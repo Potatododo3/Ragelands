@@ -20,6 +20,6 @@ public class Chat {
     public static String color(String message) { return ChatColor.translateAlternateColorCodes('&', message);}
 
     public static String version() {
-            return Bukkit.getServer().getPluginManager().getPlugin("RL-CustomItems").getDescription().getVersion();
+            return Bukkit.getServer().getPluginManager().getPlugin("RageLandsCUSTOM").getDescription().getVersion();
     }
 }

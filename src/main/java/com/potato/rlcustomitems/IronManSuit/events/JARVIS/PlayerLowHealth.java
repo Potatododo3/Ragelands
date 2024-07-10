@@ -29,7 +29,7 @@ public class PlayerLowHealth implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 1));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 3));
                         }
                     }.runTaskLater(Main.getPlugin(), 20);
                 }

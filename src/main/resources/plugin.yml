@@ -1,5 +1,5 @@
 name: RL-CustomItems
-version: '${project.version}'
+version: 2.0
 main: com.potato.rlcustomitems.Main
 api-version: '1.20'
 depend:
@@ -20,26 +20,11 @@ commands:
       default: op
       aliases: rrp
       usage: "Usage : /reloadragelandsplugin"
-  sue:
-    description: "Sue users for their wrongdoings"
-    usage: "Usage : /sue <player> <reason>"
-  addoffense:
-    description: "Adds an offense to a player"
-    usage: "Usage : /addoffense <player> <offense>"
-    permission: ragelands.admin
-    default: op
-  deletenulloffenses:
-    description: "Deletes all rows where the offense is null."
-    usage: "Usage : /deleteallnulloffenses"
-    permission: ragelands.admin
-  deleteoffense:
-    description: "Removes an offense from a players record"
-    usage: "Usage : /deleteoffense <player> <offense>"
-    permission : ragelands.admin
-  backgroundcheck:
-    description: "Checks a player's record for any previous offenses"
-    usage: "Usage : /backgroundcheck <player>"
-  reconnectdb:
-    description: "Reconnects to the database when closed connection"
-    usage: "Usage : /reconnectdb"
-  checkconnection:
+  ironman:
+    aliases:
+      - im
+  suits:
+    aliases:
+      - suit
+  mk42:
+

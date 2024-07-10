@@ -2,13 +2,30 @@ package com.potato.rlcustomitems;
 
 import com.potato.rlcustomitems.Commands.*;
 import com.potato.rlcustomitems.Functions.*;
+import com.potato.rlcustomitems.IronManSuit.Chat;
+import com.potato.rlcustomitems.IronManSuit.Data;
+import com.potato.rlcustomitems.IronManSuit.SuitManager;
+import com.potato.rlcustomitems.IronManSuit.cmds.IronManCmds;
+import com.potato.rlcustomitems.IronManSuit.cmds.SuitCmds;
+import com.potato.rlcustomitems.IronManSuit.cmds.suits.mk42;
+import com.potato.rlcustomitems.IronManSuit.events.JARVIS.PlayerFire;
+import com.potato.rlcustomitems.IronManSuit.events.JARVIS.PlayerHeal;
+import com.potato.rlcustomitems.IronManSuit.events.JARVIS.PlayerLowHealth;
+import com.potato.rlcustomitems.IronManSuit.events.PlayerDeath;
+import com.potato.rlcustomitems.IronManSuit.events.PlayerJoin;
+import com.potato.rlcustomitems.IronManSuit.events.PlayerLeave;
+import com.potato.rlcustomitems.IronManSuit.events.PlayerMoveArmourListener;
+import com.potato.rlcustomitems.IronManSuit.menu.GuiListener;
 import com.potato.rlcustomitems.ItemFunctions.*;
 import com.potato.rlcustomitems.Items.*;
 import dev.respark.licensegate.LicenseGate;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -17,6 +34,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class Main extends JavaPlugin {
+    @Getter
+    private static Main plugin;
+    @Getter
+    private static SuitManager suitManager;
 
     private HashMap<UUID, Integer> playerData;;
     private Main main;
@@ -60,6 +81,10 @@ public final class Main extends JavaPlugin {
             Bukkit.getScheduler().cancelTasks(this);
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        plugin = this;
+
+        suitManager = new SuitManager(this);
+
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -89,16 +114,43 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CowboyBoots(this), this);
         getServer().getPluginManager().registerEvents(new FreezeClock(this), this);
         getServer().getPluginManager().registerEvents(new BossDropItem(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+        getServer().getPluginManager().registerEvents(new PlayerHeal(), this);
+        getServer().getPluginManager().registerEvents(new PlayerLowHealth(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
+        getServer().getPluginManager().registerEvents(new PlayerFire(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMoveArmourListener(), this);
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
         Objects.requireNonNull(getCommand("ejectpassengers")).setExecutor(new EjectCommand());
         Objects.requireNonNull(getCommand("reloadragelandsplugin")).setExecutor(new ReloadCommand(this));
+        Objects.requireNonNull(getCommand("ironman")).setExecutor(new IronManCmds());
+        Objects.requireNonNull(getCommand("suits")).setExecutor(new SuitCmds());
+        Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
+
         startItCheck();
     }
+
     @Override
     public void onDisable() {
         if (itCheck != null) {
             itCheck.cancel();
+        }
+        for (Player players : Data.Suit) {
+            Data.Suit.remove(players);
+            players.getInventory().setHelmet(null);
+            players.getInventory().setChestplate(null);
+            players.getInventory().setLeggings(null);
+            players.getInventory().setBoots(null);
+            players.setFlying(false);
+            players.setAllowFlight(false);
+            Chat.msg(players, Chat.prefix + "&7Armour removed due to reload!");
+            Chat.msg(players, Chat.prefix + "&7Effects removed due to reload!");
+            for (PotionEffect effects : players.getActivePotionEffects()) {
+                players.removePotionEffect(effects.getType());
+            }
         }
     }
 

@@ -20,20 +20,30 @@ public class mk42 implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!Data.Suit.contains(player)) {
+        try {
+            if (!Data.Suit.contains(player)) {
+                Chat.msg(player, Chat.prefix + "&7Suit required to run this command!");
+                return true;
+            }
+        }
+        catch (NullPointerException e ) {
             Chat.msg(player, Chat.prefix + "&7Suit required to run this command!");
             return true;
         }
-
-        if (!Data.suitAssigned.get(player).equalsIgnoreCase("mk42")) {
-            Chat.msg(player, Chat.jarvis + "&7mk42 required to run this command!");
+        try {
+            if (!Data.suitAssigned.get(player).equalsIgnoreCase("mk42")) {
+                Chat.msg(player, Chat.jarvis + "&7Mk42 suit required to run this command!");
+                return true;
+            }
+        } catch (NullPointerException e) {
+            Chat.msg(player, Chat.jarvis + "&7Mk42 suit required to run this command!");
             return true;
         }
 
         if (cmd.getName().equalsIgnoreCase("mk42")) {
             if (args.length == 0) {
                 Chat.msg(player,
-                        Chat.prefix + "Available suit commands:",
+                        Chat.prefix + "Available mk42 suit commands:",
                         "&8&l >> &7/mk42 nightvision");
                 return true;
             }

@@ -84,7 +84,9 @@ public class SuitCmds implements CommandExecutor {
 
                         if (Data.Suit.contains(target)) {
                             Chat.msg(player, Chat.prefix + "&6Suit set by: &a" + ((Player) sender).getDisplayName() + "&6!");
-                            Main.getSuitManager().eject(target);
+                            if (Data.suitAssigned.get(target).equals("Mk1") ||Data.suitAssigned.get(target).equals("Mk42")) {
+                                Main.getSuitManager().eject(target);
+                            }
                             Main.getSuitManager().apply(target);
                             return true;
                         }

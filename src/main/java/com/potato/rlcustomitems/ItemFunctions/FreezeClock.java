@@ -44,7 +44,7 @@ public class FreezeClock implements Listener {
                     return;
                 }
 
-                cooldownManager.setCooldown(playerName, 45);
+                cooldownManager.setFreezeClockCooldowns(playerName, 45);
 
                 for (Player nearbyPlayer : getNearbyPlayers(player, 7)) {
                     if (!isInSameFaction(player, nearbyPlayer)) {

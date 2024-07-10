@@ -13,7 +13,7 @@ public class CooldownManager {
         return freezeClockCooldowns.containsKey(playerName) && freezeClockCooldowns.get(playerName) > System.currentTimeMillis();
     }
 
-    public void setCooldown(String playerName, int seconds) {
+    public void setFreezeClockCooldowns(String playerName, int seconds) {
         freezeClockCooldowns.put(playerName, System.currentTimeMillis() + (seconds * 1000));
     }
 

@@ -26,6 +26,7 @@ com\potato\rlcustomitems\IronManSuit\cmds\SuitCmds.class
 com\potato\rlcustomitems\IronManSuit\events\PlayerMoveArmourListener.class
 com\potato\rlcustomitems\Items\ItemLongRangeBow.class
 com\potato\rlcustomitems\Main$1.class
+com\potato\rlcustomitems\IronManSuit\cmds\IronManTabCompleter.class
 com\potato\rlcustomitems\Items\ItemCowboyBoots.class
 com\potato\rlcustomitems\Commands\ReloadCommand.class
 com\potato\rlcustomitems\ItemFunctions\MagicBoots$1.class
@@ -43,6 +44,7 @@ com\potato\rlcustomitems\Items\ItemFreezeClock.class
 com\potato\rlcustomitems\IronManSuit\events\JARVIS\PlayerLowHealth$1.class
 com\potato\rlcustomitems\Items\ItemMagicBoots.class
 com\potato\rlcustomitems\IronManSuit\SuitManager.class
+com\potato\rlcustomitems\IronManSuit\cmds\SuitTabCompleter.class
 com\potato\rlcustomitems\ItemFunctions\Flashbang$1.class
 com\potato\rlcustomitems\IronManSuit\Data.class
 com\potato\rlcustomitems\Items\ItemShieldDeflect.class

@@ -43,7 +43,7 @@ public class PlayerFire implements Listener {
                 }
 
                 if (event.getCause() == EntityDamageEvent.DamageCause.POISON) {
-                    if (!Data.isPoisened.contains(player)) {
+                    if (!Data.isPoisoned.contains(player)) {
                         Chat.msg(
                                 player,
                                 Chat.jarvis + "&cWarning! Unknown synthetic detected!",

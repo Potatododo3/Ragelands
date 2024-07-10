@@ -6,7 +6,9 @@ import com.potato.rlcustomitems.IronManSuit.Chat;
 import com.potato.rlcustomitems.IronManSuit.Data;
 import com.potato.rlcustomitems.IronManSuit.SuitManager;
 import com.potato.rlcustomitems.IronManSuit.cmds.IronManCmds;
+import com.potato.rlcustomitems.IronManSuit.cmds.IronManTabCompleter;
 import com.potato.rlcustomitems.IronManSuit.cmds.SuitCmds;
+import com.potato.rlcustomitems.IronManSuit.cmds.SuitTabCompleter;
 import com.potato.rlcustomitems.IronManSuit.cmds.suits.mk42;
 import com.potato.rlcustomitems.IronManSuit.events.JARVIS.PlayerFire;
 import com.potato.rlcustomitems.IronManSuit.events.JARVIS.PlayerHeal;
@@ -128,6 +130,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("reloadragelandsplugin")).setExecutor(new ReloadCommand(this));
         Objects.requireNonNull(getCommand("ironman")).setExecutor(new IronManCmds());
         Objects.requireNonNull(getCommand("suits")).setExecutor(new SuitCmds());
+        Objects.requireNonNull(getCommand("suits")).setTabCompleter(new SuitTabCompleter());
+        getCommand("ironman").setTabCompleter(new IronManTabCompleter());
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
 
         startItCheck();

@@ -68,24 +68,24 @@ public final class Main extends JavaPlugin {
 
         // Verify the license
         // The "SCOPE" is usually your plugin name - you have to set the same string when creating the license
-        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.LIGHT_PURPLE + "======================");
-        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.WHITE + ChatColor.BOLD + "Verifying your license key...");
-        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.LIGHT_PURPLE + "======================");
+        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.LIGHT_PURPLE + "======================");
+        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.WHITE + ChatColor.BOLD + "Verifying your license key...");
+        getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.LIGHT_PURPLE + "======================");
 
         // In just one line
         boolean isValid = new LicenseGate("a1d10").verify(LicenseKey).isValid();
 
         // Take action
         if(isValid) {
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_GREEN + "======================");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]"  +ChatColor.GREEN + ChatColor.BOLD + "License valid!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.GREEN + ChatColor.BOLD + "Enjoy the official plugin!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_GREEN + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.DARK_GREEN + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] "  +ChatColor.GREEN + ChatColor.BOLD + "License valid!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.GREEN + ChatColor.BOLD + "Enjoy the official plugin!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.DARK_GREEN + "======================");
         } else {
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_RED + ChatColor.BOLD + "License invalid!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_RED + ChatColor.BOLD + "Please contact your administrator or plugin author!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.RED + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.DARK_RED + ChatColor.BOLD + "License invalid!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.DARK_RED + ChatColor.BOLD + "Please contact your administrator or plugin author!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.RED + "======================");
             Bukkit.getScheduler().cancelTasks(this);
             Bukkit.getPluginManager().disablePlugin(this);
         }

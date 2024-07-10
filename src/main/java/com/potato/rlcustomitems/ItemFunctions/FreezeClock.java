@@ -2,6 +2,7 @@ package com.potato.rlcustomitems.ItemFunctions;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.potato.rlcustomitems.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class FreezeClock implements Listener {
 
@@ -39,7 +41,8 @@ public class FreezeClock implements Listener {
                 String playerName = player.getName();
 
                 if (cooldownManager.isOnFreezeClockCooldown(playerName)) {
-                    float remainingTime = (float) CooldownManager.getFreezeClockCooldown(playerName) / 50;
+                    long remainingMillis = cooldownManager.getRemainingFreezeClockCooldown(playerName);
+                    float remainingTime = remainingMillis / 1000.0f;  // Convert milliseconds to seconds
                     player.sendMessage("Ability on cooldown! " + remainingTime + " seconds remaining.");
                     return;
                 }
@@ -75,7 +78,12 @@ public class FreezeClock implements Listener {
     private boolean isInSameFaction(Player player1, Player nearbyPlayer) {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player1);
         FPlayer nearbyfPlayer = FPlayers.getInstance().getByPlayer(nearbyPlayer);
-        if (fPlayer.getFaction().equals(nearbyfPlayer.getFaction())) {
+        Faction fPlayerFaction = fPlayer.getFaction();
+        Faction nearbyfPlayerFaction = nearbyfPlayer.getFaction();
+        if (fPlayerFaction.isWilderness() || nearbyfPlayerFaction.isWilderness()) {
+            return false;
+        }
+        else if (fPlayerFaction.toString().equals(nearbyfPlayerFaction.toString())){
             return true;
         }
         else {

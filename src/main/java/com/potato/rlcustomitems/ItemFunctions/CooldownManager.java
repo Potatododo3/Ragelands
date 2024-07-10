@@ -14,7 +14,7 @@ public class CooldownManager {
     }
 
     public void setFreezeClockCooldowns(String playerName, int seconds) {
-        freezeClockCooldowns.put(playerName, System.currentTimeMillis() + (seconds * 1000));
+        freezeClockCooldowns.put(playerName, System.currentTimeMillis() + (seconds * 1000L));
     }
 
     // Set cooldown in ticks
@@ -66,17 +66,12 @@ public class CooldownManager {
     public static boolean isOnFragbombCooldown(String player) {
         return getFragbombCooldown(player) > 0;
     }
-    // Get remaining cooldown time in ticks
-    public static int getFreezeClockCooldown(String player) {
-        Long cooldownTick = freezeClockCooldowns.get(player);
-        if (cooldownTick == null) return 0;
-        long currentTick = System.currentTimeMillis() / 50;
-        if (currentTick >= cooldownTick) {
-            freezeClockCooldowns.remove(player);
-            return 0;
+    public long getRemainingFreezeClockCooldown(String playerName) {
+        if (!freezeClockCooldowns.containsKey(playerName)) {
+            return 0L;
         }
-
-        return (int) (cooldownTick - currentTick);
+        long remainingTime = freezeClockCooldowns.get(playerName) - System.currentTimeMillis();
+        return remainingTime > 0 ? remainingTime : 0L; // Ensure non-negative remaining time
     }
 }
 

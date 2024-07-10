@@ -1,7 +1,11 @@
 package com.potato.rlcustomitems;
 
-import com.potato.rlcustomitems.Commands.*;
-import com.potato.rlcustomitems.Functions.*;
+import com.potato.rlcustomitems.Commands.EjectCommand;
+import com.potato.rlcustomitems.Commands.ItemGiver;
+import com.potato.rlcustomitems.Commands.ReloadCommand;
+import com.potato.rlcustomitems.Functions.BossDropItem;
+import com.potato.rlcustomitems.Functions.ItemGiverTabCompleter;
+import com.potato.rlcustomitems.Functions.NoTNT;
 import com.potato.rlcustomitems.IronManSuit.Chat;
 import com.potato.rlcustomitems.IronManSuit.Data;
 import com.potato.rlcustomitems.IronManSuit.SuitManager;
@@ -34,6 +38,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.potato.rlcustomitems.IronManSuit.Chat.ragelands;
 
 public final class Main extends JavaPlugin {
     @Getter
@@ -71,15 +77,15 @@ public final class Main extends JavaPlugin {
 
         // Take action
         if(isValid) {
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.DARK_GREEN + "======================");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] "  +ChatColor.GREEN + ChatColor.BOLD + "License valid!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.GREEN + ChatColor.BOLD + "Enjoy the official plugin!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.DARK_GREEN + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_GREEN + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]"  +ChatColor.GREEN + ChatColor.BOLD + "License valid!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.GREEN + ChatColor.BOLD + "Enjoy the official plugin!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_GREEN + "======================");
         } else {
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.RED + "======================");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.DARK_RED + ChatColor.BOLD + "License invalid!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.DARK_RED + ChatColor.BOLD + "Please contact your administrator or plugin author!");
-            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.RED + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_RED + ChatColor.BOLD + "License invalid!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_RED + ChatColor.BOLD + "Please contact your administrator or plugin author!");
+            getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
             Bukkit.getScheduler().cancelTasks(this);
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -131,7 +137,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("ironman")).setExecutor(new IronManCmds());
         Objects.requireNonNull(getCommand("suits")).setExecutor(new SuitCmds());
         Objects.requireNonNull(getCommand("suits")).setTabCompleter(new SuitTabCompleter());
-        getCommand("ironman").setTabCompleter(new IronManTabCompleter());
+        Objects.requireNonNull(getCommand("ironman")).setTabCompleter(new IronManTabCompleter());
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
 
         startItCheck();
@@ -163,10 +169,10 @@ public final class Main extends JavaPlugin {
             @Override
             public void run() {
                 if (!isItValid()) {
-                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.RED + "======================");
-                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.DARK_RED + ChatColor.BOLD + "License key is deactivated! Disabling plugin...");
+                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
+                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.DARK_RED + ChatColor.BOLD + "License key is deactivated! Disabling plugin...");
                     getLogger().warning("Please contact plugin author for renewal of license or more information!");
-                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[RL-CustomItems] " + ChatColor.RED + "======================");
+                    getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "]" + ChatColor.RED + "======================");
                     Bukkit.getPluginManager().disablePlugin(Main.this); // Use MyPlugin.this
                 }
             }

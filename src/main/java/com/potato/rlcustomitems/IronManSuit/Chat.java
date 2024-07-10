@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public class Chat {
+    public static String ragelands = "RageLands";
     public static String prefix = color("&7[&c&lRageLands&7] ");
     public static String jarvis = color("&7[&c&lJ.A.R.V.I.S&7] ");
     public static String jarvisMenu = color("&c&lJ.A.R.V.I.S ");

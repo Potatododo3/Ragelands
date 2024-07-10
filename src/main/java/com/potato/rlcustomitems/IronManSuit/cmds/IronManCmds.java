@@ -32,15 +32,10 @@ public class IronManCmds implements CommandExecutor {
                     Chat.msg(
                             player,
                             Chat.prefix + "&7Information:",
-                            "&7Ironman is an extension to the ragelands custom plugin created by no other than Licensed to bring Ironman, to your game. " +
-                                    "This plugin aims to bring his abilities, J.A.R.V.I.S and suits to ragelands!",
-                            "&8&l >> &7Version: " + Chat.version()
+                            "&7Ironman is an extension to the ragelands custom plugin created by no other than licensed to bring Ironman, to RageLands" +
+                            "\nThis plugin aims to bring his abilities, J.A.R.V.I.S and suits to ragelands!",
+                            "\n&8&l >> &7Plugin Version: " + Chat.version()
                             );
-                    return true;
-                }
-
-                if (args[0].equalsIgnoreCase("version")) {
-                    Chat.msg(player, Chat.prefix + "Version: " + Chat.version());
                     return true;
                 }
 

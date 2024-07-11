@@ -14,15 +14,17 @@ import com.potato.ragelandscustom.IronManSuit.cmds.IronManTabCompleter;
 import com.potato.ragelandscustom.IronManSuit.cmds.SuitCmds;
 import com.potato.ragelandscustom.IronManSuit.cmds.SuitTabCompleter;
 import com.potato.ragelandscustom.IronManSuit.cmds.suits.mk42;
+import com.potato.ragelandscustom.IronManSuit.events.*;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerFire;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerHeal;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerLowHealth;
-import com.potato.ragelandscustom.IronManSuit.events.*;
+import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerTracking;
 import com.potato.ragelandscustom.IronManSuit.menu.GuiListener;
 import com.potato.ragelandscustom.ItemFunctions.*;
 import com.potato.ragelandscustom.Items.*;
 import dev.respark.licensegate.LicenseGate;
 import lombok.Getter;
+import me.msmaciek.redefinedglowingentities.api.RedefinedGlowingEntitiesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -43,10 +45,10 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     @Getter
     private static SuitManager suitManager;
-
     private HashMap<UUID, Integer> playerData;;
     private Main main;
     private BukkitTask itCheck;
+    public RedefinedGlowingEntitiesAPI geAPI;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -86,6 +88,8 @@ public final class Main extends JavaPlugin {
             Bukkit.getScheduler().cancelTasks(this);
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        geAPI = new RedefinedGlowingEntitiesAPI(this);
+
         plugin = this;
 
         suitManager = new SuitManager(this);
@@ -128,6 +132,9 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new PlayerFire(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveArmourListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerTracking(this), this);
+        getServer().getPluginManager().registerEvents(new FireAbility(this), this);
+        getServer().getPluginManager().registerEvents(new ProjectileImpactListener(this), this);
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
         Objects.requireNonNull(getCommand("ejectpassengers")).setExecutor(new EjectCommand());

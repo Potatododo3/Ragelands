@@ -111,6 +111,12 @@ public class SuitManager {
 
         if (Data.suitAssigned.get(player).equals("MK42")) {
             player.getInventory().setLeggings(new ItemStackBuilder(Material.DIAMOND_LEGGINGS).setName("&8&lMark 42").build());
+            for (int i = 0; i < 37; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    player.getInventory().setItem(i, new ItemStackBuilder(Material.BLAZE_POWDER).addLore("Shoot explosive arrows").build());
+                    return;
+                }
+            }
         }
     }
 
@@ -123,6 +129,12 @@ public class SuitManager {
         if (Data.suitAssigned.get(player).equals("MK42")) {
             player.getInventory().setBoots(new ItemStackBuilder(Material.DIAMOND_BOOTS).setName("&8&lMark 42").build());
             player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, Integer.MAX_VALUE, 1));
+            for (int i = 0; i < 37; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    player.getInventory().setItem(i, new ItemStackBuilder(Material.COMPASS).addLore("Track Nearby Players").build());
+                    return;
+                }
+            }
         }
     }
 }

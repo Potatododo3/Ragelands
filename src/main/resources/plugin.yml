@@ -4,10 +4,11 @@ main: com.potato.ragelandscustom.Main
 author: "Licensed (Potato_dodo0)"
 api-version: '1.20'
 description: "A Custom ragelands plugin made by Licensed"
-load: STARTUP
+load: POSTWORLD
 depend:
   - Factions
   - Vault
+  - packetevents
 commands:
   giveitem:
     usage: "Usage : /giveitem <item> <player>"

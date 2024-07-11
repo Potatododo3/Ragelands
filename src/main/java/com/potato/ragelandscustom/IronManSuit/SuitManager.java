@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -43,36 +42,7 @@ public class SuitManager {
             Data.buildingSuit.remove(player);
         });
         Data.Suit.add(player);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (Data.Suit.contains(player)) {
-                    if (player.isOnGround()) {
-                        player.setGliding(false);
-                        player.setAllowFlight(true);
-                        if (playerFlyStatus == null) {
-                            playerFlyStatus = new HashMap<>();
-                        }
-                        playerFlyStatus.put(player.getUniqueId(), false);
-                    } else if (player.isFlying()) {
-                        if (player.isGliding()) {
-                            player.setAllowFlight(true);
-                            player.setFlying(false);
-                            playerFlyStatus.put(player.getUniqueId(), false);
-                            player.setGliding(false);
-                        } else {
-                            player.setAllowFlight(false);
-                            player.setFlying(false);
-                            player.setGliding(true);
-                            playerFlyStatus.put(player.getUniqueId(), true);
-                        }
-                    }
-                }
-                else {
-                    this.cancel();
-                }
-            }
-        }.runTaskTimer(main, 0L, 1L); // Schedule the task to run every tick
+
     }
 
     public void eject(Player player) {

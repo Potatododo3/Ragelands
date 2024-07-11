@@ -19,6 +19,7 @@ public class SuitManager {
         this.main = main;
     }
     public HashMap<UUID, Boolean> playerFlyStatus;
+
     public void apply(Player player) {
         Data.buildingSuit.add(player);
         Delay.until(20*3, () -> {
@@ -49,6 +50,9 @@ public class SuitManager {
                     if (player.isOnGround()) {
                         player.setGliding(false);
                         player.setAllowFlight(true);
+                        if (playerFlyStatus == null) {
+                            playerFlyStatus = new HashMap<>();
+                        }
                         playerFlyStatus.put(player.getUniqueId(), false);
                     } else if (player.isFlying()) {
                         if (player.isGliding()) {

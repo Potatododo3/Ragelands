@@ -42,7 +42,6 @@ public class SuitManager {
             Data.buildingSuit.remove(player);
         });
         Data.Suit.add(player);
-
     }
 
     public void eject(Player player) {

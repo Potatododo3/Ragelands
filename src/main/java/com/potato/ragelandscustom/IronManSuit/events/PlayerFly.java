@@ -33,6 +33,12 @@ public class PlayerFly implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
+        if (!Data.Suit.contains(e.getPlayer())) {
+            e.getPlayer().setFlying(false);
+            e.getPlayer().setGliding(false);
+            e.getPlayer().setAllowFlight(false);
+            return;
+        }
         if (e.getPlayer().getLocation().subtract(0, 1, 0).getBlock().getType() != Material.AIR) {
             e.getPlayer().setAllowFlight(true);
             e.getPlayer().setFlying(false);
@@ -46,7 +52,7 @@ public class PlayerFly implements Listener {
         if(!player.isGliding())
             return;
 
-        player.fireworkBoost(new ItemStack(Material.FIREWORK_ROCKET));
+        player.boostElytra(new ItemStack(Material.FIREWORK_ROCKET));
     }
     @EventHandler
     public void onFly(PlayerToggleFlightEvent e) {
@@ -66,6 +72,9 @@ public class PlayerFly implements Listener {
                     }
                 }
             }.runTaskTimer(main, 0L, 10L); // Schedule the task to run every 20 ticks (1 second)
+        }
+        else {
+            e.setCancelled(true);
         }
     }
 }

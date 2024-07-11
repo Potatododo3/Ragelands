@@ -26,7 +26,7 @@ public class PlayerTracking implements Listener {
         Player player = e.getPlayer();
 
         if (e.getItem() != null && e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasLore() && e.getItem().getItemMeta().getLore().contains("Track Nearby Players")) {
-            startTrackingNearbyPlayersTask(player, 13, 36);
+            startTrackingNearbyPlayersTask(player, 12, 36);
         }
     }
 
@@ -49,9 +49,9 @@ public class PlayerTracking implements Listener {
                         if (entity instanceof Player) {
                             if (entity != player) {
                                 Player nearbyPlayer = (Player) entity;
-                                if (!main.geAPI.getGlowingEntities().containsKey(nearbyPlayer.getUniqueId())) {
+                                if(!glowingPlayers.contains(nearbyPlayer)) {
                                     sendGlowingPacket(player, nearbyPlayer, NamedTextColor.WHITE);
-                                    Chat.msg(player, "&4&l!! &cTracker found player " + nearbyPlayer.getDisplayName() + " with health " + nearbyPlayer.getHealth() + "&4&l!!");
+                                    Chat.msg(player, "&4&l!! &cTracker found player " + "&d&l" + nearbyPlayer.getDisplayName()  + " &cwith health " + nearbyPlayer.getHealth() + "&4&l !!");
                                     glowingPlayers.add(nearbyPlayer); // Add player to glowing set
                                     unglowPlayers(player, nearbyPlayer);
                                 }
@@ -60,9 +60,9 @@ public class PlayerTracking implements Listener {
                     }
                 }
 
-                timeElapsed += 10; // Increment elapsed time by the period (10 ticks)
+                timeElapsed += 5; // Increment elapsed time by the period (10 ticks)
             }
-        }.runTaskTimer(main, 0L, 10L); // Schedule the task to run every 10 ticks (0.5 seconds)
+        }.runTaskTimer(main, 0L, 5L); // Schedule the task to run every 10 ticks (0.5 seconds)
     }
 
     private void sendGlowingPacket(Player toPlayer, Player targetPlayer, NamedTextColor glowing) {

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -25,43 +24,41 @@ public class FireAbility implements Listener {
 
     @EventHandler
     public void onPlayerUse(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-            Player player = event.getPlayer();
-            ItemStack item = player.getInventory().getItemInMainHand();
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-            if (item != null && item.getType() == Material.BLAZE_POWDER && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("Shoot explosive arrows")) {
-                Projectile projectile = player.launchProjectile(org.bukkit.entity.Arrow.class);
-                projectile.setVelocity(player.getLocation().getDirection().multiply(2));
-                projectile.setMetadata("ironman_projectile", new FixedMetadataValue(plugin, true));
+        if (item != null && item.getType() == Material.BLAZE_POWDER && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("Shoot explosive arrows")) {
+            Projectile projectile = player.launchProjectile(org.bukkit.entity.Arrow.class);
+            projectile.setVelocity(player.getLocation().getDirection().multiply(2));
+            projectile.setMetadata("ironman_projectile", new FixedMetadataValue(plugin, true));
 
-                // Schedule despawning task after 10 seconds if not hit
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            // Schedule despawning task after 10 seconds if not hit
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                if (!projectile.isDead()) {
+                    projectile.remove();
+                }
+            }, 200L); // 200 ticks = 10 seconds
+
+            // Check for nearby players and update projectile velocity
+            new BukkitRunnable() {
+                @Override
+                public void run() {
                     if (!projectile.isDead()) {
-                        projectile.remove();
-                    }
-                }, 200L); // 200 ticks = 10 seconds
-
-                // Check for nearby players and update projectile velocity
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (!projectile.isDead()) {
-                            Player nearestPlayer = findNearestPlayer(projectile);
-                            if (nearestPlayer != null) {
-                                Vector direction = nearestPlayer.getLocation().toVector().subtract(projectile.getLocation().toVector()).normalize();
-                                projectile.setVelocity(direction.multiply(1.15)); // Adjust speed as needed
-                            }
-                        } else {
-                            this.cancel();
+                        Player nearestPlayer = findNearestPlayer(projectile);
+                        if (nearestPlayer != null) {
+                            Vector direction = nearestPlayer.getLocation().toVector().subtract(projectile.getLocation().toVector()).normalize();
+                            projectile.setVelocity(direction.multiply(2)); // Adjust speed as needed
                         }
+                    } else {
+                        this.cancel();
                     }
-                }.runTaskTimer(plugin, 0L, 10L); // Run every 0 ticks (immediately) and repeat every 10 ticks (0.5 seconds)
-            }
+                }
+            }.runTaskTimer(plugin, 0L, 1L); // Run every tick (20 times per second)
         }
     }
 
     private Player findNearestPlayer(Projectile projectile) {
-        double minDistanceSquared = 64; // 8 blocks squared
+        double minDistanceSquared = 16; // 4 blocks squared
         Player nearestPlayer = null;
         Collection<Player> nearbyPlayers = projectile.getWorld().getPlayers();
 

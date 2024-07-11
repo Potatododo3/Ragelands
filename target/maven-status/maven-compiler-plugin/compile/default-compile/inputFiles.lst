@@ -11,10 +11,12 @@ C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscus
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\ItemFunctions\FreezeClock.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\Items\ItemFragBomb.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\Main.java
+C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerLeave.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\menu\GuiListener.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\ItemFunctions\MagicBoots.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerLowHealth.java
+C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\FireAbility.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerJoin.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\Commands\ReloadCommand.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\Items\ItemCowboyBoots.java
@@ -36,6 +38,7 @@ C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscus
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\ItemFunctions\LongRangeBow.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerMoveArmourListener.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\Data.java
+C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\events\ProjectileImpactListener.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\DataManager.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\IronManTabCompleter.java
 C:\Users\barag\IdeaProjects\RL-CustomItems\src\main\java\com\potato\ragelandscustom\ItemFunctions\Flashbang.java

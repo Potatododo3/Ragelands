@@ -1,6 +1,7 @@
 com\potato\ragelandscustom\Commands\EjectCommand.class
 com\potato\ragelandscustom\ItemFunctions\CooldownManager.class
 com\potato\ragelandscustom\Items\ItemMagicBoots.class
+com\potato\ragelandscustom\IronManSuit\events\PlayerFly$1.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerMoveArmourListener.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots.class
 com\potato\ragelandscustom\Main$1.class

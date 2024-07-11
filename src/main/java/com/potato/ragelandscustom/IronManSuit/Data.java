@@ -13,5 +13,6 @@ public class Data {
     public static ArrayList<Player> isOnFire = new ArrayList<>();
     public static ArrayList<Player> isPoisoned = new ArrayList<>();
     public static HashMap<Player, String> suitAssigned = new HashMap<>();
+    public static ArrayList<Player> isGliding = new ArrayList<>();
 
 }

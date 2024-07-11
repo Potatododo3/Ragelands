@@ -119,7 +119,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CowboyBoots(this), this);
         getServer().getPluginManager().registerEvents(new FreezeClock(this), this);
         getServer().getPluginManager().registerEvents(new BossDropItem(), this);
-        getServer().getPluginManager().registerEvents(new PlayerFly(), this);
+        getServer().getPluginManager().registerEvents(new PlayerFly(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerHeal(), this);
         getServer().getPluginManager().registerEvents(new PlayerLowHealth(), this);
@@ -146,18 +146,20 @@ public final class Main extends JavaPlugin {
         if (itCheck != null) {
             itCheck.cancel();
         }
-        for (Player players : Data.Suit) {
-            Data.Suit.remove(players);
-            players.getInventory().setHelmet(null);
-            players.getInventory().setChestplate(null);
-            players.getInventory().setLeggings(null);
-            players.getInventory().setBoots(null);
-            players.setFlying(false);
-            players.setAllowFlight(false);
-            Chat.msg(players, Chat.prefix + "&7Armour removed due to reload!");
-            Chat.msg(players, Chat.prefix + "&7Effects removed due to reload!");
-            for (PotionEffect effects : players.getActivePotionEffects()) {
-                players.removePotionEffect(effects.getType());
+        if (!Data.Suit.isEmpty()) {
+            for (Player players : Data.Suit) {
+                Data.Suit.remove(players);
+                players.getInventory().setHelmet(null);
+                players.getInventory().setChestplate(null);
+                players.getInventory().setLeggings(null);
+                players.getInventory().setBoots(null);
+                players.setFlying(false);
+                players.setAllowFlight(false);
+                Chat.msg(players, Chat.prefix + "&7Armour removed due to reload!");
+                Chat.msg(players, Chat.prefix + "&7Effects removed due to reload!");
+                for (PotionEffect effects : players.getActivePotionEffects()) {
+                    players.removePotionEffect(effects.getType());
+                }
             }
         }
     }

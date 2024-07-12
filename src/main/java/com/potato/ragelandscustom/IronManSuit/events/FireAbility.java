@@ -59,7 +59,7 @@ public class FireAbility implements Listener {
     }
 
     private Player findNearestPlayer(Projectile projectile) {
-        double minDistanceSquared = 16; // 4 blocks squared
+        double minDistanceSquared = 64; // 8 blocks squared
         Player nearestPlayer = null;
         Collection<Player> nearbyPlayers = projectile.getWorld().getPlayers();
 

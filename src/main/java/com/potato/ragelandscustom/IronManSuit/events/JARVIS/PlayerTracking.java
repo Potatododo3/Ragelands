@@ -3,6 +3,7 @@ package com.potato.ragelandscustom.IronManSuit.events.JARVIS;
 import com.potato.ragelandscustom.IronManSuit.Chat;
 import com.potato.ragelandscustom.Main;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -25,7 +26,7 @@ public class PlayerTracking implements Listener {
     public void onTrack(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
-        if (e.getItem() != null && e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasLore() && e.getItem().getItemMeta().getLore().contains("Track Nearby Players")) {
+        if (e.getItem() != null && e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasLore() && e.getItem().getItemMeta().getLore().contains(ChatColor.translateAlternateColorCodes('&', "&6Track Nearby Players"))) {
             startTrackingNearbyPlayersTask(player, 12, 36);
         }
     }
@@ -51,7 +52,7 @@ public class PlayerTracking implements Listener {
                                 Player nearbyPlayer = (Player) entity;
                                 if(!glowingPlayers.contains(nearbyPlayer)) {
                                     sendGlowingPacket(player, nearbyPlayer, NamedTextColor.WHITE);
-                                    Chat.msg(player, "&4&l!! &cTracker found player " + "&d&l" + nearbyPlayer.getDisplayName()  + " &cwith health " + nearbyPlayer.getHealth() + "&4&l !!");
+                                    Chat.msg(player, "&4&l!! &cTracker found player " + "&d&l" + nearbyPlayer.getDisplayName()  + " &cwith health " + roundToNearestHalf(nearbyPlayer.getHealth() / 2) + "&4♥" + "&4&l !!");
                                     glowingPlayers.add(nearbyPlayer); // Add player to glowing set
                                     unglowPlayers(player, nearbyPlayer);
                                 }
@@ -68,7 +69,19 @@ public class PlayerTracking implements Listener {
     private void sendGlowingPacket(Player toPlayer, Player targetPlayer, NamedTextColor glowing) {
         main.geAPI.setGlowing(toPlayer, targetPlayer, glowing);
     }
+    public double roundToNearestHalf(double number) {
+        double start = 20.0;
+        double increment = 0.5;
 
+        // Ensure number is greater than or equal to start
+        if (number < start) {
+            return start;
+        }
+
+        // Calculate the number of increments from the start
+        double increments = Math.round((number - start) / increment);
+        return start + (increments * increment);
+    }
     private void unglowPlayers(Player toPlayer, Player targetPlayer) {
         new BukkitRunnable() {
             @Override

@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit.events;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -27,7 +28,7 @@ public class FireAbility implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (item != null && item.getType() == Material.BLAZE_POWDER && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("Shoot explosive arrows")) {
+        if (item != null && item.getType() == Material.BLAZE_POWDER && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains(ChatColor.translateAlternateColorCodes('&', "&fShoot explosive arrows"))) {
             Projectile projectile = player.launchProjectile(org.bukkit.entity.Arrow.class);
             projectile.setVelocity(player.getLocation().getDirection().multiply(2));
             projectile.setMetadata("ironman_projectile", new FixedMetadataValue(plugin, true));

@@ -29,7 +29,6 @@ public class CowboyBoots implements Listener {
         ItemStack boots = player.getInventory().getBoots();
         return boots != null && boots.getType() == Material.GOLDEN_BOOTS;
     }
-
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         if (e.getHand() == EquipmentSlot.HAND) {

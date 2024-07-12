@@ -1,8 +1,10 @@
 com\potato\ragelandscustom\Commands\EjectCommand.class
 com\potato\ragelandscustom\ItemFunctions\CooldownManager.class
+com\potato\ragelandscustom\ItemFunctions\Stinger.class
 com\potato\ragelandscustom\Items\ItemMagicBoots.class
 com\potato\ragelandscustom\IronManSuit\events\FireAbility.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerFly$1.class
+com\potato\ragelandscustom\ItemFunctions\Stinger$2.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerMoveArmourListener.class
 com\potato\ragelandscustom\IronManSuit\events\FireAbility$1.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots.class
@@ -49,6 +51,7 @@ com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerHeal.class
 com\potato\ragelandscustom\IronManSuit\menu\GuiListener.class
 com\potato\ragelandscustom\Items\ItemFreezeClock.class
 com\potato\ragelandscustom\ItemFunctions\Flashbang.class
+com\potato\ragelandscustom\ItemFunctions\Stinger$1.class
 com\potato\ragelandscustom\IronManSuit\menu\ClickAction.class
 com\potato\ragelandscustom\ItemFunctions\FragBomb.class
 com\potato\ragelandscustom\DataManager.class

@@ -2,11 +2,13 @@ package com.potato.ragelandscustom.Commands;
 
 import com.potato.ragelandscustom.DataManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemGiver implements CommandExecutor {
     @Override
@@ -42,6 +44,9 @@ public class ItemGiver implements CommandExecutor {
                         case "freezeclock":
                             giveFreezeClock(player);
                             return true;
+                        case "stinger":
+                            giveStinger(player);
+                            return true;
                         default:
                             player.sendMessage("Unknown item.");
                             return false;
@@ -72,6 +77,9 @@ public class ItemGiver implements CommandExecutor {
                             case "freezeclock":
                                 giveFreezeClock(target);
                                 return true;
+                            case "stinger":
+                                giveStinger(target);
+                                return true;
                             default:
                                 player.sendMessage("Unknown item.");
                                 return false;
@@ -89,7 +97,13 @@ public class ItemGiver implements CommandExecutor {
 
         return false;
     }
-
+    private ItemStack createStinger() {
+        ItemStack stinger = new ItemStack(Material.CROSSBOW);
+        ItemMeta meta = stinger.getItemMeta();
+        meta.setDisplayName("FIM-92 Stinger");
+        stinger.setItemMeta(meta);
+        return stinger;
+    }
     private void giveShieldDeflect(Player player) {
         ItemStack deflectingShield = DataManager.getInstance().getDeflectingShield();
         player.getInventory().addItem(deflectingShield);
@@ -118,5 +132,8 @@ public class ItemGiver implements CommandExecutor {
     private void giveFreezeClock(Player player) {
         ItemStack freezeClock = DataManager.getInstance().getFreezeClock();
         player.getInventory().addItem(freezeClock);
+    }
+    private void giveStinger(Player player) {
+
     }
 }

@@ -59,5 +59,6 @@ com\potato\ragelandscustom\IronManSuit\ItemStackBuilder.class
 com\potato\ragelandscustom\IronManSuit\Menus.class
 com\potato\ragelandscustom\IronManSuit\menu\Gui.class
 com\potato\ragelandscustom\Functions\BossDropItem.class
+com\potato\ragelandscustom\IronManSuit\events\PlayerFly$2.class
 com\potato\ragelandscustom\IronManSuit\menu\CloseAction.class
 com\potato\ragelandscustom\Items\ItemCowboyBoots.class

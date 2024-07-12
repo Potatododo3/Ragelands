@@ -149,7 +149,7 @@ public class SuitManager {
                 boolean itemGiven = false;
                 for (int i = 0; i < 37; i++) {
                     if (player.getInventory().getItem(i) == null) {
-                        player.getInventory().setItem(i, item);
+                        player.getInventory().addItem(item);
                         itemGiven = true;
                         break; // Move to the next item to give
                     }
@@ -179,7 +179,7 @@ public class SuitManager {
                 boolean itemGiven = false;
                 for (int i = 0; i < 37; i++) {
                     if (player.getInventory().getItem(i) == null) {
-                        player.getInventory().setItem(i, item);
+                        player.getInventory().addItem(item);
                         itemGiven = true;
                         break; // Move to the next item to give
                     }

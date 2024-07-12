@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RL-CustomItems.iml" filepath="$PROJECT_DIR$/RL-CustomItems.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RageLandsCUSTOM.iml" filepath="$PROJECT_DIR$/RageLandsCUSTOM.iml" />
     </modules>
   </component>
 </project>

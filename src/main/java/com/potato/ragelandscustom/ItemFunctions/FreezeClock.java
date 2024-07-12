@@ -49,7 +49,9 @@ public class FreezeClock implements Listener {
 
                 for (Player nearbyPlayer : getNearbyPlayers(player, 7)) {
                     if (!isInSameFaction(player, nearbyPlayer)) {
-                        freezePlayer(nearbyPlayer, 4);
+                        if (nearbyPlayer != player) {
+                            freezePlayer(nearbyPlayer, 4);
+                        }
                     }
                 }
             }

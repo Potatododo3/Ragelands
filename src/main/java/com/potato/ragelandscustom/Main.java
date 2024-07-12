@@ -27,8 +27,11 @@ import lombok.Getter;
 import me.msmaciek.redefinedglowingentities.api.RedefinedGlowingEntitiesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,6 +48,9 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     @Getter
     private static SuitManager suitManager;
+    public static ItemStack speedIncreaseItem;
+    public static ItemStack speedDecreaseItem;
+    public static ItemStack hoverItem;
     private HashMap<UUID, Integer> playerData;;
     private Main main;
     private BukkitTask itCheck;
@@ -93,7 +99,7 @@ public final class Main extends JavaPlugin {
         plugin = this;
 
         suitManager = new SuitManager(this);
-
+        createCustomItems();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -144,7 +150,6 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("suits")).setTabCompleter(new SuitTabCompleter());
         Objects.requireNonNull(getCommand("ironman")).setTabCompleter(new IronManTabCompleter());
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
-
         startItCheck();
     }
 
@@ -170,7 +175,25 @@ public final class Main extends JavaPlugin {
             }
         }
     }
+    private void createCustomItems() {
+        // Speed Increase Item
+        speedIncreaseItem = new ItemStack(Material.FEATHER);
+        ItemMeta speedIncreaseItemItemMeta = speedIncreaseItem.getItemMeta();
+        speedIncreaseItemItemMeta.setDisplayName("§aIncrease Speed");
+        speedIncreaseItem.setItemMeta(speedIncreaseItemItemMeta);
 
+        // Speed Decrease Item
+        speedDecreaseItem = new ItemStack(Material.ANVIL);
+        ItemMeta speedDecreaseItemMeta = speedDecreaseItem.getItemMeta();
+        speedDecreaseItemMeta.setDisplayName("§cDecrease Speed");
+        speedDecreaseItem.setItemMeta(speedDecreaseItemMeta);
+
+        // Hover Item
+        hoverItem = new ItemStack(Material.LEVER);
+        ItemMeta hoverItemMeta = hoverItem.getItemMeta();
+        hoverItemMeta.setDisplayName("§bHover");
+        hoverItem.setItemMeta(hoverItemMeta);
+    }
     private void startItCheck() {
         itCheck = new BukkitRunnable() {
             @Override

@@ -16,7 +16,10 @@ public class PlayerLeave implements Listener {
 
         Data.Suit.remove(player);
         Data.buildingSuit.remove(player);
-
+        Data.isGliding.remove(player);
+        Data.isLowHealth.remove(player);
+        Data.isOnFire.remove(player);
+        Data.isPoisoned.remove(player);
         player.getInventory().setHelmet(null);
         player.getInventory().setChestplate(null);
         player.getInventory().setLeggings(null);

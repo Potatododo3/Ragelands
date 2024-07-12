@@ -6,13 +6,26 @@ public class CooldownManager {
     private static final HashMap<String, Long> magicBootsCooldown = new HashMap<>();
     private static final HashMap<String, Long> fragBombCooldowns = new HashMap<>();
     private static final HashMap<String, Long> freezeClockCooldowns = new HashMap<>();
+    private static final HashMap<String, Long> fireAbilityCooldown = new HashMap<>();
+    private static final HashMap<String, Long> trackerCooldown = new HashMap<>();
 
     public boolean isOnFreezeClockCooldown(String playerName) {
         return freezeClockCooldowns.containsKey(playerName) && freezeClockCooldowns.get(playerName) > System.currentTimeMillis();
     }
-
+    public boolean isOnFireAbilityCooldown(String playerName) {
+        return fireAbilityCooldown.containsKey(playerName) && fireAbilityCooldown.get(playerName) > System.currentTimeMillis();
+    }
+    public boolean isOnTrackerCooldown(String playerName) {
+        return trackerCooldown.containsKey(playerName) && trackerCooldown.get(playerName) > System.currentTimeMillis();
+    }
     public void setFreezeClockCooldowns(String playerName, int seconds) {
         freezeClockCooldowns.put(playerName, System.currentTimeMillis() + (seconds * 1000L));
+    }
+    public void setFireAbilityCooldown(String playerName, int seconds) {
+        fireAbilityCooldown.put(playerName, System.currentTimeMillis() + (seconds * 1000L));
+    }
+    public void setTrackerCooldown(String playerName, int seconds) {
+        trackerCooldown.put(playerName, System.currentTimeMillis() + (seconds * 1000L));
     }
 
     // Set cooldown in ticks
@@ -64,11 +77,25 @@ public class CooldownManager {
     public static boolean isOnFragbombCooldown(String player) {
         return getFragbombCooldown(player) > 0;
     }
+
     public long getRemainingFreezeClockCooldown(String playerName) {
         if (!freezeClockCooldowns.containsKey(playerName)) {
             return 0L;
         }
         long remainingTime = freezeClockCooldowns.get(playerName) - System.currentTimeMillis();
+        return remainingTime > 0 ? remainingTime : 0L; // Ensure non-negative remaining time
+    }
+    public long getRemainingFireAbilityCooldown(String playerName) {
+        if (!fireAbilityCooldown.containsKey(playerName)) {
+            return 0L;
+        }
+        long remainingTime = fireAbilityCooldown.get(playerName) - System.currentTimeMillis();
+        return remainingTime > 0 ? remainingTime : 0L; // Ensure non-negative remaining time
+    }public long getRemainingTrackerCooldown(String playerName) {
+        if (!trackerCooldown.containsKey(playerName)) {
+            return 0L;
+        }
+        long remainingTime = trackerCooldown.get(playerName) - System.currentTimeMillis();
         return remainingTime > 0 ? remainingTime : 0L; // Ensure non-negative remaining time
     }
 }

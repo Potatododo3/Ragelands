@@ -21,8 +21,7 @@ public class Menus {
                         (clicker, event) -> {
                             if (Data.Suit.contains(clicker)) {
                                 Main.getSuitManager().eject(clicker);
-                                Main.getSuitManager().apply(clicker);
-                                clicker.sendMessage(Chat.jarvis + "Mark 1 is on its way!");
+                                clicker.sendMessage(Chat.jarvis + "Mark 1 ejected!");
                                 clicker.closeInventory();
                                 return;
                             }
@@ -38,12 +37,14 @@ public class Menus {
                                 .setName("&8&lMark 42")
                                 .addLore("Code Name: The Prodigal Son")
                                 .addLore("Armour Type: Prehensile Suit")
+                                .addLore("Abilities :")
+                                .addLore("- Tracker (tracks nearby players)")
+                                .addLore("- Explosive Laser (explodes on blocks and lights people on fire")
                                 .build(),
                         (clicker, event) -> {
                             if (Data.Suit.contains(clicker)) {
                                 Main.getSuitManager().eject(clicker);
-                                Main.getSuitManager().apply(clicker);
-                                clicker.sendMessage(Chat.jarvis + "Mark 42 is on its way!");
+                                clicker.sendMessage(Chat.jarvis + "Mark 42 ejected!");
                                 clicker.closeInventory();
                                 return;
                             }

@@ -113,7 +113,7 @@ public class SuitManager {
             player.getInventory().setLeggings(new ItemStackBuilder(Material.DIAMOND_LEGGINGS).setName("&8&lMark 42").build());
             for (int i = 0; i < 37; i++) {
                 if (player.getInventory().getItem(i) == null) {
-                    player.getInventory().setItem(i, new ItemStackBuilder(Material.BLAZE_POWDER).addLore("Shoot explosive arrows").build());
+                    player.getInventory().setItem(i, new ItemStackBuilder(Material.BLAZE_POWDER).setName("&c&lLaser hands").addLore("&fShoot explosive arrows").build());
                     return;
                 }
             }
@@ -131,7 +131,7 @@ public class SuitManager {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, Integer.MAX_VALUE, 1));
             for (int i = 0; i < 37; i++) {
                 if (player.getInventory().getItem(i) == null) {
-                    player.getInventory().setItem(i, new ItemStackBuilder(Material.COMPASS).addLore("Track Nearby Players").build());
+                    player.getInventory().setItem(i, new ItemStackBuilder(Material.COMPASS).setName("&d&lTracker").addLore("&6Track Nearby Players").build());
                     return;
                 }
             }

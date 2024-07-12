@@ -46,7 +46,7 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder withData(int data) {
+    public ItemStackBuilder withDurability(int data) {
         itemStack.setDurability((short) data);
         return this;
     }

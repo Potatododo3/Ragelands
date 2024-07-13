@@ -32,6 +32,7 @@ public class Stinger implements Listener {
     private final Main main;
     private final NamespacedKey fireworkKey;
     private final Gson gson = new Gson();
+    private final double maxHomingDistance = 65.0; // Configurable homing distance
 
     public Stinger(Main main) {
         this.main = main;
@@ -93,7 +94,7 @@ public class Stinger implements Listener {
                                     this.cancel();
                                     return;
                                 }
-                                Entity target = findNearestFlyingEntity(firework);
+                                Entity target = findNearestFlyingEntity(firework, maxHomingDistance);
                                 if (target != null) {
                                     Vector direction = target.getLocation().toVector().subtract(firework.getLocation().toVector()).normalize();
                                     firework.setVelocity(direction.multiply(2));
@@ -126,13 +127,13 @@ public class Stinger implements Listener {
         return fireworkMeta;
     }
 
-    private Entity findNearestFlyingEntity(Entity source) {
+    private Entity findNearestFlyingEntity(Entity source, double maxDistance) {
         double closestDistance = Double.MAX_VALUE;
         Entity closestEntity = null;
         for (Entity entity : source.getWorld().getEntities()) {
             if (entity instanceof Player && ((Player) entity).isFlying()) {
                 double distance = entity.getLocation().distance(source.getLocation());
-                if (distance < closestDistance) {
+                if (distance < closestDistance && distance <= maxDistance) {
                     closestDistance = distance;
                     closestEntity = entity;
                 }

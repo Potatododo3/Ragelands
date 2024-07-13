@@ -77,8 +77,8 @@ public class PlayerFly implements Listener {
         }
 
         float speed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
-        // Apply the speed directly to the player's velocity
-        player.setVelocity(player.getLocation().getDirection().multiply(speed / MAX_SPEED));
+        float bukkitSpeed = scaleToBukkitSpeed(speed);
+        player.setVelocity(player.getLocation().getDirection().multiply(bukkitSpeed));
     }
 
     @EventHandler
@@ -122,13 +122,14 @@ public class PlayerFly implements Listener {
         if (item == null || !item.hasItemMeta()) {
             return;
         }
-
-        if (item.isSimilar(Main.speedIncreaseItem)) {
-            increaseSpeed(player);
-        } else if (item.isSimilar(Main.speedDecreaseItem)) {
-            decreaseSpeed(player);
-        } else if (item.isSimilar(Main.hoverItem)) {
-            toggleHover(player);
+        if (!Data.Suit.contains(player)) {
+            if (item.isSimilar(Main.speedIncreaseItem)) {
+                increaseSpeed(player);
+            } else if (item.isSimilar(Main.speedDecreaseItem)) {
+                decreaseSpeed(player);
+            } else if (item.isSimilar(Main.hoverItem)) {
+                toggleHover(player);
+            }
         }
     }
 
@@ -136,8 +137,8 @@ public class PlayerFly implements Listener {
         float currentSpeed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
         float newSpeed = Math.min(currentSpeed + SPEED_STEP, MAX_SPEED);
         Data.playerSpeed.put(player, newSpeed);
-        player.setFlySpeed(newSpeed); // Update the player's fly speed
-        player.setFlying(false);
+        player.setFlySpeed(scaleToBukkitSpeed(newSpeed)); // Update the player's fly speed
+        player.setFlying(false); // Ensure player is not flying immediately after speed change
         player.sendMessage("Speed increased to: " + newSpeed);
     }
 
@@ -145,8 +146,8 @@ public class PlayerFly implements Listener {
         float currentSpeed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
         float newSpeed = Math.max(currentSpeed - SPEED_STEP, MIN_SPEED);
         Data.playerSpeed.put(player, newSpeed);
-        player.setFlySpeed(newSpeed); // Update the player's fly speed
-        player.setFlying(false);
+        player.setFlySpeed(scaleToBukkitSpeed(newSpeed)); // Update the player's fly speed
+        player.setFlying(false); // Ensure player is not flying immediately after speed change
         player.sendMessage("Speed decreased to: " + newSpeed);
     }
 
@@ -176,5 +177,8 @@ public class PlayerFly implements Listener {
                 }
             }.runTaskTimer(main, 0L, 1L); // Schedule the task to run every tick
         }
+    }
+    private float scaleToBukkitSpeed(float customSpeed) {
+        return (2.0f * customSpeed - (MIN_SPEED + MAX_SPEED)) / (MAX_SPEED - MIN_SPEED);
     }
 }

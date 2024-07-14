@@ -31,4 +31,7 @@ commands:
     aliases:
       - suit
   mk42:
+  cooldownreset:
+    aliases: cdres
+    permission: ragelands.cooldownsreset
 

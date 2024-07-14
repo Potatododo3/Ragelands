@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
@@ -17,9 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PlayerFly implements Listener {
 
     private final Main main;
-    private static final float MIN_SPEED = 1.0f;
-    private static final float MAX_SPEED = 5.0f;
-    private static final float SPEED_STEP = 0.25f;
+    private static final double MIN_SPEED = 0.1;
+    private static final double MAX_SPEED = 2.0;
+    private static final double SPEED_STEP = 0.2;
 
     public PlayerFly(Main main) {
         this.main = main;
@@ -75,10 +74,7 @@ public class PlayerFly implements Listener {
         if (!player.isGliding()) {
             return;
         }
-
-        float speed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
-        float bukkitSpeed = scaleToBukkitSpeed(speed);
-        player.setVelocity(player.getLocation().getDirection().multiply(bukkitSpeed));
+        player.boostElytra(new ItemStack(Material.FIREWORK_ROCKET));
     }
 
     @EventHandler
@@ -109,76 +105,9 @@ public class PlayerFly implements Listener {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(main, 0L, 10L); // Schedule the task to run every 10 ticks (0.5 seconds)
+            }.runTaskTimer(main, 0L, 12L); // Schedule the task to run every 10 ticks (0.5 seconds)
         } else {
             e.setCancelled(true);
         }
-    }
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (item == null || !item.hasItemMeta()) {
-            return;
-        }
-        if (!Data.Suit.contains(player)) {
-            if (item.isSimilar(Main.speedIncreaseItem)) {
-                increaseSpeed(player);
-            } else if (item.isSimilar(Main.speedDecreaseItem)) {
-                decreaseSpeed(player);
-            } else if (item.isSimilar(Main.hoverItem)) {
-                toggleHover(player);
-            }
-        }
-    }
-
-    private void increaseSpeed(Player player) {
-        float currentSpeed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
-        float newSpeed = Math.min(currentSpeed + SPEED_STEP, MAX_SPEED);
-        Data.playerSpeed.put(player, newSpeed);
-        player.setFlySpeed(scaleToBukkitSpeed(newSpeed)); // Update the player's fly speed
-        player.setFlying(false); // Ensure player is not flying immediately after speed change
-        player.sendMessage("Speed increased to: " + newSpeed);
-    }
-
-    private void decreaseSpeed(Player player) {
-        float currentSpeed = Data.playerSpeed.getOrDefault(player, MIN_SPEED);
-        float newSpeed = Math.max(currentSpeed - SPEED_STEP, MIN_SPEED);
-        Data.playerSpeed.put(player, newSpeed);
-        player.setFlySpeed(scaleToBukkitSpeed(newSpeed)); // Update the player's fly speed
-        player.setFlying(false); // Ensure player is not flying immediately after speed change
-        player.sendMessage("Speed decreased to: " + newSpeed);
-    }
-
-    private void toggleHover(Player player) {
-        if (!player.isGliding()) {
-            player.sendMessage("You need to be gliding to hover.");
-            return;
-        }
-
-        if (Data.isHovering.contains(player)) {
-            // Disable hovering
-            Data.isHovering.remove(player);
-            player.sendMessage("You are no longer hovering.");
-        } else {
-            // Enable hovering
-            Data.isHovering.add(player);
-            player.sendMessage("You are now hovering.");
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!player.isOnline() || !Data.isHovering.contains(player)) {
-                        this.cancel();
-                        return;
-                    }
-                    // Reset the player's vertical velocity to zero to maintain hover
-                    player.setVelocity(player.getVelocity().setY(0));
-                }
-            }.runTaskTimer(main, 0L, 1L); // Schedule the task to run every tick
-        }
-    }
-    private float scaleToBukkitSpeed(float customSpeed) {
-        return (2.0f * customSpeed - (MIN_SPEED + MAX_SPEED)) / (MAX_SPEED - MIN_SPEED);
     }
 }

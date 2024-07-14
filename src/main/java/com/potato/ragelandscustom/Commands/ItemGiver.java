@@ -134,6 +134,6 @@ public class ItemGiver implements CommandExecutor {
         player.getInventory().addItem(freezeClock);
     }
     private void giveStinger(Player player) {
-
+        player.getInventory().addItem(createStinger());
     }
 }

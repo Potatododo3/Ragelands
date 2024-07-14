@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.potato</groupId>
   <artifactId>RageLandsCUSTOM</artifactId>
-  <name>RL-CustomItems</name>
+  <name>RageLandsCUSTOM</name>
   <version>1.20.1</version>
   <build>
     <resources>

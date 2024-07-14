@@ -20,7 +20,7 @@ import java.util.Set;
 public class PlayerTracking implements Listener {
     private final Main main;
     private final CooldownManager cooldownManager;
-    private final Set<Player> glowingPlayers = new HashSet<>();
+    public static Set<Player> glowingPlayers = new HashSet<>();
     public PlayerTracking(Main main) {
         this.main = main;
         this.cooldownManager = new CooldownManager();

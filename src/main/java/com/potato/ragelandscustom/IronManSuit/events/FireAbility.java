@@ -1,5 +1,8 @@
 package com.potato.ragelandscustom.IronManSuit.events;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.potato.ragelandscustom.IronManSuit.Data;
 import com.potato.ragelandscustom.ItemFunctions.CooldownManager;
 import org.bukkit.ChatColor;
@@ -78,7 +81,13 @@ public class FireAbility implements Listener {
         Collection<Player> nearbyPlayers = projectile.getWorld().getPlayers();
 
         for (Player player : nearbyPlayers) {
-            if (!player.equals(projectile.getShooter())) { // Exclude the shooter (usually the player)
+            Player shooter = (Player) projectile.getShooter();
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(shooter);
+            FPlayer nearbyPlayer = FPlayers.getInstance().getByPlayer(player);
+            Faction shooterFPlayerFaction = fPlayer.getFaction();
+            Faction nearbyPlayerFaction = nearbyPlayer.getFaction();
+            // Exclude the shooter (usually the player)
+            if (!player.equals(projectile.getShooter()) && shooterFPlayerFaction != nearbyPlayerFaction) {
                 double distanceSquared = player.getLocation().distanceSquared(projectile.getLocation());
                 if (distanceSquared < minDistanceSquared) {
                     minDistanceSquared = distanceSquared;

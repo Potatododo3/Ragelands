@@ -1,10 +1,8 @@
 com\potato\ragelandscustom\Commands\EjectCommand.class
 com\potato\ragelandscustom\ItemFunctions\CooldownManager.class
-com\potato\ragelandscustom\ItemFunctions\Stinger.class
 com\potato\ragelandscustom\Items\ItemMagicBoots.class
 com\potato\ragelandscustom\IronManSuit\events\FireAbility.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerFly$1.class
-com\potato\ragelandscustom\ItemFunctions\Stinger$2.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerMoveArmourListener.class
 com\potato\ragelandscustom\IronManSuit\events\FireAbility$1.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots.class
@@ -13,6 +11,7 @@ com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking$2.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerFly.class
 com\potato\ragelandscustom\IronManSuit\cmds\SuitTabCompleter.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots$1$1.class
+com\potato\ragelandscustom\Commands\ResetCooldowns.class
 com\potato\ragelandscustom\Functions\ItemGiverTabCompleter.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerLeave.class
 com\potato\ragelandscustom\ItemFunctions\LongRangeBow.class
@@ -51,7 +50,6 @@ com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerHeal.class
 com\potato\ragelandscustom\IronManSuit\menu\GuiListener.class
 com\potato\ragelandscustom\Items\ItemFreezeClock.class
 com\potato\ragelandscustom\ItemFunctions\Flashbang.class
-com\potato\ragelandscustom\ItemFunctions\Stinger$1.class
 com\potato\ragelandscustom\IronManSuit\menu\ClickAction.class
 com\potato\ragelandscustom\ItemFunctions\FragBomb.class
 com\potato\ragelandscustom\DataManager.class
@@ -62,6 +60,5 @@ com\potato\ragelandscustom\IronManSuit\ItemStackBuilder.class
 com\potato\ragelandscustom\IronManSuit\Menus.class
 com\potato\ragelandscustom\IronManSuit\menu\Gui.class
 com\potato\ragelandscustom\Functions\BossDropItem.class
-com\potato\ragelandscustom\IronManSuit\events\PlayerFly$2.class
 com\potato\ragelandscustom\IronManSuit\menu\CloseAction.class
 com\potato\ragelandscustom\Items\ItemCowboyBoots.class

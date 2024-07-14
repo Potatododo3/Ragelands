@@ -3,6 +3,7 @@ package com.potato.ragelandscustom;
 import com.potato.ragelandscustom.Commands.EjectCommand;
 import com.potato.ragelandscustom.Commands.ItemGiver;
 import com.potato.ragelandscustom.Commands.ReloadCommand;
+import com.potato.ragelandscustom.Commands.ResetCooldowns;
 import com.potato.ragelandscustom.Functions.BossDropItem;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
@@ -37,6 +38,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -141,6 +143,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerTracking(this), this);
         getServer().getPluginManager().registerEvents(new FireAbility(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileImpactListener(this), this);
+        Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
         Objects.requireNonNull(getCommand("ejectpassengers")).setExecutor(new EjectCommand());
@@ -177,22 +180,25 @@ public final class Main extends JavaPlugin {
     }
     private void createCustomItems() {
         // Speed Increase Item
-        speedIncreaseItem = new ItemStack(Material.FEATHER);
-        ItemMeta speedIncreaseItemItemMeta = speedIncreaseItem.getItemMeta();
-        speedIncreaseItemItemMeta.setDisplayName("§aIncrease Speed");
-        speedIncreaseItem.setItemMeta(speedIncreaseItemItemMeta);
+        speedIncreaseItem = new ItemStack(Material.DIAMOND);
+        ItemMeta speedIncreaseMeta = speedIncreaseItem.getItemMeta();
+        speedIncreaseMeta.setDisplayName(ChatColor.GREEN + "Speed Increase Item");
+        speedIncreaseMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to increase speed"));
+        speedIncreaseItem.setItemMeta(speedIncreaseMeta);
 
         // Speed Decrease Item
         speedDecreaseItem = new ItemStack(Material.ANVIL);
-        ItemMeta speedDecreaseItemMeta = speedDecreaseItem.getItemMeta();
-        speedDecreaseItemMeta.setDisplayName("§cDecrease Speed");
-        speedDecreaseItem.setItemMeta(speedDecreaseItemMeta);
+        ItemMeta speedDecreaseMeta = speedDecreaseItem.getItemMeta();
+        speedDecreaseMeta.setDisplayName(ChatColor.GREEN + "Speed Decrease Item");
+        speedDecreaseMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to decrease speed"));
+        speedDecreaseItem.setItemMeta(speedDecreaseMeta);
 
         // Hover Item
         hoverItem = new ItemStack(Material.LEVER);
-        ItemMeta hoverItemMeta = hoverItem.getItemMeta();
-        hoverItemMeta.setDisplayName("§bHover");
-        hoverItem.setItemMeta(hoverItemMeta);
+        ItemMeta hoverMeta = hoverItem.getItemMeta();
+        hoverMeta.setDisplayName(ChatColor.GREEN + "Hover Item");
+        hoverMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to hover"));
+        hoverItem.setItemMeta(hoverMeta);
     }
     private void startItCheck() {
         itCheck = new BukkitRunnable() {

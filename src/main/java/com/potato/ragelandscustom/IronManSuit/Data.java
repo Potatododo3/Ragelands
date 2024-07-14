@@ -12,7 +12,7 @@ public class Data {
     public static ArrayList<Player> isOnFire = new ArrayList<>();
     public static ArrayList<Player> isPoisoned = new ArrayList<>();
     public static HashMap<Player, String> suitAssigned = new HashMap<>();
-    public static Map<Player, Float> playerSpeed = new HashMap<>();
+    public static Map<Player, Double> playerSpeed = new HashMap<>();
     public static Set<Player> isHovering = new HashSet<>();
     public static ArrayList<Player> isGliding = new ArrayList<>();
 

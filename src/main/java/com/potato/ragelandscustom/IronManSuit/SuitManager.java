@@ -166,9 +166,6 @@ public class SuitManager {
                             .setName("&c&lLaser hands")
                             .addLore("&fShoot explosive arrows")
                             .build(),
-                    Main.speedIncreaseItem,
-                    Main.speedDecreaseItem,
-                    Main.hoverItem,
                     new ItemStackBuilder(Material.COMPASS)
                             .setName("&d&lTracker")
                             .addLore("&6Track Nearby Players")

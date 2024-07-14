@@ -53,7 +53,14 @@ public class SuitManager {
             Chat.msg(player, Chat.jarvis + "&4Suit not built yet!");
             return;
         }
-
+        ItemStack Laserhands = new ItemStackBuilder(Material.BLAZE_POWDER)
+                .setName("&c&lLaser hands")
+                .addLore("&fShoot explosive arrows")
+                .build();
+        ItemStack Tracker = new ItemStackBuilder(Material.COMPASS)
+                .setName("&d&lTracker")
+                .addLore("&6Track Nearby Players")
+                .build();
         player.getInventory().setHelmet(null);
         player.getInventory().setChestplate(null);
         player.getInventory().setLeggings(null);
@@ -71,6 +78,13 @@ public class SuitManager {
         Delay.until(20, () -> player.getWorld().createExplosion(location, 0));
         player.setAllowFlight(false);
         player.setFlying(false);
+
+        if (player.getInventory().contains(Laserhands)) {
+            player.getInventory().removeItem(Laserhands);
+        }
+        if (player.getInventory().contains(Tracker)) {
+            player.getInventory().removeItem(Tracker);
+        }
 
         Data.suitAssigned.remove(player, "MK1");
         Data.suitAssigned.remove(player, "MK42");
@@ -131,18 +145,18 @@ public class SuitManager {
 
     private void giveSpeedControls(Player player) {
         if (Data.suitAssigned.get(player).equals("MK1")) {
+            ItemStack Laserhands = new ItemStackBuilder(Material.BLAZE_POWDER)
+                    .setName("&c&lLaser hands")
+                    .addLore("&fShoot explosive arrows")
+                    .build();
+            ItemStack Tracker = new ItemStackBuilder(Material.COMPASS)
+                    .setName("&d&lTracker")
+                    .addLore("&6Track Nearby Players")
+                    .build();
+
             ItemStack[] itemsToGive = new ItemStack[]{
-                    new ItemStackBuilder(Material.BLAZE_POWDER)
-                            .setName("&c&lLaser hands")
-                            .addLore("&fShoot explosive arrows")
-                            .build(),
-                    Main.speedIncreaseItem,
-                    Main.speedDecreaseItem,
-                    Main.hoverItem,
-                    new ItemStackBuilder(Material.COMPASS)
-                            .setName("&d&lTracker")
-                            .addLore("&6Track Nearby Players")
-                            .build()
+                    Laserhands,
+                    Tracker
             };
 
             for (ItemStack item : itemsToGive) {

@@ -5,10 +5,12 @@ import com.potato.ragelandscustom.Commands.ItemGiver;
 import com.potato.ragelandscustom.Commands.ReloadCommand;
 import com.potato.ragelandscustom.Commands.ResetCooldowns;
 import com.potato.ragelandscustom.Functions.BossDropItem;
+import com.potato.ragelandscustom.Functions.DragonEgg.*;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
 import com.potato.ragelandscustom.IronManSuit.Chat;
 import com.potato.ragelandscustom.IronManSuit.Data;
+import com.potato.ragelandscustom.IronManSuit.ItemStackBuilder;
 import com.potato.ragelandscustom.IronManSuit.SuitManager;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManCmds;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManTabCompleter;
@@ -57,6 +59,7 @@ public final class Main extends JavaPlugin {
     private Main main;
     private BukkitTask itCheck;
     public RedefinedGlowingEntitiesAPI geAPI;
+    private AbilitySelectionGUI abilitySelectionGUI;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -143,6 +146,14 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerTracking(this), this);
         getServer().getPluginManager().registerEvents(new FireAbility(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileImpactListener(this), this);
+        abilitySelectionGUI = new AbilitySelectionGUI(this);
+
+        // Register the event listeners
+        getServer().getPluginManager().registerEvents(new DragonSmashAbility(this), this);
+        getServer().getPluginManager().registerEvents(new DragonFlameAbility(this), this);
+        getServer().getPluginManager().registerEvents(new DragonSummonAbility(this), this);
+        getServer().getPluginManager().registerEvents(new PreventDragonEggPlacement(this), this);
+        getServer().getPluginManager().registerEvents(abilitySelectionGUI, this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -163,6 +174,20 @@ public final class Main extends JavaPlugin {
         }
         if (!Data.Suit.isEmpty()) {
             for (Player players : Data.Suit) {
+                ItemStack Laserhands = new ItemStackBuilder(Material.BLAZE_POWDER)
+                        .setName("&c&lLaser hands")
+                        .addLore("&fShoot explosive arrows")
+                        .build();
+                ItemStack Tracker = new ItemStackBuilder(Material.COMPASS)
+                        .setName("&d&lTracker")
+                        .addLore("&6Track Nearby Players")
+                        .build();
+                if (players.getInventory().contains(Laserhands)) {
+                    players.getInventory().removeItem(Laserhands);
+                }
+                if (players.getInventory().contains(Tracker)) {
+                    players.getInventory().removeItem(Tracker);
+                }
                 Data.Suit.remove(players);
                 players.getInventory().setHelmet(null);
                 players.getInventory().setChestplate(null);

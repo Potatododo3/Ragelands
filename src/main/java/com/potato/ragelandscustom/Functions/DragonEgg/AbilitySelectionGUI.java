@@ -46,30 +46,28 @@ public class AbilitySelectionGUI implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!event.getView().getTitle().equals("Select Dragon Ability")) {
-            return;
+        if (event.getView().getTitle().equals("Select Dragon Ability")) {
+            event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
+            ItemStack clickedItem = event.getCurrentItem();
+
+            if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+                return;
+            }
+
+            if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Smash")) {
+                // Trigger Dragon Smash ability
+                triggerDragonSmash(player);
+            } else if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Flame")) {
+                // Trigger Dragon Flame ability
+                triggerDragonFlame(player);
+            } else if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Summon")) {
+                // Trigger Dragon Summon ability
+                triggerDragonSummon(player);
+            }
+
+            player.closeInventory();
         }
-
-        event.setCancelled(true);
-        Player player = (Player) event.getWhoClicked();
-        ItemStack clickedItem = event.getCurrentItem();
-
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return;
-        }
-
-        if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Smash")) {
-            // Trigger Dragon Smash ability
-            triggerDragonSmash(player);
-        } else if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Flame")) {
-            // Trigger Dragon Flame ability
-            triggerDragonFlame(player);
-        } else if (clickedItem.getItemMeta().getDisplayName().equals("Dragon Summon")) {
-            // Trigger Dragon Summon ability
-            triggerDragonSummon(player);
-        }
-
-        player.closeInventory();
     }
 
     private void triggerDragonSmash(Player player) {

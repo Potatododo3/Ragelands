@@ -147,13 +147,13 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FireAbility(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileImpactListener(this), this);
         abilitySelectionGUI = new AbilitySelectionGUI(this);
-
-        // Register the event listeners
+        getServer().getPluginManager().registerEvents(new DragonEggActivationListener(this), this);
         getServer().getPluginManager().registerEvents(new DragonSmashAbility(this), this);
         getServer().getPluginManager().registerEvents(new DragonFlameAbility(this), this);
         getServer().getPluginManager().registerEvents(new DragonSummonAbility(this), this);
         getServer().getPluginManager().registerEvents(new PreventDragonEggPlacement(this), this);
         getServer().getPluginManager().registerEvents(abilitySelectionGUI, this);
+        getServer().getPluginManager().registerEvents(new DragonEggPreventer(), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());

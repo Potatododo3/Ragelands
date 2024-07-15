@@ -1,7 +1,10 @@
 package com.potato.ragelandscustom.Functions.DragonEgg;
 
+import com.potato.ragelandscustom.IronManSuit.Chat;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -10,18 +13,20 @@ import org.bukkit.inventory.ItemStack;
 
 public class DragonEggPreventer implements Listener {
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        // Check if the inventory is an Ender Chest
-        Inventory inventory = event.getInventory();
-        if (inventory.getType() == InventoryType.ENDER_CHEST) {
-            // Check if the clicked item is a dragon egg
-            ItemStack clickedItem = event.getCurrentItem();
-            if (clickedItem != null && clickedItem.getType() == Material.DRAGON_EGG) {
-                // Cancel the event to prevent the dragon egg from being placed in the Ender Chest
+    @EventHandler(priority = EventPriority.LOW)
+    public void onInventoryClickEvent(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        Inventory inventory = event.getClickedInventory();
+        if (inventory == null) return;
+
+        ItemStack item = event.getCurrentItem();
+        if (item == null) return;
+
+        if (event.getView().getTopInventory().getType()== InventoryType.SHULKER_BOX || event.getView().getTopInventory().getType() == InventoryType.ENDER_CHEST) {
+            if (item.getType() == Material.DRAGON_EGG) {
+                Chat.msg(player, "&f&lYou can not store the dragon egg in an ender chest or a shulker box!");
                 event.setCancelled(true);
-                // Optionally, send a message to the player
-                event.getWhoClicked().sendMessage("You cannot place dragon eggs in your Ender Chest!");
             }
         }
     }

@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class DragonSummonAbility implements Listener {
 
     private final Main main;
-
+    private Long timeElapse = 0L;
     public DragonSummonAbility(Main main) {
         this.main = main;
     }
@@ -23,6 +23,10 @@ public class DragonSummonAbility implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (timeElapse >= 300) {
+                    return;
+                }
+
                 if (!dragonPet.isValid() || !player.isOnline()) {
                     dragonPet.remove();
                     cancel();
@@ -42,12 +46,12 @@ public class DragonSummonAbility implements Listener {
                         }
                     }
                 }
-
+                timeElapse = timeElapse + 10;
                 // Ensure the Vex doesn't attack the player
                 if (dragonPet.getTarget() == player) {
                     dragonPet.setTarget(null);
                 }
             }
-        }.runTaskTimer(main, 0, 20);
+        }.runTaskTimer(main, 0, 10L);
     }
 }

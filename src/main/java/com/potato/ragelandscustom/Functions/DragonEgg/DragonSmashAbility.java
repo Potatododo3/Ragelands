@@ -41,8 +41,8 @@ public class DragonSmashAbility implements Listener {
                             }.runTaskTimer(main, 0, 1);
                         }
                     }
-                }.runTaskLater(main, 20); // Delay to check if the player is falling
+                }.runTaskLater(main, 5); // Delay to check if the player is falling
             }
-        }.runTaskLater(main, 20); // Delay to check if the player continues sneaking
+        }.runTaskLater(main, 5); // Delay to check if the player continues sneaking
     }
 }

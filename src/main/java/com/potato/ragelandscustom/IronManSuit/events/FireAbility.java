@@ -3,6 +3,7 @@ package com.potato.ragelandscustom.IronManSuit.events;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.potato.ragelandscustom.IronManSuit.Chat;
 import com.potato.ragelandscustom.IronManSuit.Data;
 import com.potato.ragelandscustom.ItemFunctions.CooldownManager;
 import org.bukkit.ChatColor;
@@ -71,6 +72,9 @@ public class FireAbility implements Listener {
                             }
                         }
                     }.runTaskTimer(plugin, 0L, 1L); // Run every tick (20 times per second)
+                }
+                else {
+                    Chat.msg(player, "You need to build the IronMan MK42 Suit to use this!");
                 }
         }
     }

@@ -7,17 +7,20 @@
         <list>
           <option value="RL-CustomItems" />
           <option value="RL-CustomItems" />
+          <option value="RageLandsCUSTOM" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="com.google.guava:guava:31.1-jre" />
           <option value="junit:junit:4.10" />
+          <option value="com.google.guava:guava:31.1-jre" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
           <option value="Other" />
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>
       </option>

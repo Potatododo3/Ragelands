@@ -11,6 +11,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\IronManTabCompleter.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\Menus.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\DragonEgg\DragonEggPreventer.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\ItemsPreventer.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\CooldownManager.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemPowerOrbFragment.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\ItemGiverTabCompleter.java
@@ -38,6 +39,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\ProjectileImpactListener.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemFlashBang.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemShieldDeflect.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\BasketOfSeeds.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\menu\Gui.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemFreezeClock.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerLeave.java

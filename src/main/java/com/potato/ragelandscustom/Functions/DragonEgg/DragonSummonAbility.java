@@ -15,7 +15,7 @@ public class DragonSummonAbility implements Listener {
 
     public void triggerAbility(Player player) {
         // Summon the Vex
-        Vex dragonPet = (Vex) player.getWorld().spawnEntity(player.getLocation(), EntityType.VEX);
+        Vex dragonPet = (Vex) player.getWorld().spawnEntity(player.getLocation(), EntityType.BLAZE);
         dragonPet.setCustomName("Dragon Pet");
         dragonPet.setCustomNameVisible(true);
         dragonPet.setSilent(true); // Mute the Vex
@@ -24,6 +24,8 @@ public class DragonSummonAbility implements Listener {
             @Override
             public void run() {
                 if (timeElapse >= 300) {
+                    dragonPet.remove();
+                    this.cancel();
                     return;
                 }
 
@@ -38,20 +40,20 @@ public class DragonSummonAbility implements Listener {
 
                 // Find nearby hostile mobs and set the Vex's target
                 for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
-                    if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+                    if (entity instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity) entity;
-                        if (livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.SKELETON || livingEntity.getType() == EntityType.CREEPER) {
+                        if (livingEntity instanceof Player) {
                             dragonPet.setTarget(livingEntity);
                             break;
                         }
                     }
                 }
-                timeElapse = timeElapse + 10;
+                timeElapse = timeElapse + 40;
                 // Ensure the Vex doesn't attack the player
                 if (dragonPet.getTarget() == player) {
                     dragonPet.setTarget(null);
                 }
             }
-        }.runTaskTimer(main, 0, 10L);
+        }.runTaskTimer(main, 0, 40L);
     }
 }

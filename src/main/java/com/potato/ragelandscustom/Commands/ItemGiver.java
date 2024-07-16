@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static com.potato.ragelandscustom.Main.createBasketOfSeeds;
+
 public class ItemGiver implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -44,8 +46,8 @@ public class ItemGiver implements CommandExecutor {
                         case "freezeclock":
                             giveFreezeClock(player);
                             return true;
-                        case "stinger":
-                            giveStinger(player);
+                        case "basketseeds":
+                            giveBasketOfSeeds(player);
                             return true;
                         default:
                             player.sendMessage("Unknown item.");
@@ -77,8 +79,8 @@ public class ItemGiver implements CommandExecutor {
                             case "freezeclock":
                                 giveFreezeClock(target);
                                 return true;
-                            case "stinger":
-                                giveStinger(target);
+                            case "basketseeds":
+                                giveBasketOfSeeds(target);
                                 return true;
                             default:
                                 player.sendMessage("Unknown item.");
@@ -133,7 +135,7 @@ public class ItemGiver implements CommandExecutor {
         ItemStack freezeClock = DataManager.getInstance().getFreezeClock();
         player.getInventory().addItem(freezeClock);
     }
-    private void giveStinger(Player player) {
-        player.getInventory().addItem(createStinger());
+    private void giveBasketOfSeeds(Player player) {
+        player.getInventory().addItem(createBasketOfSeeds());
     }
 }

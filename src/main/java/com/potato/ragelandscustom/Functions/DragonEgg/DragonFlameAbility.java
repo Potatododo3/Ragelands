@@ -16,7 +16,7 @@ public class DragonFlameAbility implements Listener {
     }
 
     public void triggerAbility(Player player) {
-        Vector direction = player.getLocation().getDirection();
+        Vector direction = player.getEyeLocation().getDirection();
         new BukkitRunnable() {
 
             @Override
@@ -35,7 +35,7 @@ public class DragonFlameAbility implements Listener {
                     });
                 }
             }
-        }.runTaskTimer(main, 0, 20L);
+        }.runTaskTimer(main, 0, 2L);
 
     }
 }

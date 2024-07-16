@@ -35,15 +35,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 import static com.potato.ragelandscustom.IronManSuit.Chat.ragelands;
 
@@ -60,6 +63,7 @@ public final class Main extends JavaPlugin {
     private BukkitTask itCheck;
     public RedefinedGlowingEntitiesAPI geAPI;
     private AbilitySelectionGUI abilitySelectionGUI;
+    public static ItemStack basketOfSeeds;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -105,6 +109,7 @@ public final class Main extends JavaPlugin {
 
         suitManager = new SuitManager(this);
         createCustomItems();
+        createBasketOfSeeds();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -154,6 +159,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PreventDragonEggPlacement(this), this);
         getServer().getPluginManager().registerEvents(abilitySelectionGUI, this);
         getServer().getPluginManager().registerEvents(new DragonEggPreventer(), this);
+        getServer().getPluginManager().registerEvents(new ItemsPreventer(), this);
+        getServer().getPluginManager().registerEvents(new BasketOfSeeds(this), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -202,6 +209,30 @@ public final class Main extends JavaPlugin {
                 }
             }
         }
+    }
+    public static ItemStack getHead(String texture) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) head.getItemMeta();
+        PlayerProfile profile = Bukkit.getServer().createPlayerProfile(UUID.randomUUID());
+        PlayerTextures textures = profile.getTextures();
+        try {
+            textures.setSkin(new URL("http://textures.minecraft.net/texture/" + texture));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        profile.setTextures(textures);
+        meta.setOwnerProfile(profile);
+        head.setItemMeta(meta);
+        return head;
+    }
+    public static @NotNull ItemStack createBasketOfSeeds() {
+        ItemStack item = getHead("94494694001906e9f9331438aafc919db1df5cb75c2ae3887ed236c3cfb5787e");
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setDisplayName("§aBasket of Seeds");
+        meta.setLore(Arrays.asList("§7Right-click to plant seeds in a", "§7specified area."));
+        item.setItemMeta(meta);
+        basketOfSeeds = item;
+        return item;
     }
     private void createCustomItems() {
         // Speed Increase Item

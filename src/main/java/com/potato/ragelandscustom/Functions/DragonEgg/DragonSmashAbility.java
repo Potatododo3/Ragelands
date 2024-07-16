@@ -1,5 +1,8 @@
 package com.potato.ragelandscustom.Functions.DragonEgg;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,10 +32,24 @@ public class DragonSmashAbility implements Listener {
                                     if (player.isOnGround()) {
                                         // Create shockwave effect
                                         player.getWorld().createExplosion(player.getLocation(), 0, false, false);
-                                        for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
+                                        for (Entity entity : player.getNearbyEntities(8, 8, 8)) {
                                             entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.5));
                                             if (entity instanceof Player) {
-                                                ((Player) entity).damage(10);
+                                                FPlayer entityfPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
+                                                FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                                                Faction targetPlayerFaction = entityfPlayer.getFaction();
+                                                Faction sneakedPlayerFaction = fPlayer.getFaction();
+                                                if (sneakedPlayerFaction == null) {
+                                                    ((Player) entity).damage(10);
+                                                }
+                                                else if (targetPlayerFaction == null) {
+                                                    ((Player) entity).damage(10);
+                                                }
+                                                else {
+                                                    if (targetPlayerFaction == sneakedPlayerFaction) {
+                                                        return;
+                                                    }
+                                                }
                                             }
                                         }
                                         cancel();

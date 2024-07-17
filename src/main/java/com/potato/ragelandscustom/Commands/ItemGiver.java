@@ -2,15 +2,13 @@ package com.potato.ragelandscustom.Commands;
 
 import com.potato.ragelandscustom.DataManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import static com.potato.ragelandscustom.Main.createBasketOfSeeds;
+import static com.potato.ragelandscustom.Main.*;
 
 public class ItemGiver implements CommandExecutor {
     @Override
@@ -49,6 +47,12 @@ public class ItemGiver implements CommandExecutor {
                         case "basketseeds":
                             giveBasketOfSeeds(player);
                             return true;
+                        case "mark34":
+                            giveMark34(player);
+                            return true;
+                        case "mark50":
+                            giveMark50(player);
+                            return true;
                         default:
                             player.sendMessage("Unknown item.");
                             return false;
@@ -82,6 +86,12 @@ public class ItemGiver implements CommandExecutor {
                             case "basketseeds":
                                 giveBasketOfSeeds(target);
                                 return true;
+                            case "mark34":
+                                giveMark34(target);
+                                return true;
+                            case "mark50":
+                                giveMark50(target);
+                                return true;
                             default:
                                 player.sendMessage("Unknown item.");
                                 return false;
@@ -98,13 +108,6 @@ public class ItemGiver implements CommandExecutor {
         }
 
         return false;
-    }
-    private ItemStack createStinger() {
-        ItemStack stinger = new ItemStack(Material.CROSSBOW);
-        ItemMeta meta = stinger.getItemMeta();
-        meta.setDisplayName("FIM-92 Stinger");
-        stinger.setItemMeta(meta);
-        return stinger;
     }
     private void giveShieldDeflect(Player player) {
         ItemStack deflectingShield = DataManager.getInstance().getDeflectingShield();
@@ -136,6 +139,12 @@ public class ItemGiver implements CommandExecutor {
         player.getInventory().addItem(freezeClock);
     }
     private void giveBasketOfSeeds(Player player) {
-        player.getInventory().addItem(createBasketOfSeeds());
+        player.getInventory().addItem(basketOfSeeds);
+    }
+    private void giveMark34(Player player) {
+        player.getInventory().addItem(mark34);
+    }
+    private void giveMark50(Player player) {
+        player.getInventory().addItem(mark50);
     }
 }

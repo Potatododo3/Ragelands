@@ -6,6 +6,7 @@ import com.potato.ragelandscustom.Commands.ReloadCommand;
 import com.potato.ragelandscustom.Commands.ResetCooldowns;
 import com.potato.ragelandscustom.Functions.BossDropItem;
 import com.potato.ragelandscustom.Functions.DragonEgg.*;
+import com.potato.ragelandscustom.Functions.IronManItem;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
 import com.potato.ragelandscustom.IronManSuit.Chat;
@@ -64,6 +65,8 @@ public final class Main extends JavaPlugin {
     public RedefinedGlowingEntitiesAPI geAPI;
     private AbilitySelectionGUI abilitySelectionGUI;
     public static ItemStack basketOfSeeds;
+    public static ItemStack mark50;
+    public static ItemStack mark34;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -110,6 +113,8 @@ public final class Main extends JavaPlugin {
         suitManager = new SuitManager(this);
         createCustomItems();
         createBasketOfSeeds();
+        createMark34();
+        createMark50();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -145,7 +150,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLowHealth(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new PlayerFire(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveArmourListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerTracking(this), this);
@@ -161,6 +165,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DragonEggPreventer(), this);
         getServer().getPluginManager().registerEvents(new ItemsPreventer(), this);
         getServer().getPluginManager().registerEvents(new BasketOfSeeds(this), this);
+        getServer().getPluginManager().registerEvents(new IronManItem(), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -232,6 +237,24 @@ public final class Main extends JavaPlugin {
         meta.setLore(Arrays.asList("§7Right-click to plant seeds in a", "§7specified area."));
         item.setItemMeta(meta);
         basketOfSeeds = item;
+        return item;
+    }
+    public static @NotNull ItemStack createMark50() {
+        ItemStack item = getHead("d14824d840fb9ae9acd6c4f0c917dbf52803a65314a3b771346e33907e4dee79");
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setDisplayName("§aIronMan");
+        meta.setLore(Arrays.asList("§7Right-click to wear the Mark 50"));
+        item.setItemMeta(meta);
+        mark50 = item;
+        return item;
+    }
+    public static @NotNull ItemStack createMark34() {
+        ItemStack item = getHead("b4ee5d3797e339ba55a3ff936be16b26c9d83c173c8ba97c9881e41889c7c3bb");
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setDisplayName("§aIronMan");
+        meta.setLore(Arrays.asList("§7Right-click to wear the Mark 34"));
+        item.setItemMeta(meta);
+        mark34 = item;
         return item;
     }
     private void createCustomItems() {

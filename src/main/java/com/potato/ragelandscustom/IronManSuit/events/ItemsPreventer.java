@@ -1,32 +1,38 @@
 package com.potato.ragelandscustom.IronManSuit.events;
 
-import com.potato.ragelandscustom.IronManSuit.ItemStackBuilder;
-import org.bukkit.Material;
+import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.IronManSuit.Data;
+import com.potato.ragelandscustom.IronManSuit.Delay;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.ArrayList;
 
 public class ItemsPreventer implements Listener {
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onInventoryClickEvent(InventoryMoveItemEvent event) {
-        ItemStack Laserhands = new ItemStackBuilder(Material.BLAZE_POWDER)
-                .setName("&c&lLaser hands")
-                .addLore("&fShoot explosive arrows")
-                .build();
-        ItemStack Tracker = new ItemStackBuilder(Material.COMPASS)
-                .setName("&d&lTracker")
-                .addLore("&6Track Nearby Players")
-                .build();
-        Inventory destination = event.getDestination();
-        ItemStack item = event.getItem();
-        if (item.isSimilar(Laserhands) || item.isSimilar(Tracker)) {
-            if (destination.getType() != InventoryType.PLAYER) {
+    ArrayList<Player> SpamCheck = new ArrayList<Player>();
+
+    @EventHandler
+    public void playerAbilityMoveEvent (InventoryClickEvent event) {
+
+        Player player = (Player) event.getWhoClicked();
+
+        if (Data.Suit.contains(player) || (Data.buildingSuit.contains(player))) {
+            if (event.getSlot() == 0 || event.getSlot() == 1) {
                 event.setCancelled(true);
+
+                if (SpamCheck.contains(player)) {
+                    player.closeInventory();
+                    return;
+                }
+
+                player.closeInventory();
+                Chat.msg(player, Chat.prefix + "&7You can not move your abilities!");
+                SpamCheck.add(player);
+
+                Delay.until(200, () -> SpamCheck.remove(player));
             }
         }
     }

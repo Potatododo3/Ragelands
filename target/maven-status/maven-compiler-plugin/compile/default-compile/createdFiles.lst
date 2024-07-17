@@ -15,7 +15,6 @@ com\potato\ragelandscustom\ItemFunctions\MagicBoots$1$1.class
 com\potato\ragelandscustom\Functions\DragonEgg\DragonSmashAbility.class
 com\potato\ragelandscustom\Commands\ResetCooldowns.class
 com\potato\ragelandscustom\Functions\ItemGiverTabCompleter.class
-com\potato\ragelandscustom\IronManSuit\events\PlayerLeave.class
 com\potato\ragelandscustom\ItemFunctions\LongRangeBow.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking.class
 com\potato\ragelandscustom\Functions\DragonEgg\DragonSummonAbility.class
@@ -58,6 +57,7 @@ com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerLowHealth.class
 com\potato\ragelandscustom\Functions\DragonEgg\DragonSmashAbility$1.class
 com\potato\ragelandscustom\Items\ItemLongRangeBow.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking$1.class
+com\potato\ragelandscustom\Functions\IronManItem.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerJoin.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerHeal.class
 com\potato\ragelandscustom\IronManSuit\menu\GuiListener.class

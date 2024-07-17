@@ -92,8 +92,8 @@ public class BasketOfSeeds implements Listener {
                 Block targetBlock = block.getRelative(dx * distance, 0, dz * distance);
                 if (targetBlock.getType() == Material.FARMLAND && seedsPlanted < seedCount) {
                     Block cropBlock = targetBlock.getRelative(0, 1, 0);
+                    if (cropBlock.getType() == chosenSeedType) return;
                     cropBlock.setType(getCropType(chosenSeedType));
-                    player.sendMessage("§aPlanted seed");
 
                     // Add particle effect
                     cropBlock.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, cropBlock.getLocation().add(0.5, 0.5, 0.5), 10, 0.5, 0.5, 0.5, 0);

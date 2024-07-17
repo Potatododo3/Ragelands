@@ -104,7 +104,7 @@ public class SuitManager {
         player.removePotionEffect(PotionEffectType.SLOW);
         player.removePotionEffect(PotionEffectType.WATER_BREATHING);
         player.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
-
+        player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
     }
 
     public static void setHelemet(Player player) {
@@ -119,7 +119,7 @@ public class SuitManager {
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5 , true);
             helmet.setItemMeta(meta);
             player.getInventory().setHelmet(helmet);
@@ -136,14 +136,14 @@ public class SuitManager {
             AttributeModifier toughnessModifier = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", 3, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
 
-            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 1, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 0.1, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistanceModifier);
 
-            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 2.5, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.max_health", 2.5, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, maxHealthModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8 , true);
             helmet.setItemMeta(meta);
             player.getInventory().setHelmet(helmet);
@@ -153,7 +153,7 @@ public class SuitManager {
 
     public static void setChestplate(Player player) {
         if (Data.suitAssigned.get(player).equals("MK1")) {
-            ItemStack chestplate = new ItemStackBuilder(Material.LEATHER_CHESTPLATE).setName("&8&lMark 1").build();
+            ItemStack chestplate = new ItemStackBuilder(Material.LEATHER_CHESTPLATE).setName("&8&lMark 50").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) chestplate.getItemMeta();
             meta.setColor(Color.fromRGB(169, 45, 69));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -166,7 +166,7 @@ public class SuitManager {
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5 , true);
             chestplate.setItemMeta(armorMeta);
             player.getInventory().setChestplate(chestplate);
@@ -175,7 +175,7 @@ public class SuitManager {
         }
 
         if (Data.suitAssigned.get(player).equals("MK42")) {
-            ItemStack chestplate = new ItemStackBuilder(Material.LEATHER_CHESTPLATE).setName("&8&lMark 42").build();
+            ItemStack chestplate = new ItemStackBuilder(Material.LEATHER_CHESTPLATE).setName("&8&lMark 34").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) chestplate.getItemMeta();
             meta.setColor(Color.fromRGB(40, 32, 30));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -187,14 +187,14 @@ public class SuitManager {
             AttributeModifier toughnessModifier = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", 3, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
 
-            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 1, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 0.1, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistanceModifier);
 
-            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 2.5, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.max_health", 2.5, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, maxHealthModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8 , true);
             chestplate.setItemMeta(armorMeta);
             player.getInventory().setChestplate(chestplate);
@@ -204,7 +204,7 @@ public class SuitManager {
 
     public static void setLeggings(Player player) {
         if (Data.suitAssigned.get(player).equals("MK1")) {
-            ItemStack leggings = new ItemStackBuilder(Material.LEATHER_LEGGINGS).setName("&8&lMark 1").build();
+            ItemStack leggings = new ItemStackBuilder(Material.LEATHER_LEGGINGS).setName("&8&lMark 50").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) leggings.getItemMeta();
             meta.setColor(Color.fromRGB(169, 45, 69));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -217,7 +217,7 @@ public class SuitManager {
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5 , true);
             leggings.setItemMeta(armorMeta);
             player.getInventory().setLeggings(leggings);
@@ -225,7 +225,7 @@ public class SuitManager {
         }
 
         if (Data.suitAssigned.get(player).equals("MK42")) {
-            ItemStack leggings = new ItemStackBuilder(Material.LEATHER_LEGGINGS).setName("&8&lMark 42").build();
+            ItemStack leggings = new ItemStackBuilder(Material.LEATHER_LEGGINGS).setName("&8&lMark 34").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) leggings.getItemMeta();
             meta.setColor(Color.fromRGB(40, 32, 30));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -237,14 +237,14 @@ public class SuitManager {
             AttributeModifier toughnessModifier = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", 3, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
 
-            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 1, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 0.1, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistanceModifier);
 
-            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 2.5, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.max_health", 2.5, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, maxHealthModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8 , true);
             leggings.setItemMeta(armorMeta);
             player.getInventory().setLeggings(leggings);
@@ -253,7 +253,7 @@ public class SuitManager {
 
     public static void setBoots(Player player) {
         if (Data.suitAssigned.get(player).equals("MK1")) {
-            ItemStack boots = new ItemStackBuilder(Material.LEATHER_BOOTS).setName("&8&lMark 1").build();
+            ItemStack boots = new ItemStackBuilder(Material.LEATHER_BOOTS).setName("&8&lMark 50").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
             meta.setColor(Color.fromRGB(169, 45, 69));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -266,7 +266,7 @@ public class SuitManager {
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5 , true);
             boots.setItemMeta(armorMeta);
             player.getInventory().setBoots(boots);
@@ -274,7 +274,7 @@ public class SuitManager {
         }
 
         if (Data.suitAssigned.get(player).equals("MK42")) {
-            ItemStack boots = new ItemStackBuilder(Material.LEATHER_BOOTS).setName("&8&lMark 42").build();
+            ItemStack boots = new ItemStackBuilder(Material.LEATHER_BOOTS).setName("&8&lMark 34").build();
             LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
             meta.setColor(Color.fromRGB(40, 32, 30));
             ArmorMeta armorMeta = (ArmorMeta) meta;
@@ -286,14 +286,14 @@ public class SuitManager {
             AttributeModifier toughnessModifier = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", 3, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessModifier);
 
-            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 1, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier knockbackResistanceModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 0.1, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistanceModifier);
 
-            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", 2.5, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier maxHealthModifier = new AttributeModifier(UUID.randomUUID(), "generic.max_health", 2.5, AttributeModifier.Operation.ADD_NUMBER);
             meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, maxHealthModifier);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ARMOR_TRIM, ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.MENDING, 1, true);
-            meta.addEnchant(Enchantment.DURABILITY, 20, true);
+            meta.addEnchant(Enchantment.DURABILITY, 80, true);
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8 , true);
             boots.setItemMeta(armorMeta);
             player.getInventory().setBoots(boots);
@@ -328,7 +328,12 @@ public class SuitManager {
                 player.getInventory().setItem(1, Tracker);
                 player.getInventory().addItem(oldItem2);
             }
-
+            if (player.getInventory().getItem(0) == null) {
+                player.getInventory().setItem(0, Laserhands);
+            }
+            if (player.getInventory().getItem(1) == null) {
+                player.getInventory().setItem(1, Tracker);
+            }
         }
     }
 }

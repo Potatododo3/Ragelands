@@ -37,7 +37,7 @@ public class LongRangeBow implements Listener {
                             Vector currentVelocity = arrow.getVelocity();
 
                             // Modify the velocity (e.g., double the speed)
-                            Vector newVelocity = currentVelocity.multiply(1.3);
+                            Vector newVelocity = currentVelocity.multiply(1.5);
 
                             // Set the new velocity
                             arrow.setVelocity(newVelocity);

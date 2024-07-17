@@ -37,8 +37,14 @@ public class SuitCmds implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("menu")) {
-                Menus.createTestMenu(player);
-                return true;
+                if (player.hasPermission("ironman.suits.menu")) {
+                    Menus.createTestMenu(player);
+                    return true;
+                }
+                else {
+                    Chat.msg(player, Chat.perm);
+                    return true;
+                }
             }
 
             if (args[0].equalsIgnoreCase("list")) {
@@ -52,6 +58,10 @@ public class SuitCmds implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("eject")) {
+                if (!player.hasPermission("ironman.suits.eject")) {
+                    Chat.msg(player, Chat.perm);
+                    return true;
+                }
                 if (Data.Suit.contains(player)){
                     Main.getSuitManager().eject(player);
                     return true;
@@ -63,7 +73,6 @@ public class SuitCmds implements CommandExecutor {
             if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("set")) {
                     if (player.hasPermission("ironman.suits.set")) {
-
                         if (args.length < 3) {
                             Chat.msg(
                                     player,

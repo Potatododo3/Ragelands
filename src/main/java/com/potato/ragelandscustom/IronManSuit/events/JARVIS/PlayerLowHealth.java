@@ -18,7 +18,7 @@ public class PlayerLowHealth implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (Data.Suit.contains(player)) {
-                if (player.getHealth() < 10 && !Data.isLowHealth.contains(player)) {
+                if (player.getHealth() < 10 && !Data.isLowHealth.contains(player) && !player.isDead()) {
                     Data.isLowHealth.add(player);
                     Chat.msg(
                             player,

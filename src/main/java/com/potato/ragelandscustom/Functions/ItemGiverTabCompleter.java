@@ -12,7 +12,7 @@ public class ItemGiverTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
         if (args.length == 1) {
-            List<String> items = Arrays.asList("magicboots", "shielddeflect", "longrangebow", "fragbomb", "flashbang", "cowboyboots", "freezeclock", "basketseeds", "mark34", "mark50");
+            List<String> items = Arrays.asList("magicboots", "shielddeflect", "longrangebow", "fragbomb", "flashbang", "cowboyboots", "freezeclock", "basketseeds", "mark34", "mark50", "stinger");
             List<String> suggestions = new ArrayList<>();
             for (String item : items) {
                 if (item.toLowerCase().startsWith(args[0].toLowerCase())) {

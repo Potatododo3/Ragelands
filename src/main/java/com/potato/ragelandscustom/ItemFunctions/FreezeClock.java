@@ -89,7 +89,6 @@ public class FreezeClock implements Listener {
         else {
             return false;
         }
-
     }
     private Set<Player> getNearbyPlayers(Player player, int radius) {
         Set<Player> nearbyPlayers = new HashSet<>();

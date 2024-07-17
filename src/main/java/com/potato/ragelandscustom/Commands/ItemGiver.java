@@ -53,6 +53,9 @@ public class ItemGiver implements CommandExecutor {
                         case "mark50":
                             giveMark50(player);
                             return true;
+                        case "stinger":
+                            giveStinger(player);
+                            return true;
                         default:
                             player.sendMessage("Unknown item.");
                             return false;
@@ -91,6 +94,9 @@ public class ItemGiver implements CommandExecutor {
                                 return true;
                             case "mark50":
                                 giveMark50(target);
+                                return true;
+                            case "stinger":
+                                giveStinger(target);
                                 return true;
                             default:
                                 player.sendMessage("Unknown item.");
@@ -146,5 +152,8 @@ public class ItemGiver implements CommandExecutor {
     }
     private void giveMark50(Player player) {
         player.getInventory().addItem(mark50);
+    }
+    private void giveStinger(Player player ) {
+        player.getInventory().addItem(stinger);
     }
 }

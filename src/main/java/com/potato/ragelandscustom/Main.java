@@ -9,9 +9,6 @@ import com.potato.ragelandscustom.Functions.DragonEgg.*;
 import com.potato.ragelandscustom.Functions.IronManItem;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
-import com.potato.ragelandscustom.IronManSuit.Chat;
-import com.potato.ragelandscustom.IronManSuit.Data;
-import com.potato.ragelandscustom.IronManSuit.ItemStackBuilder;
 import com.potato.ragelandscustom.IronManSuit.SuitManager;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManCmds;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManTabCompleter;
@@ -25,6 +22,8 @@ import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerLowHealth;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerTracking;
 import com.potato.ragelandscustom.IronManSuit.menu.GuiListener;
 import com.potato.ragelandscustom.ItemFunctions.*;
+import com.potato.ragelandscustom.ItemFunctions.Stinger.ArrowFireListener;
+import com.potato.ragelandscustom.ItemFunctions.Stinger.ArrowHitListener;
 import com.potato.ragelandscustom.Items.*;
 import dev.respark.licensegate.LicenseGate;
 import lombok.Getter;
@@ -33,12 +32,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -56,14 +53,13 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     @Getter
     private static SuitManager suitManager;
-    public static ItemStack speedIncreaseItem;
-    public static ItemStack speedDecreaseItem;
-    public static ItemStack hoverItem;
+    public static ItemStack stinger;
     private HashMap<UUID, Integer> playerData;;
     private Main main;
     private BukkitTask itCheck;
     public RedefinedGlowingEntitiesAPI geAPI;
     private AbilitySelectionGUI abilitySelectionGUI;
+    private ArrowFireListener arrowFireListener;
     public static ItemStack basketOfSeeds;
     public static ItemStack mark50;
     public static ItemStack mark34;
@@ -111,7 +107,20 @@ public final class Main extends JavaPlugin {
         plugin = this;
 
         suitManager = new SuitManager(this);
-        createCustomItems();
+
+        arrowFireListener = new ArrowFireListener(this);
+        // Initialize the Stinger item
+        ItemStack item = new ItemStack(Material.CROSSBOW); // Use the appropriate material
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.RED + "Stinger");
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Hit mid air enemies and assert the high ground.");
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+        }
+        stinger = item;
+
         createBasketOfSeeds();
         createMark34();
         createMark50();
@@ -166,6 +175,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemsPreventer(), this);
         getServer().getPluginManager().registerEvents(new BasketOfSeeds(this), this);
         getServer().getPluginManager().registerEvents(new IronManItem(), this);
+        getServer().getPluginManager().registerEvents(new ArrowFireListener(this), this);
+        getServer().getPluginManager().registerEvents(new ArrowHitListener(this, arrowFireListener), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -183,36 +194,6 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         if (itCheck != null) {
             itCheck.cancel();
-        }
-        if (!Data.Suit.isEmpty()) {
-            for (Player players : Data.Suit) {
-                ItemStack Laserhands = new ItemStackBuilder(Material.BLAZE_POWDER)
-                        .setName("&c&lLaser hands")
-                        .addLore("&fShoot explosive arrows")
-                        .build();
-                ItemStack Tracker = new ItemStackBuilder(Material.COMPASS)
-                        .setName("&d&lTracker")
-                        .addLore("&6Track Nearby Players")
-                        .build();
-                if (players.getInventory().contains(Laserhands)) {
-                    players.getInventory().removeItem(Laserhands);
-                }
-                if (players.getInventory().contains(Tracker)) {
-                    players.getInventory().removeItem(Tracker);
-                }
-                Data.Suit.remove(players);
-                players.getInventory().setHelmet(null);
-                players.getInventory().setChestplate(null);
-                players.getInventory().setLeggings(null);
-                players.getInventory().setBoots(null);
-                players.setFlying(false);
-                players.setAllowFlight(false);
-                Chat.msg(players, Chat.prefix + "&7Armour removed due to reload!");
-                Chat.msg(players, Chat.prefix + "&7Effects removed due to reload!");
-                for (PotionEffect effects : players.getActivePotionEffects()) {
-                    players.removePotionEffect(effects.getType());
-                }
-            }
         }
     }
     public static ItemStack getHead(String texture) {
@@ -256,28 +237,6 @@ public final class Main extends JavaPlugin {
         item.setItemMeta(meta);
         mark34 = item;
         return item;
-    }
-    private void createCustomItems() {
-        // Speed Increase Item
-        speedIncreaseItem = new ItemStack(Material.DIAMOND);
-        ItemMeta speedIncreaseMeta = speedIncreaseItem.getItemMeta();
-        speedIncreaseMeta.setDisplayName(ChatColor.GREEN + "Speed Increase Item");
-        speedIncreaseMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to increase speed"));
-        speedIncreaseItem.setItemMeta(speedIncreaseMeta);
-
-        // Speed Decrease Item
-        speedDecreaseItem = new ItemStack(Material.ANVIL);
-        ItemMeta speedDecreaseMeta = speedDecreaseItem.getItemMeta();
-        speedDecreaseMeta.setDisplayName(ChatColor.GREEN + "Speed Decrease Item");
-        speedDecreaseMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to decrease speed"));
-        speedDecreaseItem.setItemMeta(speedDecreaseMeta);
-
-        // Hover Item
-        hoverItem = new ItemStack(Material.LEVER);
-        ItemMeta hoverMeta = hoverItem.getItemMeta();
-        hoverMeta.setDisplayName(ChatColor.GREEN + "Hover Item");
-        hoverMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Right-click to hover"));
-        hoverItem.setItemMeta(hoverMeta);
     }
     private void startItCheck() {
         itCheck = new BukkitRunnable() {

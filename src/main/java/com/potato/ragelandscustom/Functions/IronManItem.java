@@ -19,7 +19,6 @@ public class IronManItem implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (item != null) {
                 if (item.isSimilar(Main.mark34)) {
-                    player.sendMessage("Item matches Main.mark34");
                     e.setCancelled(true);
                     Data.suitAssigned.put(player, "MK42");
                     Main.getSuitManager().apply(player);

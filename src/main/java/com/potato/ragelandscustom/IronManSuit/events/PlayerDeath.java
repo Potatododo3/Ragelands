@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -23,6 +24,9 @@ public class PlayerDeath implements Listener {
             Data.buildingSuit.remove(player);
             player.setAllowFlight(false);
             player.setFlying(false);
+            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+                player.removePotionEffect(potionEffect.getType());
+            }
         }
     }
 }

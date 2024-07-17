@@ -1,6 +1,7 @@
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerHeal.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\SuitCmds.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerDeath.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\Stinger\HomingArrowRunnable.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerMoveArmourListener.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Commands\ResetCooldowns.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\SuitTabCompleter.java
@@ -8,6 +9,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\menu\ClickAction.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\CowboyBoots.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Commands\ReloadCommand.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowHitListener.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\IronManTabCompleter.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\Menus.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\DragonEgg\DragonEggPreventer.java
@@ -33,6 +35,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\FragBomb.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\Chat.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\IronManCmds.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowFireListener.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemFragBomb.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerLowHealth.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\MagicBoots.java
@@ -43,7 +46,6 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\IronManItem.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\menu\Gui.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemFreezeClock.java
-C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\PlayerLeave.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\DragonEgg\PreventDragonEggPlacement.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\menu\GuiItem.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerFire.java

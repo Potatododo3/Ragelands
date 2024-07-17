@@ -1,5 +1,6 @@
 com\potato\ragelandscustom\Commands\EjectCommand.class
 com\potato\ragelandscustom\ItemFunctions\CooldownManager.class
+com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowHitListener.class
 com\potato\ragelandscustom\Items\ItemMagicBoots.class
 com\potato\ragelandscustom\IronManSuit\events\FireAbility.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerFly$1.class
@@ -66,12 +67,15 @@ com\potato\ragelandscustom\ItemFunctions\Flashbang.class
 com\potato\ragelandscustom\IronManSuit\menu\ClickAction.class
 com\potato\ragelandscustom\ItemFunctions\FragBomb.class
 com\potato\ragelandscustom\DataManager.class
+com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowFireListener.class
 com\potato\ragelandscustom\Functions\NoTNT.class
 com\potato\ragelandscustom\Commands\ItemGiver.class
 com\potato\ragelandscustom\Functions\DragonEgg\DragonSummonAbility$1.class
 com\potato\ragelandscustom\IronManSuit\Data.class
+com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowHitListener$1.class
 com\potato\ragelandscustom\IronManSuit\ItemStackBuilder.class
 com\potato\ragelandscustom\IronManSuit\Menus.class
+com\potato\ragelandscustom\ItemFunctions\Stinger\HomingArrowRunnable.class
 com\potato\ragelandscustom\Functions\DragonEgg\PreventDragonEggPlacement.class
 com\potato\ragelandscustom\IronManSuit\menu\Gui.class
 com\potato\ragelandscustom\Functions\BossDropItem.class

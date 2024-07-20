@@ -45,7 +45,7 @@ public class Flashbang implements Listener {
                 meta = item.getItemMeta();
             }
             PDCKeys pdcKeys = new PDCKeys(main);
-            NamespacedKey key = pdcKeys.getKey();
+            NamespacedKey key = pdcKeys.getCustomItemKey();
             PersistentDataContainer flashBangPDC = null;
             if (meta.getPersistentDataContainer() != null) {
                 flashBangPDC = meta.getPersistentDataContainer();
@@ -84,7 +84,7 @@ public class Flashbang implements Listener {
             Item droppedItemEntity = e.getItem();
             ItemStack droppedItem = droppedItemEntity.getItemStack();
             PDCKeys pdcKeys = new PDCKeys(main);
-            NamespacedKey key = pdcKeys.getKey();
+            NamespacedKey key = pdcKeys.getCustomItemKey();
             if (droppedItem.getType() == Material.SNOWBALL && droppedItem.hasItemMeta() && Boolean.TRUE.equals(droppedItem.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN))) {
                 e.setCancelled(true);
             }

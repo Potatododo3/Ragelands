@@ -60,6 +60,7 @@ com\potato\ragelandscustom\Items\ItemLongRangeBow.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking$1.class
 com\potato\ragelandscustom\Functions\IronManItem.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerJoin.class
+com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking$1$1.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerHeal.class
 com\potato\ragelandscustom\IronManSuit\menu\GuiListener.class
 com\potato\ragelandscustom\Items\ItemFreezeClock.class

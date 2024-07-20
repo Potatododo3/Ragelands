@@ -18,7 +18,7 @@ public class ItemLongRangeBow {
 
     public ItemStack getLongRangeBow() {
         PDCKeys pdcKeys = new PDCKeys(main);
-        NamespacedKey key = pdcKeys.getKey();
+        NamespacedKey key = pdcKeys.getCustomItemKey();
         ItemStack longRangeBow = new ItemStack(Material.BOW, 1);
         ItemMeta meta = longRangeBow.getItemMeta();
         meta.setDisplayName(CC.translate("&#54050E&lL&#4E0E1E&lo&#48182F&ln&#43213F&lg &#373460&lR&#313D71&la&#2C4681&ln&#264F92&lg&#2059A2&le &#156BC3&lB&#0F75D4&lo&#097EE4&lw"));

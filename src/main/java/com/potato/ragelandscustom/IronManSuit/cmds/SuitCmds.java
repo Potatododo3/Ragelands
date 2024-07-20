@@ -1,7 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit.cmds;
 
 import com.potato.ragelandscustom.IronManSuit.Chat;
-import com.potato.ragelandscustom.IronManSuit.Data;
 import com.potato.ragelandscustom.IronManSuit.Menus;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Bukkit;
@@ -9,6 +8,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.*;
 
 public class SuitCmds implements CommandExecutor {
 
@@ -62,7 +65,8 @@ public class SuitCmds implements CommandExecutor {
                     Chat.msg(player, Chat.perm);
                     return true;
                 }
-                if (Data.Suit.contains(player)){
+                PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+                if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))){
                     Main.getSuitManager().eject(player);
                     return true;
                 } else{
@@ -90,10 +94,10 @@ public class SuitCmds implements CommandExecutor {
                             );
                             return true;
                         }
-
-                        if (Data.Suit.contains(target)) {
+                        PersistentDataContainer playerpdc = target.getPersistentDataContainer();
+                        if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
                             Chat.msg(player, Chat.prefix + "&6Suit set by: &a" + ((Player) sender).getDisplayName() + "&6!");
-                            if (Data.suitAssigned.get(target).equals("Mk1") ||Data.suitAssigned.get(target).equals("Mk42")) {
+                            if (Boolean.TRUE.equals(playerpdc.get(MK50, PersistentDataType.BOOLEAN)) || Boolean.TRUE.equals(playerpdc.get(MK34, PersistentDataType.BOOLEAN))) {
                                 Main.getSuitManager().eject(target);
                             }
                             Main.getSuitManager().apply(target);
@@ -102,13 +106,13 @@ public class SuitCmds implements CommandExecutor {
 
                         if (suit.equalsIgnoreCase("mk1")) {
                             Chat.msg(player, Chat.prefix + "&6Suit set by: &a" + ((Player) sender).getDisplayName() + "&6!");
-                            Data.suitAssigned.put(target, "MK1");
+                            playerpdc.set(MK50, PersistentDataType.BOOLEAN, true);
                             Main.getSuitManager().apply(target);
                         }
 
                         if (suit.equalsIgnoreCase("mk42")) {
                             Chat.msg(player, Chat.prefix + "&6Suit set by: &a" + ((Player) sender).getDisplayName() + "&6!");
-                            Data.suitAssigned.put(target, "MK42");
+                            playerpdc.set(MK34, PersistentDataType.BOOLEAN, true);
                             Main.getSuitManager().apply(target);
                         }
                     }

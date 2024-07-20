@@ -1,7 +1,6 @@
 package com.potato.ragelandscustom.ItemFunctions.Stinger;
 
 import com.potato.ragelandscustom.Main;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -21,32 +20,37 @@ public class ArrowHitListener implements Listener {
 
     @EventHandler
     public void onArrowHit(ProjectileHitEvent event) {
-        if (event.getEntity() instanceof Arrow) {
-            Projectile projectile = event.getEntity();
-            Projectile storedProjectile = arrowFireListener.getArrow(projectile.getUniqueId());
+        Projectile projectile = event.getEntity();
 
-            if (storedProjectile != null) {
-                if (event.getHitEntity() instanceof Player) {
-                    Player player = (Player) event.getHitEntity();
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Long timeElapsed = 0L;
-                            timeElapsed = timeElapsed + 20;
-                            if (timeElapsed >= 120) {
-                                this.cancel();
-                            }
-                            if (player.isGliding()) {
-                                player.setGliding(false);
-                            }
-                            if (player.isInsideVehicle()) {
-                                player.leaveVehicle();
-                            }
+        Projectile storedProjectile = arrowFireListener.getArrow(projectile.getUniqueId());
+
+        if (storedProjectile != null) {
+            if (event.getHitEntity() instanceof Player) {
+                Player player = (Player) event.getHitEntity();
+
+                new BukkitRunnable() {
+                    private long timeElapsed = 0L;
+
+                    @Override
+                    public void run() {
+                        timeElapsed += 5;
+
+                        if (timeElapsed >= 120) {
+                            this.cancel();
                         }
-                    }.runTaskTimer(main, 0, 20L);
-                }
+
+                        if (player.isGliding()) {
+                            player.setGliding(false);
+                            player.damage(23);
+                        }
+
+                        if (player.isInsideVehicle()) {
+                            player.leaveVehicle();
+                            player.damage(23);
+                        }
+                    }
+                }.runTaskTimer(main, 0, 5L);
             }
         }
     }
-
 }

@@ -10,8 +10,9 @@ public class PDCKeys {
         this.main = main;
     }
 
-    public NamespacedKey getKey() {
+    public NamespacedKey getCustomItemKey() {
         NamespacedKey key = new NamespacedKey(main, "customitem");
         return key;
     }
+
 }

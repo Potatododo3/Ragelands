@@ -11,14 +11,15 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.suitOn;
 
 public class PlayerFly implements Listener {
 
     private final Main main;
-    private static final double MIN_SPEED = 0.1;
-    private static final double MAX_SPEED = 2.0;
-    private static final double SPEED_STEP = 0.2;
 
     public PlayerFly(Main main) {
         this.main = main;
@@ -33,14 +34,14 @@ public class PlayerFly implements Listener {
             if (player.getGameMode() == GameMode.CREATIVE) {
                 return; // Allow normal creative flight
             }
-
+            PersistentDataContainer playerpdc = player.getPersistentDataContainer();
             // Allow normal elytra gliding if player doesn't have the suit
-            if (!Data.Suit.contains(player)) {
+            if (Boolean.FALSE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
                 return;
             }
 
             // Custom suit gliding logic
-            if (!player.getAllowFlight() && Data.Suit.contains(player)) {
+            if (!player.getAllowFlight() && Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
                 e.setCancelled(true);
             }
         }
@@ -54,18 +55,17 @@ public class PlayerFly implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return; // Allow normal creative flight
         }
-
+        PersistentDataContainer playerpdc = player.getPersistentDataContainer();
         // Allow normal elytra flying if player doesn't have the suit
-        if (!Data.Suit.contains(player)) {
+        if (Boolean.FALSE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
             return;
         }
 
         // Custom suit movement logic
         if (player.getLocation().subtract(0, 1, 0).getBlock().getType() != Material.AIR) {
-            player.setAllowFlight(true);
-            player.setFlying(false);
-            if (Data.Suit.contains(player)) {
-                Data.isGliding.remove(player);
+            if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
+                player.setAllowFlight(true);
+                player.setFlying(false);
             }
         }
     }
@@ -85,23 +85,25 @@ public class PlayerFly implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return; // Allow normal creative flight
         }
-
+        PersistentDataContainer playerpdc = player.getPersistentDataContainer();
         // Allow normal elytra flying if player doesn't have the suit
-        if (!Data.Suit.contains(player)) {
+        if (Boolean.FALSE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
             return;
         }
 
         // Custom suit flying logic
-        if (e.isFlying() && Data.Suit.contains(player)) {
+        if (e.isFlying() && Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
             player.setAllowFlight(false);
             player.setGliding(true);
             Data.isGliding.add(player);
+            long ticks = 0;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (Data.Suit.contains(player) && Data.isGliding.contains(player)) {
+                    if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN)) && player.isGliding()) {
                         boostPlayer(player);
-                    } else {
+                    }
+                    else {
                         this.cancel();
                     }
                 }

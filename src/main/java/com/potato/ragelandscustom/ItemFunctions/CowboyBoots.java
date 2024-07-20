@@ -36,7 +36,7 @@ public class CowboyBoots implements Listener {
             Entity entity = e.getRightClicked();
             if (hasCowboyBoots(player)) {
                 PDCKeys pdcKeys = new PDCKeys(main);
-                NamespacedKey key = pdcKeys.getKey();
+                NamespacedKey key = pdcKeys.getCustomItemKey();
                 ItemStack playerBoots = player.getInventory().getBoots();
                 if (playerBoots != null) {
                     Boolean bootsPDC = Objects.requireNonNull(playerBoots.getItemMeta()).getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);

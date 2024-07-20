@@ -63,6 +63,7 @@ public final class Main extends JavaPlugin {
     public static ItemStack basketOfSeeds;
     public static ItemStack mark50;
     public static ItemStack mark34;
+    private static Main mainInstance;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -71,7 +72,7 @@ public final class Main extends JavaPlugin {
         // Load the config
         FileConfiguration config = getConfig();
 
-        String LicenseKey = getConfig().getString("licensekey");
+        String LicenseKey = config.getString("licensekey");
 
         // Your public RSA key (can be found in your settings)
         final String PUBLIC_KEY = "-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqWngAoriC/ty4zcRGrax kRD3kQVamK9CLb9DxzldVAQXUI3ONXccHchUqVtyKry00obrrryowRgKOrdvCJHE 2oUa9T/bHC3xAD0xdSjeeUVvHYpHJlxpFGDgBeyxlDqTY0wkFM++Ye8nkE1zt7Px VKIvkgYrKT8Kn0aXu79O8kJ5863tAZ1Wc2na3UrSaZ5WH5PT+DDVb8qFz7hKbFOS p4cIneBZoSgGG8bvxrqsW51jt8mshkH8Z1NwvwvkXfCI0U+PXIkdxCp4OYYhyaBt gN/VGGe9RbRLvw1y36uvM6LN4U9YPHUK1HIFMM0aedHRtKttPngbm4U7yrXmQ+LS QQIDAQAB -----END PUBLIC KEY-----";
@@ -106,6 +107,8 @@ public final class Main extends JavaPlugin {
 
         plugin = this;
 
+        mainInstance = this;
+
         suitManager = new SuitManager(this);
 
         arrowFireListener = new ArrowFireListener(this);
@@ -119,6 +122,9 @@ public final class Main extends JavaPlugin {
             meta.setLore(lore);
             item.setItemMeta(meta);
         }
+        double stingerRadius = config.getDouble("StingerRadius");
+        double laserRadius = config.getDouble("LaserRadius");
+
         stinger = item;
 
         createBasketOfSeeds();
@@ -252,7 +258,9 @@ public final class Main extends JavaPlugin {
             }
         }.runTaskTimer(this, 0L, 20L * 60 * 10); // Check every 10 minutes
     }
-
+    public static Main getMainInstance() {
+        return mainInstance;
+    }
     private boolean isItValid() {
         // Implement your logic to check the license status here
         // Return true if valid, false if deactivated

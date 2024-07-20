@@ -26,7 +26,7 @@ public class LongRangeBow implements Listener {
         if (e.getEntity() instanceof Player) {
             if (e.getProjectile() instanceof Arrow) {
                 PDCKeys pdcKeys = new PDCKeys(main);
-                NamespacedKey key = pdcKeys.getKey();
+                NamespacedKey key = pdcKeys.getCustomItemKey();
                 Arrow arrow = (Arrow) e.getProjectile();
                 ItemStack bow = e.getBow();
                 if (Objects.requireNonNull(bow).getItemMeta() != null) {

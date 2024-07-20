@@ -33,29 +33,35 @@ public class DragonSmashAbility implements Listener {
                                         // Create shockwave effect
                                         player.getWorld().createExplosion(player.getLocation(), 0, false, false);
                                         for (Entity entity : player.getNearbyEntities(8, 8, 8)) {
-                                            entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.5));
                                             if (entity instanceof Player) {
                                                 FPlayer entityfPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
                                                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
                                                 Faction targetPlayerFaction = entityfPlayer.getFaction();
                                                 Faction sneakedPlayerFaction = fPlayer.getFaction();
                                                 if (sneakedPlayerFaction == null) {
-                                                    ((Player) entity).damage(10);
+                                                    entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.5));
+                                                    ((Player) entity).damage(20);
+                                                    return;
                                                 }
                                                 else if (targetPlayerFaction == null) {
-                                                    ((Player) entity).damage(10);
+                                                    entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.5));
+                                                    ((Player) entity).damage(20);
+                                                    return;
+                                                }
+                                                else if (targetPlayerFaction != sneakedPlayerFaction) {
+                                                    entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.5));
+                                                    ((Player) entity).damage(20);
+                                                    return;
                                                 }
                                                 else {
-                                                    if (targetPlayerFaction == sneakedPlayerFaction) {
-                                                        return;
-                                                    }
+                                                    return;
                                                 }
                                             }
                                         }
                                         cancel();
                                     }
                                 }
-                            }.runTaskTimer(main, 0, 1);
+                            }.runTaskTimer(main, 0, 1l);
                         }
                     }
                 }.runTaskLater(main, 5); // Delay to check if the player is falling

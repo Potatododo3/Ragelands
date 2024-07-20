@@ -1,15 +1,19 @@
 package com.potato.ragelandscustom.IronManSuit.cmds.suits;
 
 import com.potato.ragelandscustom.IronManSuit.Chat;
-import com.potato.ragelandscustom.IronManSuit.Data;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.MK34;
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.suitOn;
 
 public class mk42 implements CommandExecutor {
 
@@ -21,7 +25,8 @@ public class mk42 implements CommandExecutor {
         Player player = (Player) sender;
 
         try {
-            if (!Data.Suit.contains(player)) {
+            PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+            if (Boolean.FALSE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
                 Chat.msg(player, Chat.prefix + "&7Suit required to run this command!");
                 return true;
             }
@@ -31,7 +36,8 @@ public class mk42 implements CommandExecutor {
             return true;
         }
         try {
-            if (!Data.suitAssigned.get(player).equalsIgnoreCase("mk42")) {
+            PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+            if (Boolean.FALSE.equals(playerpdc.get(MK34, PersistentDataType.BOOLEAN))) {
                 Chat.msg(player, Chat.jarvis + "&7Mk42 suit required to run this command!");
                 return true;
             }

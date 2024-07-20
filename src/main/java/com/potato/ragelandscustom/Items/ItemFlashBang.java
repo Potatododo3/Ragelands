@@ -19,7 +19,7 @@ public class ItemFlashBang {
 
     public ItemStack getFlashBang() {
         PDCKeys pdcKeys = new PDCKeys(main);
-        NamespacedKey key = pdcKeys.getKey();
+        NamespacedKey key = pdcKeys.getCustomItemKey();
         ItemStack flashBang = new ItemStack(Material.SNOWBALL, 1);
         ItemMeta meta = flashBang.getItemMeta();
         if (meta != null) {

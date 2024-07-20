@@ -5,8 +5,10 @@ import com.potato.ragelandscustom.IronManSuit.menu.GuiItem;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Objects;
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.*;
 
 public class Menus {
 
@@ -21,10 +23,11 @@ public class Menus {
                                 .addLore("Armour Type: None")
                                 .build(),
                         (clicker, event) -> {
-                            if (Data.Suit.contains(clicker)) {
-                                if (Objects.equals(Data.suitAssigned.get(clicker), "MK42")) {
+                            PersistentDataContainer playerpdc = clicker.getPersistentDataContainer();
+                            if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
+                                if (Boolean.TRUE.equals(playerpdc.get(MK50, PersistentDataType.BOOLEAN))) {
                                     Main.getSuitManager().eject(clicker);
-                                    Data.suitAssigned.put(clicker, "MK1");
+                                    playerpdc.set(MK50, PersistentDataType.BOOLEAN, true);
                                     Main.getSuitManager().apply(clicker);
                                     clicker.sendMessage(Chat.jarvis + "Mark 42 ejected and Mark 1 is on its way!");
                                     clicker.closeInventory();
@@ -37,7 +40,7 @@ public class Menus {
                             }
                             Main.getSuitManager().apply(clicker);
                             clicker.sendMessage(Chat.jarvis + "Mark 1 is on its way!");
-                            Data.suitAssigned.put(player, "MK1");
+                            playerpdc.set(MK50, PersistentDataType.BOOLEAN, true);
                             clicker.closeInventory();
                         }
                 ),
@@ -52,10 +55,12 @@ public class Menus {
                                 .addLore("- Explosive Laser (explodes on blocks and lights people on fire")
                                 .build(),
                         (clicker, event) -> {
-                            if (Data.Suit.contains(clicker)) {
-                                if (Objects.equals(Data.suitAssigned.get(clicker), "MK1")) {
+                            PersistentDataContainer playerpdc = clicker.getPersistentDataContainer();
+                            if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
+                                if (Boolean.TRUE.equals(playerpdc.get(MK50, PersistentDataType.BOOLEAN))) {
                                     Main.getSuitManager().eject(clicker);
-                                    Data.suitAssigned.put(clicker, "MK42");
+                                    playerpdc.set(MK34, PersistentDataType.BOOLEAN, true
+                                    );
                                     Main.getSuitManager().apply(clicker);
                                     clicker.sendMessage(Chat.jarvis + "Mark 1 ejected and Mark 42 is on its way!");
                                     clicker.closeInventory();
@@ -68,7 +73,7 @@ public class Menus {
                             }
                             Main.getSuitManager().apply(clicker);
                             clicker.sendMessage(Chat.jarvis + "Mark 42 is on its way!");
-                            Data.suitAssigned.put(player, "MK42");
+                            playerpdc.set(MK34, PersistentDataType.BOOLEAN, true);
                             clicker.closeInventory();
                         }
                 )

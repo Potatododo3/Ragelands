@@ -100,7 +100,7 @@ public class MagicBoots implements Listener {
     public void onSneak(PlayerToggleSneakEvent e) {
         if (hasMagicBoots(e.getPlayer())) {
             PDCKeys pdcKeys = new PDCKeys(main);
-            NamespacedKey key = pdcKeys.getKey();
+            NamespacedKey key = pdcKeys.getCustomItemKey();
             Location blockOfSneak = e.getPlayer().getLocation();
             Player sneakedPlayer = e.getPlayer();
             ItemStack playerBoots = sneakedPlayer.getInventory().getBoots();

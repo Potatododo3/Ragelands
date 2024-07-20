@@ -18,9 +18,7 @@ public class ResetCooldowns implements CommandExecutor {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
             if (player.hasPermission("ragelands.cooldownreset")) {
-                if (glowingPlayers.contains(player)) {
-                    glowingPlayers.remove(player);
-                }
+                glowingPlayers.remove(player);
                 if (cooldownManager.isOnTrackerCooldown(player.getName())) {
                     cooldownManager.setTrackerCooldown(player.getName(), 0);
                 }

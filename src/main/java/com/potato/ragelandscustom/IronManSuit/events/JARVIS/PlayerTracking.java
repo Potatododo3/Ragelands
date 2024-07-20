@@ -1,7 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit.events.JARVIS;
 
 import com.potato.ragelandscustom.IronManSuit.Chat;
-import com.potato.ragelandscustom.IronManSuit.Data;
 import com.potato.ragelandscustom.ItemFunctions.CooldownManager;
 import com.potato.ragelandscustom.Main;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,10 +11,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.MK34;
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.suitOn;
 
 public class PlayerTracking implements Listener {
     private final Main main;
@@ -24,19 +28,21 @@ public class PlayerTracking implements Listener {
     public PlayerTracking(Main main) {
         this.main = main;
         this.cooldownManager = new CooldownManager();
+        radius = main.getConfig().getInt("TrackerRadius");
     }
-
+    int radius;
     @EventHandler
     public void onTrack(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-
+        PersistentDataContainer playerpdc = player.getPersistentDataContainer();
         if (e.getItem() != null && e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasLore() && e.getItem().getItemMeta().getLore().contains(ChatColor.translateAlternateColorCodes('&', "&6Track Nearby Players"))) {
-            startTrackingNearbyPlayersTask(player, 12, 36);
+            startTrackingNearbyPlayersTask(player, 12, radius);
         }
     }
 
     private void startTrackingNearbyPlayersTask(Player player, int durationSeconds, int radius) {
-        if (Data.Suit.contains(player) && Data.suitAssigned.get(player).equals("MK42")) {
+        PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+        if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN)) && Boolean.TRUE.equals(playerpdc.get(MK34, PersistentDataType.BOOLEAN))) {
             String playerName = player.getName();
             if (cooldownManager.isOnTrackerCooldown(playerName)) {
                 long remainingMillis = cooldownManager.getRemainingTrackerCooldown(playerName);
@@ -57,7 +63,7 @@ public class PlayerTracking implements Listener {
                     }
 
                     // Check if the player is online
-                    if (player != null && player.isOnline()) {
+                    if (player.isOnline()) {
                         Location location = player.getLocation();
                         for (Entity entity : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
                             if (entity instanceof Player) {
@@ -68,6 +74,14 @@ public class PlayerTracking implements Listener {
                                         Chat.msg(player, "&4&l!! &cTracker found player " + "&d&l" + nearbyPlayer.getDisplayName() + " &cwith health " + roundToNearestHalf(nearbyPlayer.getHealth() / 2) + "&4♥ " + "&4&l !!");
                                         glowingPlayers.add(nearbyPlayer); // Add player to glowing set
                                         unglowPlayers(player, nearbyPlayer);
+                                        new BukkitRunnable() {
+                                            @Override
+                                            public void run() {
+                                                for (Player player : glowingPlayers) {
+                                                    glowingPlayers.remove(player);
+                                                }
+                                            }
+                                        }.runTaskLater(main, 20L * 12);
                                     }
                                 }
                             }

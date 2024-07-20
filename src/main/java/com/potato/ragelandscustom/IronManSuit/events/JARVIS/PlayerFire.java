@@ -7,8 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.suitOn;
 
 public class PlayerFire implements Listener {
 
@@ -18,7 +22,8 @@ public class PlayerFire implements Listener {
     public void onPlayerFire(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (Data.Suit.contains(player)) {
+            PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+            if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN))) {
                 if (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
                     if (!Data.isOnFire.contains(player)) {
                         if (fireCooldown.contains(player)) {
@@ -31,33 +36,14 @@ public class PlayerFire implements Listener {
                                 Chat.jarvis + "&cWarning! Fire detected!",
                                 Chat.jarvis + "&6Fire suppression started!"
                         );
-                        Delay.until(40, () -> {
+                        Delay.until(15, () -> {
                             player.setFireTicks(0);
                             Chat.msg(player, Chat.jarvis + "&6Fire suppression successful!");
                             fireCooldown.add(player);
                             Data.isOnFire.remove(player);
                         });
 
-                        Delay.until(200, () -> fireCooldown.remove(player));
-                    }
-                }
-
-                if (event.getCause() == EntityDamageEvent.DamageCause.POISON) {
-                    if (!Data.isPoisoned.contains(player)) {
-                        Chat.msg(
-                                player,
-                                Chat.jarvis + "&cWarning! Unknown synthetic detected!",
-                                Chat.jarvis + "&6Starting scan..."
-                        );
-                    }
-                }
-
-                if (event.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
-                    if (!Data.Suit.contains(player)) {
-                        Chat.msg(
-                                player,
-                                Chat.jarvis + ""
-                        );
+                        Delay.until(50, () -> fireCooldown.remove(player));
                     }
                 }
             }

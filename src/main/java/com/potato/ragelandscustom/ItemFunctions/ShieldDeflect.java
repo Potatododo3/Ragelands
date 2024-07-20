@@ -38,7 +38,7 @@ public class ShieldDeflect implements Listener {
                     ItemStack damagedShield = damaged.getInventory().getItemInOffHand();
                     ItemMeta damagedShieldMeta = damagedShield.getItemMeta();
                     PDCKeys pdcKeys = new PDCKeys(main);
-                    NamespacedKey key = pdcKeys.getKey();
+                    NamespacedKey key = pdcKeys.getCustomItemKey();
                     PersistentDataContainer damagedShieldPDC = null;
                     if (damagedShieldMeta != null) {
                         damagedShieldPDC = (damagedShieldMeta.getPersistentDataContainer());
@@ -61,7 +61,7 @@ public class ShieldDeflect implements Listener {
                         ItemStack damagedShield = damaged.getInventory().getItemInOffHand();
                         ItemMeta damagedShieldMeta = damagedShield.getItemMeta();
                         PDCKeys pdcKeys = new PDCKeys(main);
-                        NamespacedKey key = pdcKeys.getKey();
+                        NamespacedKey key = pdcKeys.getCustomItemKey();
                         PersistentDataContainer damagedShieldPDC = null;
                         if (damagedShieldMeta != null) {
                             damagedShieldPDC = (damagedShieldMeta.getPersistentDataContainer());

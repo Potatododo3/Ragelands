@@ -18,7 +18,7 @@ public class ItemCowboyBoots {
 
     public ItemStack getCowboyBoots() {
         PDCKeys pdcKeys = new PDCKeys(main);
-        NamespacedKey key = pdcKeys.getKey();
+        NamespacedKey key = pdcKeys.getCustomItemKey();
         ItemStack cowboyBoots = new ItemStack(Material.GOLDEN_BOOTS, 1);
         ItemMeta meta = cowboyBoots.getItemMeta();
         if (meta != null) {

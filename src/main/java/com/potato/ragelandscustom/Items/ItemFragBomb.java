@@ -21,7 +21,7 @@ public class ItemFragBomb {
 
     public ItemStack getFragBomb() {
         PDCKeys pdcKeys = new PDCKeys(main);
-        NamespacedKey key = pdcKeys.getKey();
+        NamespacedKey key = pdcKeys.getCustomItemKey();
         ItemStack fragBomb = new ItemStack(Material.FIREWORK_ROCKET, 1);
         FireworkMeta meta = (FireworkMeta) fragBomb.getItemMeta();
         if (meta != null) {

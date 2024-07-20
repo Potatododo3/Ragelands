@@ -8,8 +8,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+
+import static com.potato.ragelandscustom.IronManSuit.SuitManager.suitOn;
 
 public class PlayerMoveArmourListener implements Listener {
 
@@ -19,8 +23,8 @@ public class PlayerMoveArmourListener implements Listener {
     public void playerMoveArmourEvent (InventoryClickEvent event) {
 
         Player player = (Player) event.getWhoClicked();
-
-        if (Data.Suit.contains(player) || (Data.buildingSuit.contains(player))) {
+        PersistentDataContainer playerpdc = player.getPersistentDataContainer();
+        if (Boolean.TRUE.equals(playerpdc.get(suitOn, PersistentDataType.BOOLEAN)) || (Data.buildingSuit.contains(player))) {
             if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
                 event.setCancelled(true);
 

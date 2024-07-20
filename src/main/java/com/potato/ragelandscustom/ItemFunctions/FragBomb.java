@@ -45,7 +45,7 @@ public class FragBomb implements Listener {
                 meta = item.getItemMeta();
             }
             PDCKeys pdcKeys = new PDCKeys(main);
-            NamespacedKey key = pdcKeys.getKey();
+            NamespacedKey key = pdcKeys.getCustomItemKey();
             Boolean fragBombBoolean = null;
             if (meta != null) {
                 fragBombBoolean = meta.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);

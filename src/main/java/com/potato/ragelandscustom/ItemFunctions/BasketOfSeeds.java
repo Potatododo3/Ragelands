@@ -39,7 +39,9 @@ public class BasketOfSeeds implements Listener {
                 Material.WHEAT_SEEDS,
                 Material.BEETROOT_SEEDS,
                 Material.PUMPKIN_SEEDS,
-                Material.MELON_SEEDS
+                Material.MELON_SEEDS,
+                Material.CARROT,
+                Material.POTATO
         };
 
         final Material chosenSeedType;
@@ -92,7 +94,9 @@ public class BasketOfSeeds implements Listener {
                 Block targetBlock = block.getRelative(dx * distance, 0, dz * distance);
                 if (targetBlock.getType() == Material.FARMLAND && seedsPlanted < seedCount) {
                     Block cropBlock = targetBlock.getRelative(0, 1, 0);
-                    if (cropBlock.getType() == chosenSeedType) return;
+                    if (cropBlock.getType() == getCropType(chosenSeedType)) {
+                        return;
+                    }
                     cropBlock.setType(getCropType(chosenSeedType));
 
                     // Add particle effect

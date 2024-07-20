@@ -147,10 +147,10 @@ public class ItemGiver implements CommandExecutor {
     private void giveBasketOfSeeds(Player player) {
         player.getInventory().addItem(basketOfSeeds);
     }
-    private void giveMark34(Player player) {
+    public static void giveMark34(Player player) {
         player.getInventory().addItem(mark34);
     }
-    private void giveMark50(Player player) {
+    public static void giveMark50(Player player) {
         player.getInventory().addItem(mark50);
     }
     private void giveStinger(Player player ) {

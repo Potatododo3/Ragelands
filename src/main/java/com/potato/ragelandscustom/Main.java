@@ -1,9 +1,6 @@
 package com.potato.ragelandscustom;
 
-import com.potato.ragelandscustom.Commands.EjectCommand;
-import com.potato.ragelandscustom.Commands.ItemGiver;
-import com.potato.ragelandscustom.Commands.ReloadCommand;
-import com.potato.ragelandscustom.Commands.ResetCooldowns;
+import com.potato.ragelandscustom.Commands.*;
 import com.potato.ragelandscustom.Functions.BossDropItem;
 import com.potato.ragelandscustom.Functions.DragonEgg.*;
 import com.potato.ragelandscustom.Functions.IronManItem;
@@ -193,6 +190,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("suits")).setTabCompleter(new SuitTabCompleter());
         Objects.requireNonNull(getCommand("ironman")).setTabCompleter(new IronManTabCompleter());
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
+        Objects.requireNonNull(getCommand("notnt")).setExecutor(new NoTNTCommand());
+        Objects.requireNonNull(getCommand("nobossdrops")).setExecutor(new BossDropItemCommand());
         startItCheck();
     }
 

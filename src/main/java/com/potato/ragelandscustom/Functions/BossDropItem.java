@@ -9,10 +9,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static com.potato.ragelandscustom.Commands.BossDropItemCommand.BossDrops;
+
 public class BossDropItem implements Listener {
 
     @EventHandler
     public void onBossDeath(EntityDeathEvent e) {
+        if (!BossDrops) {
+            return;
+        }
         LivingEntity deathEntity = e.getEntity();
         if (!(deathEntity instanceof Player)) {
             if (deathEntity.getType() == EntityType.ENDER_DRAGON || deathEntity.getType() == EntityType.WITHER) {

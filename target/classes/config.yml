@@ -3,3 +3,5 @@ licensekey: "INSERT YOUR LICENSE KEY HERE"
 StingerRadius: 1600.0
 LaserRadius: 144.0
 TrackerRadius: 68
+Mark50Protection: 3
+Mark34Protection: 5

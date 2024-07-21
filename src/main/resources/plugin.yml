@@ -49,10 +49,10 @@ commands:
     description: "Prevents TNT from being used."
     permission: ragelands.admin
 
-  nobossdrops:
-    description: "Prevents boss drops."
+  saveitem:
+    description: "Saves an item for the boss drops."
+    default: op
     permission: ragelands.admin
-
 permissions:
   ragelands.admin:
     description: "Allows access to admin commands."

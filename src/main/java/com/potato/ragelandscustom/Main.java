@@ -1,8 +1,9 @@
 package com.potato.ragelandscustom;
 
 import com.potato.ragelandscustom.Commands.*;
-import com.potato.ragelandscustom.Functions.BossDropItem;
-import com.potato.ragelandscustom.Functions.DragonEgg.*;
+import com.potato.ragelandscustom.Functions.DragonEgg.DragonEggPreventer;
+import com.potato.ragelandscustom.Functions.DragonEgg.PlayerDeathWithEgg;
+import com.potato.ragelandscustom.Functions.DragonEgg.PlayerObtainEgg;
 import com.potato.ragelandscustom.Functions.IronManItem;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
@@ -29,6 +30,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -39,6 +42,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -55,17 +60,19 @@ public final class Main extends JavaPlugin {
     private Main main;
     private BukkitTask itCheck;
     public RedefinedGlowingEntitiesAPI geAPI;
-    private AbilitySelectionGUI abilitySelectionGUI;
+    private RetrieveItemUtil retrieveItemUtil;
     private ArrowFireListener arrowFireListener;
     public static ItemStack basketOfSeeds;
     public static ItemStack mark50;
     public static ItemStack mark34;
     private static Main mainInstance;
+    private File customConfigFile;
+    private FileConfiguration customConfig;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
         saveDefaultConfig();
-
+        createCustomConfig();
         // Load the config
         FileConfiguration config = getConfig();
 
@@ -109,6 +116,7 @@ public final class Main extends JavaPlugin {
         suitManager = new SuitManager(this);
 
         arrowFireListener = new ArrowFireListener(this);
+        retrieveItemUtil = new RetrieveItemUtil(this);
         // Initialize the Stinger item
         ItemStack item = new ItemStack(Material.CROSSBOW); // Use the appropriate material
         ItemMeta meta = item.getItemMeta();
@@ -123,7 +131,17 @@ public final class Main extends JavaPlugin {
         double laserRadius = config.getDouble("LaserRadius");
 
         stinger = item;
+        // Register commands
 
+        // Example usage of retrieving the item
+        RetrieveItemUtil retrieveItemUtil = new RetrieveItemUtil(this);
+        ItemStack savedItem = retrieveItemUtil.getSavedItem();
+        if (savedItem != null) {
+            getLogger().info("Successfully retrieved saved item.");
+        }
+        else {
+            getLogger().info("No item found in custom config.");
+        }
         createBasketOfSeeds();
         createMark34();
         createMark50();
@@ -155,7 +173,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Flashbang(this, this), this);
         getServer().getPluginManager().registerEvents(new CowboyBoots(this), this);
         getServer().getPluginManager().registerEvents(new FreezeClock(this), this);
-        getServer().getPluginManager().registerEvents(new BossDropItem(), this);
         getServer().getPluginManager().registerEvents(new PlayerFly(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerHeal(), this);
@@ -167,19 +184,14 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerTracking(this), this);
         getServer().getPluginManager().registerEvents(new FireAbility(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileImpactListener(this), this);
-        abilitySelectionGUI = new AbilitySelectionGUI(this);
-        getServer().getPluginManager().registerEvents(new DragonEggActivationListener(this), this);
-        getServer().getPluginManager().registerEvents(new DragonSmashAbility(this), this);
-        getServer().getPluginManager().registerEvents(new DragonFlameAbility(this), this);
-        getServer().getPluginManager().registerEvents(new DragonSummonAbility(this), this);
-        getServer().getPluginManager().registerEvents(new PreventDragonEggPlacement(this), this);
-        getServer().getPluginManager().registerEvents(abilitySelectionGUI, this);
         getServer().getPluginManager().registerEvents(new DragonEggPreventer(), this);
         getServer().getPluginManager().registerEvents(new ItemsPreventer(), this);
         getServer().getPluginManager().registerEvents(new BasketOfSeeds(this), this);
         getServer().getPluginManager().registerEvents(new IronManItem(), this);
         getServer().getPluginManager().registerEvents(new ArrowFireListener(this), this);
         getServer().getPluginManager().registerEvents(new ArrowHitListener(this, arrowFireListener), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathWithEgg(), this);
+        getServer().getPluginManager().registerEvents(new PlayerObtainEgg(), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -191,7 +203,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("ironman")).setTabCompleter(new IronManTabCompleter());
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
         Objects.requireNonNull(getCommand("notnt")).setExecutor(new NoTNTCommand());
-        Objects.requireNonNull(getCommand("nobossdrops")).setExecutor(new BossDropItemCommand());
+        Objects.requireNonNull(getCommand("saveitem")).setExecutor(new SaveItemCommand(this));
         startItCheck();
     }
 
@@ -199,6 +211,58 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         if (itCheck != null) {
             itCheck.cancel();
+        }
+    }
+    public FileConfiguration getCustomConfig() {
+        return this.customConfig;
+    }
+
+    private void createCustomConfig() {
+        customConfigFile = new File(getDataFolder(), "items.yml");
+        if (!customConfigFile.exists()) {
+            customConfigFile.getParentFile().mkdirs();
+            try {
+                customConfigFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        customConfig = new YamlConfiguration();
+        try {
+            customConfig.load(customConfigFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static List<InventoryType> getAllInventoryTypes() {
+        return Arrays.asList(
+                InventoryType.CHEST,
+                InventoryType.DISPENSER,
+                InventoryType.DROPPER,
+                InventoryType.HOPPER,
+                InventoryType.BREWING,
+                InventoryType.ENCHANTING,
+                InventoryType.ANVIL,
+                InventoryType.MERCHANT,
+                InventoryType.SHULKER_BOX,
+                InventoryType.ENDER_CHEST,
+                InventoryType.BARREL,
+                InventoryType.SMITHING,
+                InventoryType.CARTOGRAPHY,
+                InventoryType.FURNACE,
+                InventoryType.LOOM,
+                InventoryType.BLAST_FURNACE,
+                InventoryType.SMOKER,
+                InventoryType.GRINDSTONE,
+                InventoryType.STONECUTTER
+        );
+    }
+    public void saveCustomConfig() {
+        try {
+            customConfig.save(customConfigFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     public static ItemStack getHead(String texture) {

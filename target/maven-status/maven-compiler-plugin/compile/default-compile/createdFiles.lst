@@ -23,6 +23,7 @@ com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerFire.class
 com\potato\ragelandscustom\ItemFunctions\BasketOfSeeds.class
 com\potato\ragelandscustom\CC.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerLowHealth$1.class
+com\potato\ragelandscustom\Main$2.class
 com\potato\ragelandscustom\Functions\DragonEgg\DragonEggPreventer.class
 com\potato\ragelandscustom\ItemFunctions\FreezeClock.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerDeath.class

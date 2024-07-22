@@ -31,11 +31,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -117,7 +120,25 @@ public final class Main extends JavaPlugin {
 
         arrowFireListener = new ArrowFireListener(this);
         retrieveItemUtil = new RetrieveItemUtil(this);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getLogger().info("Running task to check players for dragon eggs.");
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Bukkit.getLogger().info("Checking player: " + player.getName());
+                    if (player.getInventory().contains(Material.DRAGON_EGG)) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 0));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20, 0));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5 * 20, 0));
+                        Bukkit.getLogger().info("Gave effects to: " + player.getName());
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0L, 60L);
+
         // Initialize the Stinger item
+
         ItemStack item = new ItemStack(Material.CROSSBOW); // Use the appropriate material
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

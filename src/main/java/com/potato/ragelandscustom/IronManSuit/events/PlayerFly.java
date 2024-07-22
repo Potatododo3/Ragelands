@@ -74,7 +74,10 @@ public class PlayerFly implements Listener {
         if (!player.isGliding()) {
             return;
         }
-        player.boostElytra(new ItemStack(Material.FIREWORK_ROCKET));
+        if (player.getInventory().contains(Material.FIREWORK_ROCKET)) {
+            player.getInventory().remove(Material.FIREWORK_ROCKET);
+            player.boostElytra(new ItemStack(Material.FIREWORK_ROCKET));
+        }
     }
 
     @EventHandler
@@ -107,7 +110,7 @@ public class PlayerFly implements Listener {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(main, 0L, 12L); // Schedule the task to run every 10 ticks (0.5 seconds)
+            }.runTaskTimer(main, 0L, 20L); // Schedule the task to run every 10 ticks (0.5 seconds)
         } else {
             e.setCancelled(true);
         }

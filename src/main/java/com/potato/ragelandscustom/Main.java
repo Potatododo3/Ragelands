@@ -256,6 +256,39 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
     }
+    public static int getItemCount(Player player, Material material) {
+        int itemCount = 0;
+
+        // Iterate through the player's inventory
+        for (ItemStack item : player.getInventory().getContents()) {
+            // Check if the item is not null and matches the specified material
+            if (item != null && item.getType() == material) {
+                itemCount += item.getAmount();
+            }
+        }
+
+        return itemCount;
+    }
+    public static void decreaseItemCount(Player player, Material material, int amount) {
+        ItemStack[] items = player.getInventory().getContents();
+
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if (item != null && item.getType() == material) {
+                int currentAmount = item.getAmount();
+                if (currentAmount > amount) {
+                    item.setAmount(currentAmount - amount);
+                    break;
+                } else {
+                    amount -= currentAmount;
+                    player.getInventory().clear(i);
+                    if (amount == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
     public static List<InventoryType> getAllInventoryTypes() {
         return Arrays.asList(
                 InventoryType.CHEST,

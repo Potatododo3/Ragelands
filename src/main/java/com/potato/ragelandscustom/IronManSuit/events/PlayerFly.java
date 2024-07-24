@@ -75,7 +75,13 @@ public class PlayerFly implements Listener {
             return;
         }
         if (player.getInventory().contains(Material.FIREWORK_ROCKET)) {
-            player.getInventory().remove(Material.FIREWORK_ROCKET);
+            int amount = Main.getItemCount(player, Material.FIREWORK_ROCKET);
+            if (amount > 0) {
+                Main.decreaseItemCount(player, Material.FIREWORK_ROCKET, 1);
+            }
+            else {
+                return;
+            }
             player.boostElytra(new ItemStack(Material.FIREWORK_ROCKET));
         }
     }

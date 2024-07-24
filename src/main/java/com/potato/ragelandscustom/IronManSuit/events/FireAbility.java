@@ -111,7 +111,6 @@ public class FireAbility implements Listener {
         double minDistanceSquared = radius;
         Player nearestPlayer = null;
         Collection<Player> nearbyPlayers = projectile.getWorld().getPlayers();
-
         for (Player player : nearbyPlayers) {
             Player shooter = (Player) projectile.getShooter();
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(shooter);

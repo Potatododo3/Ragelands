@@ -1,6 +1,9 @@
 package com.potato.ragelandscustom;
 
 import com.potato.ragelandscustom.Commands.*;
+import com.potato.ragelandscustom.Commands.PresidentalStuff.CommandHandler;
+import com.potato.ragelandscustom.Commands.PresidentalStuff.TabCompletionHandler;
+import com.potato.ragelandscustom.Commands.PresidentalStuff.VoteListener;
 import com.potato.ragelandscustom.Functions.DragonEgg.DragonEggPreventer;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerDeathWithEgg;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerObtainEgg;
@@ -15,8 +18,6 @@ import com.potato.ragelandscustom.IronManSuit.cmds.SuitTabCompleter;
 import com.potato.ragelandscustom.IronManSuit.cmds.suits.mk42;
 import com.potato.ragelandscustom.IronManSuit.events.*;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerFire;
-import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerHeal;
-import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerLowHealth;
 import com.potato.ragelandscustom.IronManSuit.events.JARVIS.PlayerTracking;
 import com.potato.ragelandscustom.IronManSuit.menu.GuiListener;
 import com.potato.ragelandscustom.ItemFunctions.*;
@@ -71,6 +72,9 @@ public final class Main extends JavaPlugin {
     private static Main mainInstance;
     private File customConfigFile;
     private FileConfiguration customConfig;
+    private File votingFile;
+    @Getter
+    private FileConfiguration votingConfig;
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -119,7 +123,10 @@ public final class Main extends JavaPlugin {
         suitManager = new SuitManager(this);
 
         arrowFireListener = new ArrowFireListener(this);
+
         retrieveItemUtil = new RetrieveItemUtil(this);
+
+
 
         new BukkitRunnable() {
             @Override
@@ -166,6 +173,7 @@ public final class Main extends JavaPlugin {
         createBasketOfSeeds();
         createMark34();
         createMark50();
+        createVotingConfig();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -196,8 +204,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FreezeClock(this), this);
         getServer().getPluginManager().registerEvents(new PlayerFly(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-        getServer().getPluginManager().registerEvents(new PlayerHeal(), this);
-        getServer().getPluginManager().registerEvents(new PlayerLowHealth(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerFire(), this);
@@ -213,6 +219,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArrowHitListener(this, arrowFireListener), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathWithEgg(), this);
         getServer().getPluginManager().registerEvents(new PlayerObtainEgg(), this);
+        getServer().getPluginManager().registerEvents(new VoteListener(this), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -225,6 +232,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("mk42")).setExecutor(new mk42());
         Objects.requireNonNull(getCommand("notnt")).setExecutor(new NoTNTCommand());
         Objects.requireNonNull(getCommand("saveitem")).setExecutor(new SaveItemCommand(this));
+        Objects.requireNonNull(getCommand("ragelands")).setExecutor(new CommandHandler(this));
+        Objects.requireNonNull(getCommand("ragelands")).setTabCompleter(new TabCompletionHandler());
         startItCheck();
     }
 
@@ -233,6 +242,7 @@ public final class Main extends JavaPlugin {
         if (itCheck != null) {
             itCheck.cancel();
         }
+        saveVotingConfig();
     }
     public FileConfiguration getCustomConfig() {
         return this.customConfig;
@@ -268,6 +278,23 @@ public final class Main extends JavaPlugin {
         }
 
         return itemCount;
+    }
+    public void createVotingConfig() {
+        votingFile = new File(getDataFolder(), "voting.yml");
+        if (!votingFile.exists()) {
+            votingFile.getParentFile().mkdirs();
+            saveResource("voting.yml", false);
+        }
+
+        votingConfig = YamlConfiguration.loadConfiguration(votingFile);
+    }
+
+    public void saveVotingConfig() {
+        try {
+            votingConfig.save(votingFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public static void decreaseItemCount(Player player, Material material, int amount) {
         ItemStack[] items = player.getInventory().getContents();

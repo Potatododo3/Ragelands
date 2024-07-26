@@ -3,7 +3,7 @@ package com.potato.ragelandscustom.IronManSuit.menu;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.Functions.Chat;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

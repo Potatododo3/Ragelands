@@ -1,6 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit.cmds;
 
-import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.IronManSuit.Menus;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Bukkit;

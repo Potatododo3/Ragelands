@@ -1,15 +1,15 @@
 package com.potato.ragelandscustom.Commands;
 
+import com.potato.ragelandscustom.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 public class ReloadCommand implements CommandExecutor {
-    private final Plugin plugin;
+    private final Main main;
 
-    public ReloadCommand(Plugin plugin) {
-        this.plugin = plugin;
+    public ReloadCommand(Main main) {
+        this.main = main;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ReloadCommand implements CommandExecutor {
                 return true;
             }
             // Perform your reload actions here, e.g., reload configuration files
-            plugin.reloadConfig();
+            main.reloadConfig();
             sender.sendMessage("Plugin reloaded successfully!");
             return true;
         }

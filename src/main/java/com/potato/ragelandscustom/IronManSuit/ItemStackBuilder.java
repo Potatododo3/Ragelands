@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;

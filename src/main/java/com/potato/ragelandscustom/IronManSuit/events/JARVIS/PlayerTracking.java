@@ -1,6 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit.events.JARVIS;
 
-import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.ItemFunctions.CooldownManager;
 import com.potato.ragelandscustom.Main;
 import net.kyori.adventure.text.format.NamedTextColor;

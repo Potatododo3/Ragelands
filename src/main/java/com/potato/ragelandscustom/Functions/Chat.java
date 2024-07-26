@@ -1,4 +1,4 @@
-package com.potato.ragelandscustom.IronManSuit;
+package com.potato.ragelandscustom.Functions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +15,11 @@ public class Chat {
 
     public static void msg(Player player, String... message) {
         Arrays.stream(message).forEach(s -> player.sendMessage(color(s)));
+    }
+    public static void broadcastMessage(String message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Chat.msg(player, message);
+        }
     }
 
     public static String color(String message) { return ChatColor.translateAlternateColorCodes('&', message);}

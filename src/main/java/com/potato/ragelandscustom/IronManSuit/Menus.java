@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.IronManSuit;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.IronManSuit.menu.Gui;
 import com.potato.ragelandscustom.IronManSuit.menu.GuiItem;
 import com.potato.ragelandscustom.Main;

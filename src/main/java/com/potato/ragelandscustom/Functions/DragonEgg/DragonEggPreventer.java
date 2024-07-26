@@ -1,6 +1,6 @@
 package com.potato.ragelandscustom.Functions.DragonEgg;
 
-import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

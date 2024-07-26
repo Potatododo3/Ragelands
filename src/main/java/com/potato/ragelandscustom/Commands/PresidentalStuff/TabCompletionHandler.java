@@ -16,7 +16,7 @@ public class TabCompletionHandler implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subcommands = Arrays.asList("votestart", "vote", "setpresident", "removepresident", "voteresults", "runpresident");
+            List<String> subcommands = Arrays.asList("votestart", "vote", "setpresident", "removepresident", "voteresults", "runpresident", "resetvotes", "resetcampaign");
             for (String subcommand : subcommands) {
                 if (subcommand.toLowerCase().startsWith(args[0].toLowerCase())) {
                     suggestions.add(subcommand);

@@ -1,9 +1,8 @@
 package com.potato.ragelandscustom;
 
 import com.potato.ragelandscustom.Commands.*;
-import com.potato.ragelandscustom.Commands.PresidentalStuff.CommandHandler;
-import com.potato.ragelandscustom.Commands.PresidentalStuff.TabCompletionHandler;
-import com.potato.ragelandscustom.Commands.PresidentalStuff.VoteListener;
+import com.potato.ragelandscustom.Commands.PresidentalStuff.*;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Functions.DragonEgg.DragonEggPreventer;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerDeathWithEgg;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerObtainEgg;
@@ -52,7 +51,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-import static com.potato.ragelandscustom.IronManSuit.Chat.ragelands;
+import static com.potato.ragelandscustom.Functions.Chat.ragelands;
 
 public final class Main extends JavaPlugin {
     @Getter
@@ -71,10 +70,12 @@ public final class Main extends JavaPlugin {
     public static ItemStack mark34;
     private static Main mainInstance;
     private File customConfigFile;
+    @Getter
     private FileConfiguration customConfig;
     private File votingFile;
     @Getter
     private FileConfiguration votingConfig;
+    private static final long CAMPAIGN_DURATION = 86400000L; // 24 hours in milliseconds
     @Override
     public void onEnable() {
         // Save the default config if it doesn't exist
@@ -131,14 +132,11 @@ public final class Main extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getLogger().info("Running task to check players for dragon eggs.");
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    Bukkit.getLogger().info("Checking player: " + player.getName());
                     if (player.getInventory().contains(Material.DRAGON_EGG)) {
                         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 0));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20, 0));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5 * 20, 0));
-                        Bukkit.getLogger().info("Gave effects to: " + player.getName());
                     }
                 }
             }
@@ -173,6 +171,31 @@ public final class Main extends JavaPlugin {
         createBasketOfSeeds();
         createMark34();
         createMark50();
+        votingConfig = new YamlConfiguration();
+
+        // Load the voting configuration
+        try {
+            votingConfig.load(new File(getDataFolder(), "voting.yml"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getServer().getPluginManager().registerEvents(new PresidentListener(this), this);
+
+        // Only schedule task to end the campaign if active
+        if (votingConfig.getBoolean("campaign_active")) {
+            long timeRemaining = CAMPAIGN_DURATION - (System.currentTimeMillis() - votingConfig.getLong("campaign_start_time"));
+            if (timeRemaining > 0) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        endCampaign();
+                    }
+                }.runTaskLater(this, timeRemaining / 50); // Convert milliseconds to ticks
+            } else {
+                endCampaign();
+            }
+        }
         createVotingConfig();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
@@ -234,6 +257,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("saveitem")).setExecutor(new SaveItemCommand(this));
         Objects.requireNonNull(getCommand("ragelands")).setExecutor(new CommandHandler(this));
         Objects.requireNonNull(getCommand("ragelands")).setTabCompleter(new TabCompletionHandler());
+        Objects.requireNonNull(getCommand("assassinationtoggle")).setExecutor(new AssassinationPresidentToggle());
         startItCheck();
     }
 
@@ -243,9 +267,6 @@ public final class Main extends JavaPlugin {
             itCheck.cancel();
         }
         saveVotingConfig();
-    }
-    public FileConfiguration getCustomConfig() {
-        return this.customConfig;
     }
 
     private void createCustomConfig() {
@@ -278,6 +299,58 @@ public final class Main extends JavaPlugin {
         }
 
         return itemCount;
+    }
+    public void startCampaign() {
+        if (votingConfig.getBoolean("campaign_active")) {
+            Bukkit.getLogger().info(Chat.prefix + "A campaign is already active. Cannot start a new campaign.");
+            return;
+        }
+
+        votingConfig.set("campaign_active", true);
+        votingConfig.set("campaign_start_time", System.currentTimeMillis());
+        saveVotingConfig();
+
+        // Schedule task to end the campaign after 24 hours
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                endCampaign();
+            }
+        }.runTaskLater(this, CAMPAIGN_DURATION / 50); // Convert milliseconds to ticks
+
+        Chat.broadcastMessage(Chat.prefix + "A new voting campaign has started! Cast your votes now!");
+    }
+    public void endCampaign() {
+        votingConfig.set("campaign_active", false);
+        saveVotingConfig();
+
+        // Determine the winner
+        String president = null;
+        int maxVotes = 0;
+        Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
+        for (Map.Entry<String, Object> entry : votes.entrySet()) {
+            int voteCount = (int) entry.getValue();
+            if (voteCount > maxVotes) {
+                maxVotes = voteCount;
+                president = entry.getKey();
+            }
+        }
+
+        // Broadcast the winner
+        if (president != null) {
+            votingConfig.set("president", president);
+            saveVotingConfig();
+            Bukkit.broadcastMessage(Chat.prefix + "The new president is " + president + " with " + maxVotes + " votes!");
+
+            // Apply effects to the new president
+            Player presidentPlayer = Bukkit.getPlayer(president);
+            if (presidentPlayer != null) {
+                presidentPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0, true, false));
+                presidentPlayer.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, false));
+            }
+        } else {
+            Bukkit.broadcastMessage(Chat.prefix + "No president was elected.");
+        }
     }
     public void createVotingConfig() {
         votingFile = new File(getDataFolder(), "voting.yml");
@@ -387,6 +460,16 @@ public final class Main extends JavaPlugin {
         item.setItemMeta(meta);
         mark34 = item;
         return item;
+    }
+    public void removePlayerVote(String playerName) {
+        FileConfiguration votingConfig = getVotingConfig();
+        if (votingConfig.contains("voters." + playerName)) {
+            String votedCandidate = votingConfig.getString("voters." + playerName);
+            int currentVotes = votingConfig.getInt("votes." + votedCandidate, 0);
+            votingConfig.set("votes." + votedCandidate, currentVotes - 1);
+            votingConfig.set("voters." + playerName, null);
+            saveVotingConfig();
+        }
     }
     private void startItCheck() {
         itCheck = new BukkitRunnable() {

@@ -53,10 +53,17 @@ commands:
     description: "Saves an item for the boss drops."
     default: op
     permission: ragelands.admin
+  ragelands:
+    description: "Allows for various commands featuring presidential campaigns"
+    usage: /ragelands <command> [args]
 permissions:
   ragelands.admin:
-    description: "Allows access to admin commands."
+    description: "Allows access to admin commands"
     default: op
+
+  ragelands.use:
+    description: "Allows use of the ragelands command"
+    default: true
 
   ragelands.reload:
     description: "Allows players to reload the plugin."

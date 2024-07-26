@@ -2,6 +2,7 @@ package com.potato.ragelandscustom.IronManSuit;
 
 import com.potato.ragelandscustom.CC;
 import com.potato.ragelandscustom.Commands.ItemGiver;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Color;
 import org.bukkit.Location;

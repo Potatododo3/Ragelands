@@ -3,7 +3,7 @@ package com.potato.ragelandscustom.IronManSuit.events;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.potato.ragelandscustom.IronManSuit.Chat;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.ItemFunctions.CooldownManager;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.ChatColor;

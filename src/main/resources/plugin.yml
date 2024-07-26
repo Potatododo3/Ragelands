@@ -56,6 +56,10 @@ commands:
   ragelands:
     description: "Allows for various commands featuring presidential campaigns"
     usage: /ragelands <command> [args]
+  assassinationtoggle:
+    description: "Enables once killed the president killer becomes president"
+    usage: /assassinationtoggle
+    permission: ragelands.admin
 permissions:
   ragelands.admin:
     description: "Allows access to admin commands"

@@ -182,20 +182,6 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PresidentListener(this), this);
 
-        // Only schedule task to end the campaign if active
-        if (votingConfig.getBoolean("campaign_active")) {
-            long timeRemaining = CAMPAIGN_DURATION - (System.currentTimeMillis() - votingConfig.getLong("campaign_start_time"));
-            if (timeRemaining > 0) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        endCampaign();
-                    }
-                }.runTaskLater(this, timeRemaining / 50); // Convert milliseconds to ticks
-            } else {
-                endCampaign();
-            }
-        }
         createVotingConfig();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
@@ -258,6 +244,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("ragelands")).setExecutor(new CommandHandler(this));
         Objects.requireNonNull(getCommand("ragelands")).setTabCompleter(new TabCompletionHandler());
         Objects.requireNonNull(getCommand("assassinationtoggle")).setExecutor(new AssassinationPresidentToggle());
+        Objects.requireNonNull(getCommand("sign")).setExecutor(new SignCommand());
         startItCheck();
     }
 
@@ -300,6 +287,14 @@ public final class Main extends JavaPlugin {
 
         return itemCount;
     }
+    public void displayVoteResults(Player player) {
+        FileConfiguration votingConfig = getVotingConfig();
+        Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
+        player.sendMessage("Current Vote Results:");
+        for (Map.Entry<String, Object> entry : votes.entrySet()) {
+            player.sendMessage(entry.getKey() + " : " + entry.getValue());
+        }
+    }
     public void startCampaign() {
         if (votingConfig.getBoolean("campaign_active")) {
             Bukkit.getLogger().info(Chat.prefix + "A campaign is already active. Cannot start a new campaign.");
@@ -307,16 +302,7 @@ public final class Main extends JavaPlugin {
         }
 
         votingConfig.set("campaign_active", true);
-        votingConfig.set("campaign_start_time", System.currentTimeMillis());
         saveVotingConfig();
-
-        // Schedule task to end the campaign after 24 hours
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                endCampaign();
-            }
-        }.runTaskLater(this, CAMPAIGN_DURATION / 50); // Convert milliseconds to ticks
 
         Chat.broadcastMessage(Chat.prefix + "A new voting campaign has started! Cast your votes now!");
     }
@@ -466,7 +452,11 @@ public final class Main extends JavaPlugin {
         if (votingConfig.contains("voters." + playerName)) {
             String votedCandidate = votingConfig.getString("voters." + playerName);
             int currentVotes = votingConfig.getInt("votes." + votedCandidate, 0);
-            votingConfig.set("votes." + votedCandidate, currentVotes - 1);
+            if (currentVotes > 0) {
+                votingConfig.set("votes." + votedCandidate, currentVotes - 1);
+            } else {
+                votingConfig.set("votes." + votedCandidate, 0);
+            }
             votingConfig.set("voters." + playerName, null);
             saveVotingConfig();
         }

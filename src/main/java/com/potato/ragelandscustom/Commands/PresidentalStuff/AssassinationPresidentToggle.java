@@ -16,16 +16,17 @@ public class AssassinationPresidentToggle implements CommandExecutor {
             if (assassinationToggle) {
                 assassinationToggle = false;
                 commandSender.sendMessage("Assassination toggle has been disabled!");
+                return true;
             }
             else {
                 assassinationToggle = true;
                 commandSender.sendMessage("Assassination toggle has been enabled!");
+                return true;
             }
         }
         else {
             commandSender.sendMessage("You do not have permission to execute this command!");
+            return true;
         }
-
-        return false;
     }
 }

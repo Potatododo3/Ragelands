@@ -10,10 +10,10 @@ com\potato\ragelandscustom\IronManSuit\events\FireAbility$1.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots.class
 com\potato\ragelandscustom\Main$1.class
 com\potato\ragelandscustom\IronManSuit\events\JARVIS\PlayerTracking$2.class
+com\potato\ragelandscustom\Commands\PresidentalStuff\AssassinationPresidentToggle.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerFly.class
 com\potato\ragelandscustom\IronManSuit\cmds\SuitTabCompleter.class
 com\potato\ragelandscustom\ItemFunctions\MagicBoots$1$1.class
-com\potato\ragelandscustom\Main$4.class
 com\potato\ragelandscustom\Commands\ResetCooldowns.class
 com\potato\ragelandscustom\Functions\ItemGiverTabCompleter.class
 com\potato\ragelandscustom\ItemFunctions\LongRangeBow.class
@@ -29,7 +29,6 @@ com\potato\ragelandscustom\Functions\DragonEgg\DragonEggPreventer.class
 com\potato\ragelandscustom\ItemFunctions\FreezeClock.class
 com\potato\ragelandscustom\IronManSuit\events\PlayerDeath.class
 com\potato\ragelandscustom\IronManSuit\cmds\SuitCmds.class
-com\potato\ragelandscustom\IronManSuit\Chat.class
 com\potato\ragelandscustom\Functions\DragonEgg\PlayerObtainEgg.class
 com\potato\ragelandscustom\IronManSuit\menu\GuiItem.class
 com\potato\ragelandscustom\IronManSuit\SuitManager.class
@@ -40,6 +39,7 @@ com\potato\ragelandscustom\ItemFunctions\FreezeClock$1.class
 com\potato\ragelandscustom\Commands\PresidentalStuff\VoteListener.class
 com\potato\ragelandscustom\Items\ItemFlashBang.class
 com\potato\ragelandscustom\Items\ItemFragBomb.class
+com\potato\ragelandscustom\Commands\SignCommand.class
 com\potato\ragelandscustom\IronManSuit\cmds\suits\mk42.class
 com\potato\ragelandscustom\Items\PDCKeys.class
 com\potato\ragelandscustom\ItemFunctions\BasketOfSeeds$1.class
@@ -73,10 +73,10 @@ com\potato\ragelandscustom\ItemFunctions\Stinger\ArrowHitListener$1.class
 com\potato\ragelandscustom\IronManSuit\ItemStackBuilder.class
 com\potato\ragelandscustom\IronManSuit\Menus.class
 com\potato\ragelandscustom\ItemFunctions\Stinger\HomingArrowRunnable.class
+com\potato\ragelandscustom\Functions\Chat.class
 com\potato\ragelandscustom\IronManSuit\menu\Gui.class
 com\potato\ragelandscustom\Commands\NoTNTCommand.class
 com\potato\ragelandscustom\Commands\RetrieveItemUtil.class
 com\potato\ragelandscustom\Commands\SaveItemCommand.class
 com\potato\ragelandscustom\IronManSuit\menu\CloseAction.class
 com\potato\ragelandscustom\Items\ItemCowboyBoots.class
-com\potato\ragelandscustom\Main$3.class

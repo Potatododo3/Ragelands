@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class CommandHandler implements CommandExecutor {
     private Main main;
@@ -37,7 +37,6 @@ public class CommandHandler implements CommandExecutor {
             case "votestart":
             case "setpresident":
             case "removepresident":
-            case "voteresults":
             case "resetvotes":
             case "resetcampaign":
                 if (!sender.hasPermission("ragelands.admin")) {
@@ -92,25 +91,25 @@ public class CommandHandler implements CommandExecutor {
                 main.saveVotingConfig();
                 sender.sendMessage(Chat.prefix + " President set to " + presidentName);
                 break;
-
+            case "resign":
+                player = (Player) sender;
+                if (Objects.equals(config.getString("president"), player.getDisplayName())) {
+                    config.set("president", "");
+                    main.saveVotingConfig();
+                    ((Player) sender).setHealth(0.0);
+                    sender.sendMessage(Chat.prefix + " You have resigned as president.");
+                    Chat.broadcastMessage(Chat.prefix + "The president has officially resigned!");
+                }
+                break;
             case "removepresident":
                 config.set("president", "");
                 main.saveVotingConfig();
                 sender.sendMessage(Chat.prefix + " President removed.");
                 break;
-
             case "voteresults":
-                if (config.contains("votes")) {
-                    Map<String, Object> votes = config.getConfigurationSection("votes").getValues(false);
-                    sender.sendMessage(Chat.prefix + " Current vote results:");
-                    for (Map.Entry<String, Object> entry : votes.entrySet()) {
-                        sender.sendMessage(entry.getKey() + ": " + entry.getValue());
-                    }
-                } else {
-                    sender.sendMessage(Chat.prefix + " No votes have been cast yet.");
-                }
+                player = (Player) sender;
+                main.displayVoteResults(player);
                 break;
-
             case "runpresident":
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(Chat.prefix + " Only players can use this command.");
@@ -172,4 +171,5 @@ public class CommandHandler implements CommandExecutor {
 
         player.openInventory(voteInventory);
     }
+
 }

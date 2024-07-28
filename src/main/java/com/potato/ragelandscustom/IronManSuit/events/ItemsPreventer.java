@@ -1,9 +1,9 @@
 package com.potato.ragelandscustom.IronManSuit.events;
 
 import com.potato.ragelandscustom.Functions.Chat;
+import com.potato.ragelandscustom.Functions.ItemStackBuilder;
 import com.potato.ragelandscustom.IronManSuit.Data;
 import com.potato.ragelandscustom.IronManSuit.Delay;
-import com.potato.ragelandscustom.IronManSuit.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;

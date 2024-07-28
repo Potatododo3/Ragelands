@@ -2,13 +2,13 @@ package com.potato.ragelandscustom;
 
 import com.potato.ragelandscustom.Commands.*;
 import com.potato.ragelandscustom.Commands.PresidentalStuff.*;
-import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Functions.DragonEgg.DragonEggPreventer;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerDeathWithEgg;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerObtainEgg;
 import com.potato.ragelandscustom.Functions.IronManItem;
 import com.potato.ragelandscustom.Functions.ItemGiverTabCompleter;
 import com.potato.ragelandscustom.Functions.NoTNT;
+import com.potato.ragelandscustom.Functions.StockSystem.*;
 import com.potato.ragelandscustom.IronManSuit.SuitManager;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManCmds;
 import com.potato.ragelandscustom.IronManSuit.cmds.IronManTabCompleter;
@@ -26,6 +26,7 @@ import com.potato.ragelandscustom.Items.*;
 import dev.respark.licensegate.LicenseGate;
 import lombok.Getter;
 import me.msmaciek.redefinedglowingentities.api.RedefinedGlowingEntitiesAPI;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,9 +34,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -75,15 +78,24 @@ public final class Main extends JavaPlugin {
     private File votingFile;
     @Getter
     private FileConfiguration votingConfig;
-    private static final long CAMPAIGN_DURATION = 86400000L; // 24 hours in milliseconds
+    private PlayerStockManager playerStockManager;
+    private StockGUI stockGUI;
+    private static Economy econ = null;
     @Override
     public void onEnable() {
+        if (!setupEconomy()) {
+            getLogger().severe("Disabled due to no Vault dependency found!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         // Save the default config if it doesn't exist
         saveDefaultConfig();
         createCustomConfig();
         // Load the config
         FileConfiguration config = getConfig();
-
+        stockGUI = new StockGUI(this);
+        playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
+        getServer().getPluginManager().registerEvents(stockGUI, this);
         String LicenseKey = config.getString("licensekey");
 
         // Your public RSA key (can be found in your settings)
@@ -181,8 +193,33 @@ public final class Main extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new PresidentListener(this), this);
+        votingFile = new File(getDataFolder(), "voting.yml");
+        if (!votingFile.exists()) {
+            try {
+                votingFile.createNewFile();
+                getLogger().info("voting.yml file created.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                getLogger().severe("Could not create voting.yml file.");
+            }
+        }
+        votingConfig = YamlConfiguration.loadConfiguration(votingFile);
 
-        createVotingConfig();
+        if (!votingConfig.contains("votes")) {
+            votingConfig.createSection("votes");
+        }
+        if (!votingConfig.contains("voters")) {
+            votingConfig.createSection("voters");
+        }
+        if (!votingConfig.contains("candidates")) {
+            votingConfig.createSection("candidates");
+        }
+        if (!votingConfig.contains("president")) {
+            votingConfig.createSection("president");
+        }
+        new StockPlaceholderExpansion(this).register();
+        playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
+        saveVotingConfig();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
         ItemMagicBoots magicBoots = new ItemMagicBoots(this);
@@ -245,6 +282,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("ragelands")).setTabCompleter(new TabCompletionHandler());
         Objects.requireNonNull(getCommand("assassinationtoggle")).setExecutor(new AssassinationPresidentToggle());
         Objects.requireNonNull(getCommand("sign")).setExecutor(new SignCommand());
+        Objects.requireNonNull(getCommand("stocks")).setExecutor(new StockCommand());
         startItCheck();
     }
 
@@ -255,7 +293,48 @@ public final class Main extends JavaPlugin {
         }
         saveVotingConfig();
     }
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
 
+    public static Economy getEconomy() {
+        return econ;
+    }
+
+    public double getPlayerBalance(Player player) {
+        return econ.getBalance(player);
+    }
+
+    public void updatePlayerBalance(Player player, double newBalance) {
+        double currentBalance = econ.getBalance(player);
+        double difference = newBalance - currentBalance;
+        if (difference > 0) {
+            econ.depositPlayer(player, difference);
+        } else {
+            econ.withdrawPlayer(player, -difference);
+        }
+    }
+
+    public double getStockPrice(StockEnum stock) {
+        switch (stock) {
+            case RAGELANDS:
+                return StockEnum.RAGELANDS.getPrice(); // Placeholder value
+            case PEESCOIN:
+                return StockEnum.PEESCOIN.getPrice(); // Placeholder value
+            case POTATOCOIN:
+                return StockEnum.POTATOCOIN.getPrice(); // Placeholder value
+            default:
+                return 0.0;
+        }
+    }
     private void createCustomConfig() {
         customConfigFile = new File(getDataFolder(), "items.yml");
         if (!customConfigFile.exists()) {
@@ -287,74 +366,98 @@ public final class Main extends JavaPlugin {
 
         return itemCount;
     }
-    public void displayVoteResults(Player player) {
-        FileConfiguration votingConfig = getVotingConfig();
-        Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
-        player.sendMessage("Current Vote Results:");
-        for (Map.Entry<String, Object> entry : votes.entrySet()) {
-            player.sendMessage(entry.getKey() + " : " + entry.getValue());
-        }
-    }
     public void startCampaign() {
-        if (votingConfig.getBoolean("campaign_active")) {
-            Bukkit.getLogger().info(Chat.prefix + "A campaign is already active. Cannot start a new campaign.");
-            return;
-        }
-
-        votingConfig.set("campaign_active", true);
+        votingConfig.set("votes", null);
+        votingConfig.set("voters", null);
+        votingConfig.set("candidates", null);
         saveVotingConfig();
-
-        Chat.broadcastMessage(Chat.prefix + "A new voting campaign has started! Cast your votes now!");
+        getServer().broadcastMessage("A new presidential campaign has started!");
     }
-    public void endCampaign() {
-        votingConfig.set("campaign_active", false);
+
+    public void resetCampaign() {
+        votingConfig.set("votes", null);
+        votingConfig.set("voters", null);
+        votingConfig.set("candidates", null);
         saveVotingConfig();
+        getServer().broadcastMessage("The presidential campaign has been reset!");
+    }
 
-        // Determine the winner
-        String president = null;
-        int maxVotes = 0;
-        Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
-        for (Map.Entry<String, Object> entry : votes.entrySet()) {
-            int voteCount = (int) entry.getValue();
-            if (voteCount > maxVotes) {
-                maxVotes = voteCount;
-                president = entry.getKey();
-            }
+    public void resetVotes() {
+        votingConfig.set("votes", null);
+        votingConfig.set("voters", null);
+        saveVotingConfig();
+        getServer().broadcastMessage("All votes have been reset!");
+    }
+
+    public void setPresident(String playerName) {
+        votingConfig.set("president", ChatColor.stripColor(playerName));
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            player.setGlowing(true);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
+            getServer().broadcastMessage(playerName + " has been elected as the President!");
         }
+        saveVotingConfig();
+    }
 
-        // Broadcast the winner
-        if (president != null) {
-            votingConfig.set("president", president);
+    public void removePresident() {
+        String presidentName = votingConfig.getString("president");
+        Player player = Bukkit.getPlayer(presidentName);
+        if (player != null) {
+            player.setGlowing(false);
+            player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+            getServer().broadcastMessage(presidentName + " is no longer the President.");
+        }
+        votingConfig.set("president", null);
+        saveVotingConfig();
+    }
+
+    public void addCandidate(String playerName) {
+        List<String> candidates = votingConfig.getStringList("candidates");
+        candidates.add(playerName);
+        votingConfig.set("candidates", candidates);
+        saveVotingConfig();
+    }
+
+    public void removePlayerVote(String playerName) {
+        if (votingConfig.contains("voters." + playerName)) {
+            String votedCandidate = votingConfig.getString("voters." + playerName);
+            int currentVotes = votingConfig.getInt("votes." + votedCandidate, 0);
+            if (currentVotes > 0) {
+                votingConfig.set("votes." + votedCandidate, currentVotes - 1);
+            }
+            votingConfig.set("voters." + playerName, null);
             saveVotingConfig();
-            Bukkit.broadcastMessage(Chat.prefix + "The new president is " + president + " with " + maxVotes + " votes!");
+        }
+    }
 
-            // Apply effects to the new president
-            Player presidentPlayer = Bukkit.getPlayer(president);
-            if (presidentPlayer != null) {
-                presidentPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0, true, false));
-                presidentPlayer.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, false));
+    public void displayVoteResults(Player player) {
+        if (votingConfig.contains("votes")) {
+            player.sendMessage("Current Vote Results:");
+            Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
+            for (Map.Entry<String, Object> entry : votes.entrySet()) {
+                player.sendMessage(entry.getKey() + " : " + entry.getValue());
             }
         } else {
-            Bukkit.broadcastMessage(Chat.prefix + "No president was elected.");
+            player.sendMessage("No votes have been cast yet.");
         }
     }
-    public void createVotingConfig() {
-        votingFile = new File(getDataFolder(), "voting.yml");
-        if (!votingFile.exists()) {
-            votingFile.getParentFile().mkdirs();
-            saveResource("voting.yml", false);
-        }
 
-        votingConfig = YamlConfiguration.loadConfiguration(votingFile);
-    }
 
     public void saveVotingConfig() {
-        try {
-            votingConfig.save(votingFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (votingFile != null) {
+            try {
+                votingConfig.save(votingFile);
+                getLogger().info("voting.yml file saved.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                getLogger().severe("Could not save voting.yml file.");
+            }
+        } else {
+            getLogger().severe("votingFile is null, cannot save.");
         }
     }
+
     public static void decreaseItemCount(Player player, Material material, int amount) {
         ItemStack[] items = player.getInventory().getContents();
 
@@ -374,6 +477,24 @@ public final class Main extends JavaPlugin {
                 }
             }
         }
+    }
+    public void openVoteInventory(Player player) {
+        List<String> candidates = votingConfig.getStringList("candidates");
+        if (candidates.isEmpty()) {
+            player.sendMessage("No candidates available for voting.");
+            return;
+        }
+
+        Inventory voteInventory = Bukkit.createInventory(null, 9, "Vote for President");
+        for (String candidateName : candidates) {
+            ItemStack candidateHead = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta meta = (SkullMeta) candidateHead.getItemMeta();
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(candidateName));
+            meta.setDisplayName(candidateName);
+            candidateHead.setItemMeta(meta);
+            voteInventory.addItem(candidateHead);
+        }
+        player.openInventory(voteInventory);
     }
     public static List<InventoryType> getAllInventoryTypes() {
         return Arrays.asList(
@@ -446,20 +567,6 @@ public final class Main extends JavaPlugin {
         item.setItemMeta(meta);
         mark34 = item;
         return item;
-    }
-    public void removePlayerVote(String playerName) {
-        FileConfiguration votingConfig = getVotingConfig();
-        if (votingConfig.contains("voters." + playerName)) {
-            String votedCandidate = votingConfig.getString("voters." + playerName);
-            int currentVotes = votingConfig.getInt("votes." + votedCandidate, 0);
-            if (currentVotes > 0) {
-                votingConfig.set("votes." + votedCandidate, currentVotes - 1);
-            } else {
-                votingConfig.set("votes." + votedCandidate, 0);
-            }
-            votingConfig.set("voters." + playerName, null);
-            saveVotingConfig();
-        }
     }
     private void startItCheck() {
         itCheck = new BukkitRunnable() {

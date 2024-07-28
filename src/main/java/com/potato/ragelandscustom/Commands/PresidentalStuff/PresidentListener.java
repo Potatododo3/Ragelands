@@ -2,6 +2,7 @@ package com.potato.ragelandscustom.Commands.PresidentalStuff;
 
 import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,23 +32,21 @@ public class PresidentListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
+    public void onPresidentDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         String presidentName = main.getVotingConfig().getString("president");
 
-        if (presidentName != null && presidentName.equals(player.getName())) {
-            // Broadcast the death of the president
-            Chat.broadcastMessage(Chat.prefix + "&f&lThe president " + presidentName + " &f&lhas died!");
-            if (AssassinationPresidentToggle.assassinationToggle) {
-                Player killer = player.getKiller();
-                String killerName = killer.getDisplayName();
-                main.getVotingConfig().set("president", killerName);
-                main.saveVotingConfig();
-                Chat.broadcastMessage(Chat.prefix + "&f&lThe new president is " + killerName + "!");
-                return;
+        if (presidentName != null && ChatColor.stripColor(presidentName).equals(player.getName())) {
+            Player killer = player.getKiller();
+
+            if (killer != null) {
+                String newPresidentName = killer.getName();
+                main.setPresident(newPresidentName);
+                Chat.broadcastMessage("The President, " + presidentName + ", has been assassinated by " + newPresidentName + "!");
+            } else {
+                Chat.broadcastMessage("The President, " + presidentName + ", has died!");
+                main.removePresident();
             }
-            main.getVotingConfig().set("president", "");
-            main.saveVotingConfig();
         }
     }
 }

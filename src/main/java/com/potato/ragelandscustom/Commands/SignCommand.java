@@ -1,6 +1,6 @@
 package com.potato.ragelandscustom.Commands;
 
-import com.potato.ragelandscustom.IronManSuit.ItemStackBuilder;
+import com.potato.ragelandscustom.Functions.ItemStackBuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -79,7 +79,6 @@ public final class Main extends JavaPlugin {
     @Getter
     private FileConfiguration votingConfig;
     private PlayerStockManager playerStockManager;
-    private StockGUI stockGUI;
     private static Economy econ = null;
     @Override
     public void onEnable() {
@@ -93,9 +92,7 @@ public final class Main extends JavaPlugin {
         createCustomConfig();
         // Load the config
         FileConfiguration config = getConfig();
-        stockGUI = new StockGUI(this);
         playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
-        getServer().getPluginManager().registerEvents(stockGUI, this);
         String LicenseKey = config.getString("licensekey");
 
         // Your public RSA key (can be found in your settings)
@@ -266,6 +263,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeathWithEgg(), this);
         getServer().getPluginManager().registerEvents(new PlayerObtainEgg(), this);
         getServer().getPluginManager().registerEvents(new VoteListener(this), this);
+        getServer().getPluginManager().registerEvents(new StockGUI(this), this);
+        getServer().getPluginManager().registerEvents(new OnJoinLeaveSaveLoad(this, playerStockManager), this);
         Objects.requireNonNull(getCommand("cooldownreset")).setExecutor(new ResetCooldowns());
         Objects.requireNonNull(getCommand("giveitem")).setExecutor(new ItemGiver());
         Objects.requireNonNull(getCommand("giveitem")).setTabCompleter(new ItemGiverTabCompleter());
@@ -283,6 +282,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("assassinationtoggle")).setExecutor(new AssassinationPresidentToggle());
         Objects.requireNonNull(getCommand("sign")).setExecutor(new SignCommand());
         Objects.requireNonNull(getCommand("stocks")).setExecutor(new StockCommand());
+        Objects.requireNonNull(getCommand("togglecowboy")).setExecutor(new PlayerDisableSit());
         startItCheck();
     }
 

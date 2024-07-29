@@ -18,6 +18,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
+import static com.potato.ragelandscustom.Commands.PlayerDisableSit.globalToggle;
+import static com.potato.ragelandscustom.Commands.PlayerDisableSit.toggledPlayers;
+
 public class CowboyBoots implements Listener {
     private final Main main;
 
@@ -53,6 +56,11 @@ public class CowboyBoots implements Listener {
     }
 
     private void handleSneaking(Player player, Entity entity) {
+        if (toggledPlayers.getOrDefault(player, true) || globalToggle) {
+            player.sendMessage(ChatColor.RED + "Riding and picking up are currently disabled.");
+            return;
+        }
+
         if (entity.getType() == EntityType.ENDER_DRAGON || entity.getType() == EntityType.WITHER) {
             player.sendMessage(ChatColor.RED + "You cannot get dragons or withers on top of you!");
         } else if (entity instanceof LivingEntity) {
@@ -70,16 +78,22 @@ public class CowboyBoots implements Listener {
     }
 
     private void handleNotSneaking(Player player, Entity entity) {
+        if (toggledPlayers.getOrDefault(player, true) || globalToggle) {
+            player.sendMessage(ChatColor.RED + "Riding and picking up are currently disabled.");
+            return;
+        }
+
         if (entity.getType() == EntityType.ENDER_DRAGON || entity.getType() == EntityType.WITHER) {
             player.sendMessage(ChatColor.RED + "You cannot ride dragons or withers!");
         } else if (entity instanceof LivingEntity) {
             if (entity.getPassengers().isEmpty()) {
-                if (entity != player) {  // Ensure the entity is not the player itself
+                if (entity != player) { // Ensure the entity isn't the player itself
                     entity.addPassenger(player);
                 }
             } else {
                 LivingEntity topEntity = getTopmostPassenger((LivingEntity) entity);
-                if (player != topEntity) {  // Ensure the player is not already a top passenger
+                if (player != topEntity) {
+                    // Ensure the player is not already a top passenger
                     topEntity.addPassenger(player);
                 }
             }

@@ -29,40 +29,35 @@ public class StockGUI implements Listener {
     }
 
     public static void openStockGUI(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 26, "Stock Market");
+        Inventory inv = Bukkit.createInventory(null, 27, "Stock Market");
         ItemStack frame = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+
         for (StockEnum stock : StockEnum.values()) {
+            ItemStack item = null;
             if (stock.getName().equalsIgnoreCase("Ragelands")) {
-                ItemStack item = new ItemStack(Material.DIAMOND);
+                item = new ItemStack(Material.DIAMOND);
                 item = ItemStackEditor.setDisplayNameItem(item, "&b&l" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(ragelandsslot, item);
-            }
-            if (stock.getName().equalsIgnoreCase("PeesCoin")) {
-                ItemStack item = new ItemStack(Material.PAPER);
+            } else if (stock.getName().equalsIgnoreCase("PeesCoin")) {
+                item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(peesslot, item);
-            }
-            if (stock.getName().equalsIgnoreCase("Potatocoin")) {
-                ItemStack item = new ItemStack(Material.PAPER);
+            } else if (stock.getName().equalsIgnoreCase("Potatocoin")) {
+                item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(potatoslot, item);
             }
         }
+
         for (int i = 0; i <= 26; i++) {
-            if (i == ragelandsslot) {
-                return;
-            }
-            if (i == peesslot) {
-                return;
-            }
-            if (i == potatoslot) {
-                return;
+            if (i == ragelandsslot || i == peesslot || i == potatoslot) {
+                continue; // Use continue to skip special slots
             }
             inv.setItem(i, frame);
         }

@@ -2,6 +2,7 @@ package com.potato.ragelandscustom.Functions.StockSystem;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Random;
 
@@ -33,5 +34,13 @@ public enum StockEnum {
         Random random = new Random();
         double changeFactor = 1 + (random.nextGaussian() * volatility);
         this.price *= changeFactor;
+    }
+
+    public static void initializeFromConfig(FileConfiguration config) {
+        for (StockEnum stock : StockEnum.values()) {
+            String path = "stocks." + stock.getName();
+            stock.setPrice(config.getDouble(path + ".initial_price", stock.getPrice()));
+            stock.setVolatility(config.getDouble(path + ".volatility", stock.getVolatility()));
+        }
     }
 }

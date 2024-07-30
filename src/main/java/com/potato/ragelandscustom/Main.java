@@ -210,7 +210,8 @@ public final class Main extends JavaPlugin {
             }
         }
         votingConfig = YamlConfiguration.loadConfiguration(votingFile);
-
+        // Initialize stock prices and volatility from the config
+        StockEnum.initializeFromConfig(getConfig());
         if (!votingConfig.contains("votes")) {
             votingConfig.createSection("votes");
         }

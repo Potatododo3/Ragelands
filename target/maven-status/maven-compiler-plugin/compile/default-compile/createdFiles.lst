@@ -89,6 +89,7 @@ com\potato\ragelandscustom\IronManSuit\Menus.class
 com\potato\ragelandscustom\Functions\Chat.class
 com\potato\ragelandscustom\Functions\ItemStackBuilder.class
 com\potato\ragelandscustom\Functions\StockSystem\OnJoinLeaveSaveLoad.class
+com\potato\ragelandscustom\Functions\StockSystem\VolatilityCommand.class
 com\potato\ragelandscustom\Commands\SaveItemCommand.class
 com\potato\ragelandscustom\Items\ItemCowboyBoots.class
 com\potato\ragelandscustom\Functions\ItemStackEditor.class

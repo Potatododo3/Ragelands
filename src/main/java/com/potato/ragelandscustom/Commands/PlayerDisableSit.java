@@ -26,14 +26,14 @@ public class PlayerDisableSit implements CommandExecutor {
                     return true;
                 }
                 globalToggle = !globalToggle; // Toggle the global boolean
-                Chat.msg(player, Chat.prefix + "Global cowboy riding " + (globalToggle ? "enabled" : "disabled"));
+                Chat.msg(player, Chat.prefix + "Global cowboy riding " + (globalToggle ? "disabled" : "enabled"));
                 return true;
             }
 
             // Toggle the player's status
             boolean currentStatus = toggledPlayers.getOrDefault(player, true);
             toggledPlayers.put(player, !currentStatus);
-            Chat.msg(player, Chat.prefix + "You have " + (currentStatus ? "disabled" : "enabled") + " cowboy riding.");
+            Chat.msg(player, Chat.prefix + "You have " + (currentStatus ? "enabled" : "disabled") + " cowboy riding.");
         } else {
             commandSender.sendMessage(Chat.prefix + "This command can only be used by players.");
         }

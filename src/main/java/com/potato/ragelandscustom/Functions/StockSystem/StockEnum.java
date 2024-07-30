@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum StockEnum {
-    RAGELANDS("RLN", 23500, 25000),
+    RLN("RLN", 23500, 25000),
     PEESCOIN("PeesCoin", 0.002, 16000000),
     POTATOCOIN("PotatoCoin", 0.05, 1600000);
 

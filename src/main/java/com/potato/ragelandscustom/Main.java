@@ -325,8 +325,8 @@ public final class Main extends JavaPlugin {
 
     public double getStockPrice(StockEnum stock) {
         switch (stock) {
-            case RAGELANDS:
-                return StockEnum.RAGELANDS.getPrice(); // Placeholder value
+            case RLN:
+                return StockEnum.RLN.getPrice(); // Placeholder value
             case PEESCOIN:
                 return StockEnum.PEESCOIN.getPrice(); // Placeholder value
             case POTATOCOIN:

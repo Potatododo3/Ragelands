@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.Functions.StockSystem;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Functions.ItemStackEditor;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Bukkit;
@@ -34,10 +35,10 @@ public class StockGUI implements Listener {
 
         for (StockEnum stock : StockEnum.values()) {
             ItemStack item = null;
-            if (stock.getName().equalsIgnoreCase("Ragelands")) {
-                System.out.println("Creating item for Ragelands");
+            if (stock.getName().equalsIgnoreCase("RLN")) {
+                System.out.println("Creating item for RLN");
                 item = new ItemStack(Material.DIAMOND);
-                item = ItemStackEditor.setDisplayNameItem(item, "&b&l" + stock.getName());
+                item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&b&l" + stock.getName()));
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(ragelandsslot, item);
@@ -45,7 +46,7 @@ public class StockGUI implements Listener {
             } else if (stock.getName().equalsIgnoreCase("PeesCoin")) {
                 System.out.println("Creating item for PeesCoin");
                 item = new ItemStack(Material.PAPER);
-                item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
+                item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&f" + stock.getName()));
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(peesslot, item);
@@ -53,7 +54,7 @@ public class StockGUI implements Listener {
             } else if (stock.getName().equalsIgnoreCase("Potatocoin")) {
                 System.out.println("Creating item for Potatocoin");
                 item = new ItemStack(Material.PAPER);
-                item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
+                item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&f" + stock.getName()));
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(potatoslot, item);
@@ -158,7 +159,7 @@ public class StockGUI implements Listener {
     private StockEnum getStockBySlot(int slot) {
         // Define the slot to stock mapping
         if (slot == ragelandsslot) {
-            return StockEnum.RAGELANDS;
+            return StockEnum.RLN;
         } else if (slot == peesslot) {
             return StockEnum.PEESCOIN;
         } else if (slot == potatoslot) {

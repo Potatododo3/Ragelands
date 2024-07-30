@@ -292,7 +292,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("sign")).setExecutor(new SignCommand());
         Objects.requireNonNull(getCommand("stocks")).setExecutor(new StockCommand());
         Objects.requireNonNull(getCommand("togglecowboy")).setExecutor(new PlayerDisableSit());
-        getCommand("setvolatility").setExecutor(new VolatilityCommand());
+        Objects.requireNonNull(getCommand("setvolatility")).setExecutor(new SetVolatilityCommand(this));
+        Objects.requireNonNull(getCommand("setvolatility")).setTabCompleter(new SetVolatilityCommand(this));
         startItCheck();
     }
 

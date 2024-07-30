@@ -31,10 +31,24 @@ public class CommandHandler implements CommandExecutor {
             switch (args[0].toLowerCase()) {
                 case "votestart":
                     if (player.hasPermission("ragelands.admin")) {
-                        main.startCampaign();
-                        player.sendMessage("Presidential campaign started!");
+                        if (args.length > 1) {
+                            switch (args[1].toLowerCase()) {
+                                case "start":
+                                    main.startCampaign();
+                                    player.sendMessage("Presidential campaign started!");
+                                    break;
+                                case "stop":
+                                    main.endCampaign();
+                                    player.sendMessage("Presidential campaign ended!");
+                                    break;
+                                default:
+                                    player.sendMessage("Usage: /ragelands votestart <start|stop>");
+                            }
+                        } else {
+                            player.sendMessage("Usage: /ragelands votestart <start|stop>");
+                        }
                     } else {
-                        player.sendMessage("You don't have permission to start a campaign.");
+                        player.sendMessage("You don't have permission to start or stop a campaign.");
                     }
                     break;
                 case "vote":

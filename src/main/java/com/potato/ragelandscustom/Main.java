@@ -433,6 +433,26 @@ public final class Main extends JavaPlugin {
         saveVotingConfig();
         getServer().broadcastMessage("A new presidential campaign has started!");
     }
+    public void endCampaign() {
+        Map<String, Object> votes = votingConfig.getConfigurationSection("votes").getValues(false);
+        String topCandidate = null;
+        int highestVotes = 0;
+
+        for (Map.Entry<String, Object> entry : votes.entrySet()) {
+            int voteCount = (int) entry.getValue();
+            if (voteCount > highestVotes) {
+                highestVotes = voteCount;
+                topCandidate = entry.getKey();
+            }
+        }
+
+        if (topCandidate != null) {
+            setPresident(topCandidate);
+        }
+
+        resetVotes(); // Optionally, reset votes after ending the campaign
+        Chat.broadcastMessage(Chat.prefix + "&7The presidential campaign has ended! " + topCandidate + " is the new president!");
+    }
 
     public void resetCampaign() {
         votingConfig.set("votes", null);

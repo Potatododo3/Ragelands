@@ -1,0 +1,13 @@
+stocks:
+  rln:
+    price: 23500
+    quantity: 25000
+    volatility: 0.05
+  peescoin:
+    price: 0.002
+    quantity: 16000000
+    volatility: 0.10
+  potatocoin:
+    price: 0.05
+    quantity: 1600000
+    volatility: 0.20

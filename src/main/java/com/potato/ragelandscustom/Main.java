@@ -210,8 +210,6 @@ public final class Main extends JavaPlugin {
             }
         }
         votingConfig = YamlConfiguration.loadConfiguration(votingFile);
-        // Initialize stock prices and volatility from the config
-        StockEnum.initializeFromConfig(getConfig());
         if (!votingConfig.contains("votes")) {
             votingConfig.createSection("votes");
         }
@@ -307,12 +305,52 @@ public final class Main extends JavaPlugin {
     private void scheduleStockPriceUpdates() {
         Bukkit.getScheduler().runTaskTimer(this, this::updateStockPrices, 0L, 72000L); // 72000 ticks = 1 hour
     }
+    // Save stock quantities
+    public void saveStockQuantities() {
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "stocks.yml"));
 
-    private void updateStockPrices() {
         for (StockEnum stock : StockEnum.values()) {
-            stock.updatePrice();
+            config.set("stocks." + stock.getName() + ".quantity", stock.getQuantity());
         }
-        // Optionally, broadcast the new prices or save them to persistent storage
+
+        try {
+            config.save(new File(getDataFolder(), "stocks.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load stock quantities
+    public void loadStockQuantities() {
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "stocks.yml"));
+        StockEnum.loadQuantitiesFromConfig(config);
+    }
+    private void updateStockPrices() {
+        // Get volatility from configuration
+        double defaultVolatility = getConfig().getDouble("stock_volatility.default", 0.05);
+
+        for (StockEnum stock : StockEnum.values()) {
+            // Calculate new price based on volatility
+            double currentPrice = stock.getPrice();
+            double volatility = stock.getVolatility(); // You might fetch this from config or set a default
+            double priceChange = (Math.random() * 2 - 1) * volatility; // Random change within volatility range
+            double newPrice = currentPrice * (1 + priceChange);
+
+            // Ensure the new price is not negative
+            if (newPrice < 0) {
+                newPrice = 0;
+            }
+
+            stock.setPrice(newPrice);
+
+            // Update the configuration with new price
+            getConfig().set("stocks." + stock.getName().toLowerCase() + ".price", newPrice);
+        }
+
+        // Save the updated configuration
+        saveConfig();
+
+        // Notify players or perform other actions
         Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
     }
     private boolean setupEconomy() {

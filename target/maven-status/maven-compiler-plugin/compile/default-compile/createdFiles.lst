@@ -18,6 +18,7 @@ com\potato\ragelandscustom\ItemFunctions\MagicBoots$1.class
 com\potato\ragelandscustom\ItemFunctions\ShieldDeflect.class
 com\potato\ragelandscustom\Commands\PresidentalStuff\VoteListener.class
 com\potato\ragelandscustom\Functions\StockSystem\StockEnum.class
+com\potato\ragelandscustom\Functions\StockSystem\SetVolatilityCommand.class
 com\potato\ragelandscustom\Items\ItemFragBomb.class
 com\potato\ragelandscustom\Items\PDCKeys.class
 com\potato\ragelandscustom\Commands\PresidentalStuff\PresidentListener.class
@@ -89,7 +90,6 @@ com\potato\ragelandscustom\IronManSuit\Menus.class
 com\potato\ragelandscustom\Functions\Chat.class
 com\potato\ragelandscustom\Functions\ItemStackBuilder.class
 com\potato\ragelandscustom\Functions\StockSystem\OnJoinLeaveSaveLoad.class
-com\potato\ragelandscustom\Functions\StockSystem\VolatilityCommand.class
 com\potato\ragelandscustom\Commands\SaveItemCommand.class
 com\potato\ragelandscustom\Items\ItemCowboyBoots.class
 com\potato\ragelandscustom\Functions\ItemStackEditor.class

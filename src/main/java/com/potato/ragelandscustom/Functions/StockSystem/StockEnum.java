@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.Random;
-
 public enum StockEnum {
     RLN("RLN", 23500, 25000, 0.05),
     PEESCOIN("PeesCoin", 0.002, 16000000, 0.10),
@@ -30,17 +28,11 @@ public enum StockEnum {
         this.volatility = volatility;
     }
 
-    public void updatePrice() {
-        Random random = new Random();
-        double changeFactor = 1 + (random.nextGaussian() * volatility);
-        this.price *= changeFactor;
-    }
-
-    public static void initializeFromConfig(FileConfiguration config) {
+    // Load quantity from configuration
+    public static void loadQuantitiesFromConfig(FileConfiguration config) {
         for (StockEnum stock : StockEnum.values()) {
-            String path = "stocks." + stock.getName();
-            stock.setPrice(config.getDouble(path + ".initial_price", stock.getPrice()));
-            stock.setVolatility(config.getDouble(path + ".volatility", stock.getVolatility()));
+            int quantity = config.getInt("stocks." + stock.getName() + ".quantity", stock.getQuantity());
+            stock.setQuantity(quantity);
         }
     }
 }

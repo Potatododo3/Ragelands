@@ -17,21 +17,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 public class StockGUI implements Listener {
     private final Main main;
-    static int peesslot = Main.getMainInstance().getConfig().getInt("Peescoin");
-    static int ragelandsslot = Main.getMainInstance().getConfig().getInt("RLN");
-    static int potatoslot = Main.getMainInstance().getConfig().getInt("Potatocoin");
+    static int peesslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.rln");
+    static int ragelandsslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.peescoin");
+    static int potatoslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.potatocoin");
 
     public StockGUI(Main main) {
         this.main = main;
     }
 
     public static void openStockGUI(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 27, "Stock Market");
+        Inventory inv = Bukkit.createInventory(null, Main.getMainInstance().getConfig().getInt("gui.stock_market.size"), Main.getMainInstance().getConfig().getString("gui.stock_market.title"));
         ItemStack frame = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
 
         for (StockEnum stock : StockEnum.values()) {
@@ -91,7 +91,7 @@ public class StockGUI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
-        if (inventory == null || !event.getView().getTitle().equals("Stock Market")) {
+        if (inventory == null || !event.getView().getTitle().equals(Main.getMainInstance().getConfig().getString("gui.stock_market.title"))) {
             return;
         }
 
@@ -142,27 +142,26 @@ public class StockGUI implements Listener {
         }
 
         int currentAmount = stocks.getOrDefault(stock, 0);
-        int newAmount = currentAmount;
         double stockPrice = main.getStockPrice(stock);
 
         if (type == TransactionType.BUY) {
             double playerBalance = main.getPlayerBalance(player);
             if (amount == Integer.MAX_VALUE) {
-                amount = (int) (playerBalance / stockPrice);
+                amount = Math.min(stock.getQuantity(), (int) (playerBalance / stockPrice));
             }
 
-            if (playerBalance >= amount * stockPrice) {
-                newAmount = currentAmount + amount;
-                // Subtract the cost from player's balance
+            if (playerBalance >= amount * stockPrice && stock.getQuantity() >= amount) {
+                stock.setQuantity(stock.getQuantity() - amount);
+                currentAmount += amount;
                 main.updatePlayerBalance(player, playerBalance - (amount * stockPrice));
             } else {
-                player.sendMessage("Not enough balance to buy " + amount + " " + stock.name() + "(s).");
+                player.sendMessage("Not enough balance or stock available to buy " + amount + " " + stock.name() + "(s).");
                 return;
             }
         } else if (type == TransactionType.SELL) {
             if (currentAmount >= amount) {
-                newAmount = currentAmount - amount;
-                // Add the value to player's balance
+                stock.setQuantity(stock.getQuantity() + amount);
+                currentAmount -= amount;
                 double playerBalance = main.getPlayerBalance(player);
                 main.updatePlayerBalance(player, playerBalance + (amount * stockPrice));
             } else {
@@ -171,8 +170,10 @@ public class StockGUI implements Listener {
             }
         }
 
-        stocks.put(stock, newAmount);
+        stocks.put(stock, currentAmount);
         player.sendMessage((type == TransactionType.BUY ? "Bought " : "Sold ") + amount + " " + stock.name() + "(s).");
+
+        updateStockGUI(player);
     }
     private StockEnum getStockBySlot(int slot) {
         // Define the slot to stock mapping
@@ -199,29 +200,29 @@ public class StockGUI implements Listener {
         Map<StockEnum, Integer> stocks = (Map<StockEnum, Integer>) player.getMetadata("stocks").get(0).value();
         main.getPlayerStockManager().savePlayerStocks(player, stocks);
     }
-
+    private int getSlotForStock(StockEnum stock) {
+        switch (stock) {
+            case RLN:
+                return ragelandsslot;
+            case PEESCOIN:
+                return peesslot;
+            case POTATOCOIN:
+                return potatoslot;
+            default:
+                return -1;
+        }
+    }
     public void updateStockGUI(Player player) {
         Inventory inv = player.getOpenInventory().getTopInventory();
 
         for (StockEnum stock : StockEnum.values()) {
-            int slot;
-            if (stock.getName().equalsIgnoreCase("RLN")) {
-                slot = ragelandsslot;
-            } else if (stock.getName().equalsIgnoreCase("PeesCoin")) {
-                slot = peesslot;
-            } else if (stock.getName().equalsIgnoreCase("Potatocoin")) {
-                slot = potatoslot;
-            } else {
-                continue;
-            }
-
-            ItemStack item = inv.getItem(slot);
+            ItemStack item = inv.getItem(getSlotForStock(stock)); // Implement getSlotForStock method
             if (item != null && item.getItemMeta() != null) {
                 ItemMeta meta = item.getItemMeta();
-                List<String> lore = meta.getLore();
-                lore.set(0, "Price: $" + stock.getPrice());
-                lore.set(1, "Quantity: " + stock.getQuantity());
-                meta.setLore(lore);
+                meta.setLore(Arrays.asList(
+                        Chat.color("&7Price: $" + stock.getPrice()),
+                        Chat.color("&7Quantity: " + stock.getQuantity())
+                ));
                 item.setItemMeta(meta);
             }
         }

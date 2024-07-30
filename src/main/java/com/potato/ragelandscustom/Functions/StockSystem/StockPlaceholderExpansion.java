@@ -26,7 +26,7 @@ public class StockPlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public String getAuthor() {
-        return "YourName";
+        return "Potato_dodo0";
     }
 
     @Override

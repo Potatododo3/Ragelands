@@ -35,23 +35,29 @@ public class StockGUI implements Listener {
         for (StockEnum stock : StockEnum.values()) {
             ItemStack item = null;
             if (stock.getName().equalsIgnoreCase("Ragelands")) {
+                System.out.println("Creating item for Ragelands");
                 item = new ItemStack(Material.DIAMOND);
                 item = ItemStackEditor.setDisplayNameItem(item, "&b&l" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(ragelandsslot, item);
+                System.out.println("Ragelands item set in slot " + ragelandsslot);
             } else if (stock.getName().equalsIgnoreCase("PeesCoin")) {
+                System.out.println("Creating item for PeesCoin");
                 item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(peesslot, item);
+                System.out.println("PeesCoin item set in slot " + peesslot);
             } else if (stock.getName().equalsIgnoreCase("Potatocoin")) {
+                System.out.println("Creating item for Potatocoin");
                 item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, "&f" + stock.getName());
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
                 item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 inv.setItem(potatoslot, item);
+                System.out.println("Potatocoin item set in slot " + potatoslot);
             }
         }
 

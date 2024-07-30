@@ -12,3 +12,13 @@ Mark34Protection: 5
 Peescoin: 11
 RLN: 13
 Potatocoin: 15
+stocks:
+  RLN:
+    initial_price: 100.0
+    volatility: 0.05
+  PeesCoin:
+    initial_price: 10.0
+    volatility: 0.10
+  Potatocoin:
+    initial_price: 1.0
+    volatility: 0.20

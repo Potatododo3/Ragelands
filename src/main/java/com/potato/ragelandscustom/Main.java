@@ -2,6 +2,7 @@ package com.potato.ragelandscustom;
 
 import com.potato.ragelandscustom.Commands.*;
 import com.potato.ragelandscustom.Commands.PresidentalStuff.*;
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Functions.DragonEgg.DragonEggPreventer;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerDeathWithEgg;
 import com.potato.ragelandscustom.Functions.DragonEgg.PlayerObtainEgg;
@@ -78,6 +79,7 @@ public final class Main extends JavaPlugin {
     private File votingFile;
     @Getter
     private FileConfiguration votingConfig;
+    @Getter
     private PlayerStockManager playerStockManager;
     private static Economy econ = null;
     @Override
@@ -87,12 +89,19 @@ public final class Main extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
         // Save the default config if it doesn't exist
         saveDefaultConfig();
         createCustomConfig();
+        // Initialize stock prices and volatility
+        for (StockEnum stock : StockEnum.values()) {
+            String path = "stocks." + stock.getName();
+            stock.setPrice(getConfig().getDouble(path + ".initial_price", stock.getPrice()));
+            stock.setVolatility(getConfig().getDouble(path + ".volatility", stock.getVolatility()));
+        }
+        scheduleStockPriceUpdates();
         // Load the config
         FileConfiguration config = getConfig();
-        playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
         String LicenseKey = config.getString("licensekey");
 
         // Your public RSA key (can be found in your settings)
@@ -109,7 +118,7 @@ public final class Main extends JavaPlugin {
 
         // In just one line
         boolean isValid = new LicenseGate("a1d10").verify(LicenseKey).isValid();
-
+        playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
         // Take action
         if(isValid) {
             getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["  + ragelands + "] " + ChatColor.DARK_GREEN + "======================");
@@ -215,7 +224,6 @@ public final class Main extends JavaPlugin {
             votingConfig.createSection("president");
         }
         new StockPlaceholderExpansion(this).register();
-        playerStockManager = new PlayerStockManager(new File(getDataFolder(), "playerdata"));
         saveVotingConfig();
         playerData = new HashMap<>();
         PDCKeys pdcKeys = new PDCKeys(this);
@@ -283,6 +291,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("sign")).setExecutor(new SignCommand());
         Objects.requireNonNull(getCommand("stocks")).setExecutor(new StockCommand());
         Objects.requireNonNull(getCommand("togglecowboy")).setExecutor(new PlayerDisableSit());
+        getCommand("setvolatility").setExecutor(new VolatilityCommand());
         startItCheck();
     }
 
@@ -292,6 +301,17 @@ public final class Main extends JavaPlugin {
             itCheck.cancel();
         }
         saveVotingConfig();
+    }
+    private void scheduleStockPriceUpdates() {
+        Bukkit.getScheduler().runTaskTimer(this, this::updateStockPrices, 0L, 72000L); // 72000 ticks = 1 hour
+    }
+
+    private void updateStockPrices() {
+        for (StockEnum stock : StockEnum.values()) {
+            stock.updatePrice();
+        }
+        // Optionally, broadcast the new prices or save them to persistent storage
+        Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

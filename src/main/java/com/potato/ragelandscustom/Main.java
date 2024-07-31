@@ -293,6 +293,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("setvolatility")).setExecutor(new SetVolatilityCommand(this));
         Objects.requireNonNull(getCommand("setvolatility")).setTabCompleter(new SetVolatilityCommand(this));
         startItCheck();
+        loadStockConfig();
+        loadStockQuantities();
     }
 
     @Override
@@ -301,18 +303,24 @@ public final class Main extends JavaPlugin {
             itCheck.cancel();
         }
         saveVotingConfig();
+        saveStockQuantities();
     }
     private void scheduleStockPriceUpdates() {
         Bukkit.getScheduler().runTaskTimer(this, this::updateStockPrices, 0L, 72000L); // 72000 ticks = 1 hour
     }
-    // Save stock quantities
-    public void saveStockQuantities() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "stocks.yml"));
 
-        for (StockEnum stock : StockEnum.values()) {
-            config.set("stocks." + stock.getName() + ".quantity", stock.getQuantity());
+    private void loadStockQuantities() {
+        File stocksFile = new File(getDataFolder(), "stocks.yml");
+        if (!stocksFile.exists()) {
+            saveResource("stocks.yml", false);
         }
+        FileConfiguration config = YamlConfiguration.loadConfiguration(stocksFile);
+        StockEnum.loadFromConfig(config);
+    }
 
+    public void saveStockQuantities() {
+        FileConfiguration config = new YamlConfiguration();
+        StockEnum.saveToConfig(config);
         try {
             config.save(new File(getDataFolder(), "stocks.yml"));
         } catch (IOException e) {
@@ -320,38 +328,38 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    // Load stock quantities
-    public void loadStockQuantities() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "stocks.yml"));
-        StockEnum.loadQuantitiesFromConfig(config);
-    }
-    private void updateStockPrices() {
-        // Get volatility from configuration
-        double defaultVolatility = getConfig().getDouble("stock_volatility.default", 0.05);
+    private void loadStockConfig() {
+        File stockConfigFile = new File(getDataFolder(), "stocks.yml");
+        if (!stockConfigFile.exists()) {
+            saveResource("stocks.yml", false);
+        }
+        YamlConfiguration stockConfig = YamlConfiguration.loadConfiguration(stockConfigFile);
 
         for (StockEnum stock : StockEnum.values()) {
-            // Calculate new price based on volatility
-            double currentPrice = stock.getPrice();
-            double volatility = stock.getVolatility(); // You might fetch this from config or set a default
-            double priceChange = (Math.random() * 2 - 1) * volatility; // Random change within volatility range
-            double newPrice = currentPrice * (1 + priceChange);
+            String path = "stocks." + stock.getName().toLowerCase();
+            stock.setPrice(stockConfig.getDouble(path + ".price"));
+            stock.setQuantity(stockConfig.getInt(path + ".quantity"));
+            stock.setVolatility(stockConfig.getDouble(path + ".volatility"));
+        }
+    }
+    private void updateStockPrices() {
+        File stockConfigFile = new File(getDataFolder(), "stocks.yml");
+        YamlConfiguration stockConfig = YamlConfiguration.loadConfiguration(stockConfigFile);
 
-            // Ensure the new price is not negative
-            if (newPrice < 0) {
-                newPrice = 0;
-            }
-
-            stock.setPrice(newPrice);
-
-            // Update the configuration with new price
-            getConfig().set("stocks." + stock.getName().toLowerCase() + ".price", newPrice);
+        for (StockEnum stock : StockEnum.values()) {
+            stock.updatePrice();
+            String path = "stocks." + stock.getName().toLowerCase();
+            stockConfig.set(path + ".price", stock.getPrice());
+            stockConfig.set(path + ".quantity", stock.getQuantity());
+            stockConfig.set(path + ".volatility", stock.getVolatility());
         }
 
-        // Save the updated configuration
-        saveConfig();
-
-        // Notify players or perform other actions
-        Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
+        try {
+            stockConfig.save(stockConfigFile);
+            Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

@@ -22,16 +22,16 @@ import java.util.Map;
 
 public class StockGUI implements Listener {
     private final Main main;
-    static int peesslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.rln");
-    static int ragelandsslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.peescoin");
-    static int potatoslot = Main.getMainInstance().getConfig().getInt("gui.stock_market.slots.potatocoin");
+    static int peesslot = 11;
+    static int ragelandsslot = 13;
+    static int potatoslot = 15;
 
     public StockGUI(Main main) {
         this.main = main;
     }
 
     public static void openStockGUI(Player player) {
-        Inventory inv = Bukkit.createInventory(null, Main.getMainInstance().getConfig().getInt("gui.stock_market.size"), Main.getMainInstance().getConfig().getString("gui.stock_market.title"));
+        Inventory inv = Bukkit.createInventory(null, 27, "Stock Market");
         ItemStack frame = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
 
         for (StockEnum stock : StockEnum.values()) {
@@ -62,7 +62,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
                 inv.setItem(peesslot, item);
                 System.out.println("PeesCoin item set in slot " + peesslot);
-            } else if (stock.getName().equalsIgnoreCase("Potatocoin")) {
+            } else if (stock.getName().equalsIgnoreCase("PotatoCoin")) {
                 System.out.println("Creating item for Potatocoin");
                 item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&f" + stock.getName()));
@@ -91,7 +91,7 @@ public class StockGUI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
-        if (inventory == null || !event.getView().getTitle().equals(Main.getMainInstance().getConfig().getString("gui.stock_market.title"))) {
+        if (inventory == null || !event.getView().getTitle().equals("Stock Market")) {
             return;
         }
 
@@ -125,6 +125,9 @@ public class StockGUI implements Listener {
             case MIDDLE:
                 handleStockTransaction(player, stocks, slot, Integer.MAX_VALUE, TransactionType.BUY);
                 break;
+            case DROP:
+                handleStockTransaction(player, stocks, slot, Integer.MAX_VALUE, TransactionType.SELL);
+                break;
             default:
                 break;
         }
@@ -142,38 +145,45 @@ public class StockGUI implements Listener {
         }
 
         int currentAmount = stocks.getOrDefault(stock, 0);
+        int newAmount = currentAmount;
         double stockPrice = main.getStockPrice(stock);
 
         if (type == TransactionType.BUY) {
             double playerBalance = main.getPlayerBalance(player);
             if (amount == Integer.MAX_VALUE) {
-                amount = Math.min(stock.getQuantity(), (int) (playerBalance / stockPrice));
+                amount = (int) (playerBalance / stockPrice);
             }
 
             if (playerBalance >= amount * stockPrice && stock.getQuantity() >= amount) {
-                stock.setQuantity(stock.getQuantity() - amount);
-                currentAmount += amount;
+                newAmount = currentAmount + amount;
+                // Subtract the cost from player's balance
                 main.updatePlayerBalance(player, playerBalance - (amount * stockPrice));
+                stock.setQuantity(stock.getQuantity() - amount); // Decrease stock quantity
+                main.saveStockQuantities(); // Save updated quantities
             } else {
-                player.sendMessage("Not enough balance or stock available to buy " + amount + " " + stock.name() + "(s).");
+                player.sendMessage("Not enough balance or stocks to buy " + amount + " " + stock.name() + "(s).");
                 return;
             }
         } else if (type == TransactionType.SELL) {
+            if (amount == Integer.MAX_VALUE) {
+                amount = currentAmount;
+            }
+
             if (currentAmount >= amount) {
-                stock.setQuantity(stock.getQuantity() + amount);
-                currentAmount -= amount;
+                newAmount = currentAmount - amount;
+                // Add the value to player's balance
                 double playerBalance = main.getPlayerBalance(player);
                 main.updatePlayerBalance(player, playerBalance + (amount * stockPrice));
+                stock.setQuantity(stock.getQuantity() + amount); // Increase stock quantity
+                main.saveStockQuantities(); // Save updated quantities
             } else {
                 player.sendMessage("Not enough stocks to sell.");
                 return;
             }
         }
 
-        stocks.put(stock, currentAmount);
+        stocks.put(stock, newAmount);
         player.sendMessage((type == TransactionType.BUY ? "Bought " : "Sold ") + amount + " " + stock.name() + "(s).");
-
-        updateStockGUI(player);
     }
     private StockEnum getStockBySlot(int slot) {
         // Define the slot to stock mapping
@@ -221,7 +231,12 @@ public class StockGUI implements Listener {
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(Arrays.asList(
                         Chat.color("&7Price: $" + stock.getPrice()),
-                        Chat.color("&7Quantity: " + stock.getQuantity())
+                        Chat.color("&7Quantity: " + stock.getQuantity()),
+                        Chat.color("&eLeft click to buy 1 " + stock.getName()),
+                        Chat.color("&eShift-left click to buy 10 " + stock.getName()),
+                        Chat.color("&eRight click to sell 1 " + stock.getName()),
+                        Chat.color("&eShift-right click to sell 10 " + stock.getName()),
+                        Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can")
                 ));
                 item.setItemMeta(meta);
             }

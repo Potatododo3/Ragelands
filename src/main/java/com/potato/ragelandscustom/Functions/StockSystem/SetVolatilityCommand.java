@@ -5,11 +5,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SetVolatilityCommand implements CommandExecutor, TabCompleter {
 
@@ -21,54 +25,53 @@ public class SetVolatilityCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used by players.");
-            return true;
-        }
-
-        Player player = (Player) sender;
-        if (!player.hasPermission("ragelands.admin")) {
-            player.sendMessage("You do not have permission to use this command.");
+        if (!(sender instanceof Player) || !sender.hasPermission("ragelands.admin")) {
+            sender.sendMessage("You don't have permission to use this command.");
             return true;
         }
 
         if (args.length != 2) {
-            player.sendMessage("Usage: /setvolatility <stock> <volatility>");
-            return true;
+            sender.sendMessage("Usage: /setvolatility <stock> <value>");
+            return false;
         }
 
-        String stockName = args[0].toUpperCase();
+        String stockName = args[0].toLowerCase();
         double volatility;
+
         try {
             volatility = Double.parseDouble(args[1]);
         } catch (NumberFormatException e) {
-            player.sendMessage("Invalid volatility value. Please enter a valid number.");
-            return true;
+            sender.sendMessage("Invalid volatility value. It must be a number.");
+            return false;
         }
 
-        StockEnum stock;
-        try {
-            stock = StockEnum.valueOf(stockName);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage("Invalid stock name. Available stocks: RLN, PEESCOIN, POTATOCOIN.");
-            return true;
+        for (StockEnum stock : StockEnum.values()) {
+            if (stock.getName().equalsIgnoreCase(stockName)) {
+                stock.setVolatility(volatility);
+                File stockConfigFile = new File(main.getDataFolder(), "stocks.yml");
+                YamlConfiguration stockConfig = YamlConfiguration.loadConfiguration(stockConfigFile);
+                stockConfig.set("stocks." + stockName + ".volatility", volatility);
+                try {
+                    stockConfig.save(stockConfigFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                sender.sendMessage("Set volatility of " + stockName + " to " + volatility);
+                return true;
+            }
         }
 
-        stock.setVolatility(volatility);
-        main.getConfig().set("stocks." + stockName.toLowerCase() + ".volatility", volatility);
-        main.saveConfig();
-        player.sendMessage("Set volatility of " + stock.getName() + " to " + volatility);
-
-        return true;
+        sender.sendMessage("Stock not found.");
+        return false;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("RLN", "PEESCOIN", "POTATOCOIN");
-        } else if (args.length == 2) {
-            return new ArrayList<>();
+            return Arrays.stream(StockEnum.values())
+                    .map(StockEnum::getName)
+                    .collect(Collectors.toList());
         }
-        return null;
+        return Collections.emptyList();
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public enum StockEnum {
     RLN("RLN", 23500, 25000, 0.05, false),
     PEESCOIN("PeesCoin", 0.002, 16000000, 0.10, true),
-    POTATOCOIN("PotatoCoin", 0.05, 1600000, 0.20, true);
+    POTATOCOIN("PotatoCoin", 0.05, 16000000, 0.20, true);
 
     @Getter
     private final String name;

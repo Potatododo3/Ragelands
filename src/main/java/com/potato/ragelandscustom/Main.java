@@ -304,7 +304,16 @@ public final class Main extends JavaPlugin {
         }
         saveVotingConfig();
         saveStockQuantities();
+        savePlayerStocks();
     }
+
+    private void savePlayerStocks() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Map<StockEnum, Integer> stocks = (Map<StockEnum, Integer>) player.getMetadata("stocks").get(0).value();
+            main.getPlayerStockManager().savePlayerStocks(player, stocks);
+        }
+    }
+
     private void scheduleStockPriceUpdates() {
         Bukkit.getScheduler().runTaskTimer(this, this::updateStockPrices, 0L, 72000L); // 72000 ticks = 1 hour
     }
@@ -357,6 +366,7 @@ public final class Main extends JavaPlugin {
         try {
             stockConfig.save(stockConfigFile);
             Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
+            Bukkit.getLogger().info("Stock prices have been updated!");
         } catch (IOException e) {
             e.printStackTrace();
         }

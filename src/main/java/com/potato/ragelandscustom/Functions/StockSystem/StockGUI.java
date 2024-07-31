@@ -55,7 +55,6 @@ public class StockGUI implements Listener {
                 item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&f" + stock.getName()));
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
-                item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 item = ItemStackEditor.addLore(item, "&eLeft click to buy 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-left click to buy 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
@@ -69,7 +68,6 @@ public class StockGUI implements Listener {
                 item = new ItemStack(Material.PAPER);
                 item = ItemStackEditor.setDisplayNameItem(item, Chat.color("&f" + stock.getName()));
                 item = ItemStackEditor.addLore(item, "&7Price: $" + stock.getPrice());
-                item = ItemStackEditor.addLore(item, "&7Quantity: " + stock.getQuantity());
                 item = ItemStackEditor.addLore(item, "&eLeft click to buy 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-left click to buy 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
@@ -242,6 +240,20 @@ public class StockGUI implements Listener {
         for (StockEnum stock : StockEnum.values()) {
             ItemStack item = inv.getItem(getSlotForStock(stock)); // Implement getSlotForStock method
             if (item != null && item.getItemMeta() != null) {
+                if (getSlotForStock(stock) == peesslot || getSlotForStock(stock) == potatoslot) {
+                    ItemMeta meta = item.getItemMeta();
+                    meta.setLore(Arrays.asList(
+                            Chat.color("&7Price: $" + stock.getPrice()),
+                            Chat.color("&eLeft click to buy 1 " + stock.getName()),
+                            Chat.color("&eShift-left click to buy 10 " + stock.getName()),
+                            Chat.color("&eRight click to sell 1 " + stock.getName()),
+                            Chat.color("&eShift-right click to sell 10 " + stock.getName()),
+                            Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can"),
+                            Chat.color("&eDrop to sell as many " + stock.getName() + "(s) as you can")
+                    ));
+                    item.setItemMeta(meta);
+                    return;
+                }
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(Arrays.asList(
                         Chat.color("&7Price: $" + stock.getPrice()),

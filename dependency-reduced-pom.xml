@@ -4,7 +4,7 @@
   <groupId>com.potato</groupId>
   <artifactId>RageLandsCUSTOM</artifactId>
   <name>RageLandsCUSTOM</name>
-  <version>1.20.1</version>
+  <version>3.0</version>
   <build>
     <resources>
       <resource>

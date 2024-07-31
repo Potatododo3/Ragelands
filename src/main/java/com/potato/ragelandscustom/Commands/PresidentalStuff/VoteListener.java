@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.Commands.PresidentalStuff;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -35,7 +36,7 @@ public class VoteListener implements Listener {
 
                     // Check if player has already voted
                     if (votingConfig.contains("voters." + playerName)) {
-                        player.sendMessage("You have already voted! Use /ragelands removevote to change your vote.");
+                        Chat.msg(player, Chat.prefix + "&7You have already voted! Use /ragelands removevote to change your vote.");
                         main.getLogger().info(playerName + " attempted to vote again.");
                         return;
                     }
@@ -46,7 +47,7 @@ public class VoteListener implements Listener {
                     votingConfig.set("voters." + playerName, candidateName);
                     main.saveVotingConfig();
 
-                    player.sendMessage("You have voted for " + candidateName + "!");
+                    Chat.msg(player, Chat.prefix + "&7You have voted for " + candidateName + "!");
                     main.getLogger().info(playerName + " voted for " + candidateName);
                     player.closeInventory();
                 }

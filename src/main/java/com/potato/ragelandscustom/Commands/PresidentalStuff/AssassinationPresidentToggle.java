@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.Commands.PresidentalStuff;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class AssassinationPresidentToggle implements CommandExecutor {
             }
         }
         else {
-            commandSender.sendMessage("You do not have permission to execute this command!");
+            commandSender.sendMessage(Chat.prefix + "You do not have permission to execute this command!");
             return true;
         }
     }

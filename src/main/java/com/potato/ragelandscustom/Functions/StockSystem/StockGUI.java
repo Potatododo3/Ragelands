@@ -47,6 +47,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(ragelandsslot, item);
                 System.out.println("Ragelands item set in slot " + ragelandsslot);
             } else if (stock.getName().equalsIgnoreCase("PeesCoin")) {
@@ -60,6 +61,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(peesslot, item);
                 System.out.println("PeesCoin item set in slot " + peesslot);
             } else if (stock.getName().equalsIgnoreCase("PotatoCoin")) {
@@ -73,6 +75,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(potatoslot, item);
                 System.out.println("Potatocoin item set in slot " + potatoslot);
             }
@@ -161,7 +164,7 @@ public class StockGUI implements Listener {
                 stock.setQuantity(stock.getQuantity() - amount); // Decrease stock quantity
                 main.saveStockQuantities(); // Save updated quantities
             } else {
-                player.sendMessage("Not enough balance or stocks to buy " + amount + " " + stock.name() + "(s).");
+                Chat.msg(player, Chat.prefix + "&7Not enough balance or stocks to buy " + amount + " " + stock.name() + "(s).");
                 return;
             }
         } else if (type == TransactionType.SELL) {
@@ -177,13 +180,13 @@ public class StockGUI implements Listener {
                 stock.setQuantity(stock.getQuantity() + amount); // Increase stock quantity
                 main.saveStockQuantities(); // Save updated quantities
             } else {
-                player.sendMessage("Not enough stocks to sell.");
+                Chat.msg(player, Chat.prefix + "&7Not enough stocks to sell.");
                 return;
             }
         }
 
         stocks.put(stock, newAmount);
-        player.sendMessage((type == TransactionType.BUY ? "Bought " : "Sold ") + amount + " " + stock.name() + "(s).");
+        Chat.msg(player, Chat.prefix + (type == TransactionType.BUY ? "&7Bought " : "&7Sold ") + amount + " " + stock.name() + "(s).");
     }
     private StockEnum getStockBySlot(int slot) {
         // Define the slot to stock mapping
@@ -236,7 +239,8 @@ public class StockGUI implements Listener {
                         Chat.color("&eShift-left click to buy 10 " + stock.getName()),
                         Chat.color("&eRight click to sell 1 " + stock.getName()),
                         Chat.color("&eShift-right click to sell 10 " + stock.getName()),
-                        Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can")
+                        Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can"),
+                        Chat.color("&eDrop to sell as many " + stock.getName() + "(s) as you can")
                 ));
                 item.setItemMeta(meta);
             }

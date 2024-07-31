@@ -1,5 +1,5 @@
 name: RageLandsCUSTOM
-version: 2.1
+version: '${project.version}'
 main: com.potato.ragelandscustom.Main
 author: "Licensed (Potato_dodo0)"
 api-version: '1.20'

@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.Commands.PresidentalStuff;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +25,7 @@ public class CommandHandler implements CommandExecutor {
 
         if (command.getName().equalsIgnoreCase("ragelands")) {
             if (args.length == 0) {
-                player.sendMessage("Usage: /ragelands <subcommand>");
+                Chat.msg(player, Chat.prefix + "&7Usage: /ragelands <subcommand>");
                 return true;
             }
 
@@ -35,20 +36,20 @@ public class CommandHandler implements CommandExecutor {
                             switch (args[1].toLowerCase()) {
                                 case "start":
                                     main.startCampaign();
-                                    player.sendMessage("Presidential campaign started!");
+                                    Chat.msg(player ,Chat.prefix + "&7Presidential campaign started!");
                                     break;
                                 case "stop":
                                     main.endCampaign();
-                                    player.sendMessage("Presidential campaign ended!");
+                                    Chat.msg(player, Chat.prefix + "&7Presidential campaign ended!");
                                     break;
                                 default:
-                                    player.sendMessage("Usage: /ragelands votestart <start|stop>");
+                                    Chat.msg(player, Chat.prefix + "&7Usage: /ragelands votestart <start|stop>");
                             }
                         } else {
-                            player.sendMessage("Usage: /ragelands votestart <start|stop>");
+                            Chat.msg(player,Chat.prefix + "&7Usage: /ragelands votestart <start|stop>");
                         }
                     } else {
-                        player.sendMessage("You don't have permission to start or stop a campaign.");
+                        Chat.msg(player, Chat.prefix  +"&7You don't have permission to start or stop a campaign.");
                     }
                     break;
                 case "vote":
@@ -57,22 +58,22 @@ public class CommandHandler implements CommandExecutor {
                 case "setpresident":
                     if (player.hasPermission("ragelands.admin")) {
                         if (args.length < 2) {
-                            player.sendMessage("Usage: /ragelands setpresident <player>");
+                            Chat.msg(player, Chat.prefix + "&7Usage: /ragelands setpresident <player>");
                             return true;
                         }
                         String presidentName = args[1];
                         main.setPresident(presidentName);
-                        player.sendMessage("President set to " + presidentName + "!");
+                        Chat.msg(player, Chat.prefix + "&7President set to " + presidentName + "!");
                     } else {
-                        player.sendMessage("You don't have permission to set the president.");
+                        Chat.msg(player, Chat.prefix + "&7You don't have permission to set the president.");
                     }
                     break;
                 case "removepresident":
                     if (player.hasPermission("ragelands.admin")) {
                         main.removePresident();
-                        player.sendMessage("President removed.");
+                        Chat.msg(player, Chat.prefix  +"&7President removed.");
                     } else {
-                        player.sendMessage("You don't have permission to remove the president.");
+                        Chat.msg(player, Chat.prefix + "&7You don't have permission to remove the president.");
                     }
                     break;
                 case "voteresults":
@@ -80,30 +81,30 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 case "runpresident":
                     main.addCandidate(player.getName());
-                    player.sendMessage("You are now running for president!");
+                    Chat.msg(player, Chat.prefix + "&7You are now running for president!");
                     break;
                 case "resetvotes":
                     if (player.hasPermission("ragelands.admin")) {
                         main.resetVotes();
-                        player.sendMessage("All votes have been reset.");
+                        Chat.msg(player, Chat.prefix + "&7All votes have been reset.");
                     } else {
-                        player.sendMessage("You don't have permission to reset votes.");
+                        Chat.msg(player,Chat.prefix  + "&7You don't have permission to reset votes.");
                     }
                     break;
                 case "resetcampaign":
                     if (player.hasPermission("ragelands.admin")) {
                         main.resetCampaign();
-                        player.sendMessage("Campaign has been reset.");
+                        Chat.msg(player, Chat.prefix + "&7Campaign has been reset.");
                     } else {
-                        player.sendMessage("You don't have permission to reset the campaign.");
+                        Chat.msg(player, Chat.prefix + "&7You don't have permission to reset the campaign.");
                     }
                     break;
                 case "removevote":
                     main.removePlayerVote(player.getName());
-                    player.sendMessage("Your vote has been removed.");
+                    Chat.msg(player, Chat.prefix  + "&7Your vote has been removed.");
                     break;
                 default:
-                    player.sendMessage("Unknown subcommand. Usage: /ragelands <subcommand>");
+                    Chat.msg(player ,Chat.prefix  + "&7Unknown subcommand. Usage: /ragelands <subcommand>");
                     break;
             }
             return true;

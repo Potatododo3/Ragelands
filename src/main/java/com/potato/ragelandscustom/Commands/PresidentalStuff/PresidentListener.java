@@ -42,9 +42,9 @@ public class PresidentListener implements Listener {
             if (killer != null) {
                 String newPresidentName = killer.getName();
                 main.setPresident(newPresidentName);
-                Chat.broadcastMessage("The President, " + presidentName + ", has been assassinated by " + newPresidentName + "!");
+                Chat.broadcastMessage(Chat.prefix + "&7The President, " + presidentName + ", has been assassinated by " + newPresidentName + "!");
             } else {
-                Chat.broadcastMessage("The President, " + presidentName + ", has died!");
+                Chat.broadcastMessage(Chat.prefix + "&7The President, " + presidentName + ", has died!");
                 main.removePresident();
             }
         }

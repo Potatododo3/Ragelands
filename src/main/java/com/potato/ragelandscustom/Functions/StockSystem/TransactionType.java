@@ -2,5 +2,6 @@ package com.potato.ragelandscustom.Functions.StockSystem;
 
 public enum TransactionType {
     BUY,
-    SELL
+    SELL,
+    SELL_ALL
 }

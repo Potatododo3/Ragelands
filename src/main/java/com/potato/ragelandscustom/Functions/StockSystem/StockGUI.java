@@ -129,7 +129,7 @@ public class StockGUI implements Listener {
                 handleStockTransaction(player, stocks, slot, Integer.MAX_VALUE, TransactionType.BUY);
                 break;
             case DROP:
-                handleStockTransaction(player, stocks, slot, Integer.MAX_VALUE, TransactionType.SELL);
+                handleStockTransaction(player, stocks, slot, 0, TransactionType.SELL_ALL);
                 break;
             default:
                 break;
@@ -157,32 +157,43 @@ public class StockGUI implements Listener {
                 amount = (int) (playerBalance / stockPrice);
             }
 
-            if (playerBalance >= amount * stockPrice && stock.getQuantity() >= amount) {
+            if (playerBalance >= amount * stockPrice && (stock.isInfiniteSupply() || stock.getQuantity() >= amount)) {
                 newAmount = currentAmount + amount;
                 // Subtract the cost from player's balance
                 main.updatePlayerBalance(player, playerBalance - (amount * stockPrice));
-                stock.setQuantity(stock.getQuantity() - amount); // Decrease stock quantity
+                if (!stock.isInfiniteSupply()) {
+                    stock.setQuantity(stock.getQuantity() - amount); // Decrease stock quantity if not infinite
+                }
                 main.saveStockQuantities(); // Save updated quantities
             } else {
-                Chat.msg(player, Chat.prefix + "&7Not enough balance or stocks to buy " + amount + " " + stock.name() + "(s).");
+                Chat.msg(player, Chat.prefix  +"&7Not enough balance or stocks to buy " + amount + " " + stock.name() + "(s).");
                 return;
             }
         } else if (type == TransactionType.SELL) {
-            if (amount == Integer.MAX_VALUE) {
-                amount = currentAmount;
-            }
-
             if (currentAmount >= amount) {
                 newAmount = currentAmount - amount;
                 // Add the value to player's balance
                 double playerBalance = main.getPlayerBalance(player);
                 main.updatePlayerBalance(player, playerBalance + (amount * stockPrice));
-                stock.setQuantity(stock.getQuantity() + amount); // Increase stock quantity
+                if (!stock.isInfiniteSupply()) {
+                    stock.setQuantity(stock.getQuantity() + amount); // Increase stock quantity if not infinite
+                }
                 main.saveStockQuantities(); // Save updated quantities
             } else {
                 Chat.msg(player, Chat.prefix + "&7Not enough stocks to sell.");
                 return;
             }
+        } else if (type == TransactionType.SELL_ALL) {
+            // Sell all available stocks
+            amount = currentAmount;
+            newAmount = 0;
+            double playerBalance = main.getPlayerBalance(player);
+            main.updatePlayerBalance(player, playerBalance + (currentAmount * stockPrice));
+            if (!stock.isInfiniteSupply()) {
+                stock.setQuantity(stock.getQuantity() + currentAmount); // Increase stock quantity if not infinite
+            }
+            main.saveStockQuantities(); // Save updated quantities
+            Chat.msg(player, Chat.prefix + "&7Sold all " + currentAmount + " " + stock.name() + "(s).");
         }
 
         stocks.put(stock, newAmount);

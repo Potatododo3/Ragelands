@@ -50,6 +50,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\StockSystem\StockCommand.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemFlashBang.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemShieldDeflect.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\StockSystem\SetVolatilityCommand.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Commands\PresidentalStuff\VoteListener.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\ItemFunctions\BasketOfSeeds.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\IronManItem.java
@@ -62,6 +63,7 @@ C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscu
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\DragonEgg\PlayerObtainEgg.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\events\FireAbility.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Items\ItemMagicBoots.java
+C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Commands\PlayerDisableSit.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\Data.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\IronManSuit\cmds\suits\mk42.java
 C:\Users\barag\IdeaProjects\RagelandsCUSTOM\src\main\java\com\potato\ragelandscustom\Functions\NoTNT.java

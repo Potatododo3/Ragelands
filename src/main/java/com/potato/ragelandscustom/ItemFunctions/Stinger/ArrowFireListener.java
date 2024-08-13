@@ -1,5 +1,6 @@
 package com.potato.ragelandscustom.ItemFunctions.Stinger;
 
+import com.potato.ragelandscustom.Functions.Chat;
 import com.potato.ragelandscustom.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
@@ -49,7 +50,11 @@ public class ArrowFireListener implements Listener {
         if (lore == null || !lore.contains(ChatColor.GRAY + "Hit mid air enemies and assert the high ground.")) {
             return;
         }
-
+        if (shooter.isGliding() || shooter.isFlying()) {
+            event.setCancelled(true);
+            Chat.msg(shooter, Chat.color(Chat.prefix + "&7You can not use the stinger while flying!"));
+            return;
+        }
         if (event.getEntity() instanceof Arrow || event.getEntity() instanceof Firework) {
             Projectile projectile = event.getEntity();
             arrowMap.put(projectile.getUniqueId(), projectile); // Store the arrow's UUID

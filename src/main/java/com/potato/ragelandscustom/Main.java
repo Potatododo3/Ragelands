@@ -99,7 +99,7 @@ public final class Main extends JavaPlugin {
             stock.setPrice(getConfig().getDouble(path + ".initial_price", stock.getPrice()));
             stock.setVolatility(getConfig().getDouble(path + ".volatility", stock.getVolatility()));
         }
-        scheduleStockPriceUpdates();
+        startStockPriceUpdateTask();
         // Load the config
         FileConfiguration config = getConfig();
         String LicenseKey = config.getString("licensekey");
@@ -314,8 +314,19 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    private void scheduleStockPriceUpdates() {
-        Bukkit.getScheduler().runTaskTimer(this, this::updateStockPrices, 0L, 72000L); // 72000 ticks = 1 hour
+    private void broadcastStockPrices() {
+        StringBuilder message = new StringBuilder("Stock prices have been updated:\n");
+        for (StockEnum stock : StockEnum.values()) {
+            message.append(stock.getName())
+                    .append(": $")
+                    .append(String.format("%.5f", stock.getPrice()))
+                    .append("\n");
+        }
+        Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
+    }
+
+    private void startStockPriceUpdateTask() {
+        getServer().getScheduler().runTaskTimer(this, this::updateStockPrices, 0, 20 * 60 * 60); // Run every hour
     }
 
     private void loadStockQuantities() {
@@ -365,7 +376,7 @@ public final class Main extends JavaPlugin {
 
         try {
             stockConfig.save(stockConfigFile);
-            Chat.broadcastMessage(Chat.prefix + "&7Stock prices have been updated!");
+            broadcastStockPrices();
             Bukkit.getLogger().info("Stock prices have been updated!");
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -33,6 +34,9 @@ public class StockGUI implements Listener {
     public static void openStockGUI(Player player) {
         Inventory inv = Bukkit.createInventory(null, 27, "Stock Market");
         ItemStack frame = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        ItemMeta frameMeta = frame.getItemMeta();
+        frameMeta.setDisplayName("");
+        frameMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ITEM_SPECIFICS, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_DESTROYS);
 
         for (StockEnum stock : StockEnum.values()) {
             ItemStack item = null;
@@ -46,7 +50,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eShift-left click to buy 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
-                item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eCtrl + Drop to buy as many " + stock.getName() + "(s) as you can");
                 item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(ragelandsslot, item);
                 System.out.println("Ragelands item set in slot " + ragelandsslot);
@@ -59,7 +63,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eShift-left click to buy 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
-                item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eCtrl + Drop to buy as many " + stock.getName() + "(s) as you can");
                 item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(peesslot, item);
                 System.out.println("PeesCoin item set in slot " + peesslot);
@@ -72,7 +76,7 @@ public class StockGUI implements Listener {
                 item = ItemStackEditor.addLore(item, "&eShift-left click to buy 10 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eRight click to sell 1 " + stock.getName());
                 item = ItemStackEditor.addLore(item, "&eShift-right click to sell 10 " + stock.getName());
-                item = ItemStackEditor.addLore(item, "&eMiddle click to buy as many " + stock.getName() + "(s) as you can");
+                item = ItemStackEditor.addLore(item, "&eCtrl + Drop to buy as many " + stock.getName() + "(s) as you can");
                 item = ItemStackEditor.addLore(item, "&eDrop to sell as many " + stock.getName() + "(s) as you can");
                 inv.setItem(potatoslot, item);
                 System.out.println("Potatocoin item set in slot " + potatoslot);
@@ -123,7 +127,7 @@ public class StockGUI implements Listener {
             case SHIFT_RIGHT:
                 handleStockTransaction(player, stocks, slot, 10, TransactionType.SELL);
                 break;
-            case MIDDLE:
+            case CONTROL_DROP:
                 handleStockTransaction(player, stocks, slot, Integer.MAX_VALUE, TransactionType.BUY);
                 break;
             case DROP:
@@ -248,7 +252,7 @@ public class StockGUI implements Listener {
                             Chat.color("&eShift-left click to buy 10 " + stock.getName()),
                             Chat.color("&eRight click to sell 1 " + stock.getName()),
                             Chat.color("&eShift-right click to sell 10 " + stock.getName()),
-                            Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can"),
+                            Chat.color("&eCtrl + Drop to buy as many " + stock.getName() + "(s) as you can"),
                             Chat.color("&eDrop to sell as many " + stock.getName() + "(s) as you can")
                     ));
                     item.setItemMeta(meta);
@@ -262,7 +266,7 @@ public class StockGUI implements Listener {
                         Chat.color("&eShift-left click to buy 10 " + stock.getName()),
                         Chat.color("&eRight click to sell 1 " + stock.getName()),
                         Chat.color("&eShift-right click to sell 10 " + stock.getName()),
-                        Chat.color("&eMiddle click to buy as many " + stock.getName() + "(s) as you can"),
+                        Chat.color("&eCtrl + Drop to buy as many " + stock.getName() + "(s) as you can"),
                         Chat.color("&eDrop to sell as many " + stock.getName() + "(s) as you can")
                 ));
                 item.setItemMeta(meta);
